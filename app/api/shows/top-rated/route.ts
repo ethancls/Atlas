@@ -15,26 +15,11 @@ export async function GET() {
     }
 
     const data = await response.json();
-    const shows: TVShow[] = formatTVShow(data.results);
+    const shows: TVShow[] = data.results;
 
     return NextResponse.json(shows);
   } catch (error) {
     console.error("Erreur lors de la récupération des films:", error);
     return NextResponse.json({ error: "Une erreur est survenue." }, { status: 500 });
   }
-}
-
-function formatTVShow(data: any[]): TVShow[] {
-  return data.map(item => ({
-    id: item.id,
-    name: item.name,
-    poster_path: item.poster_path,
-    overview: item.overview,
-    genre_ids: item.genre_ids,
-    origin_country: item.origin_country,
-    first_air_date: item.first_air_date,
-    vote_average: item.vote_average,
-    vote_count: item.vote_count,
-    popularity: item.popularity,
-  }));
 }

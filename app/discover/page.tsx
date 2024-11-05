@@ -2,24 +2,24 @@
 
 import { useEffect, useState } from 'react';
 import { Movie } from "@/app/entities/Movie";
-import { TVShow } from './entities/TVShow';
+import { TVShow } from '../entities/TVShow';
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 
 const NowPlaying = () => {
-  const [movies, setMovies] = useState<TVShow[]>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Fonction pour récupérer les films
-    const fetchMovies = async () => {
+    const fetchDiscover = async () => {
       try {
-        const response = await fetch('/api/shows/popular');
+        const response = await fetch('/api/discover');
         if (!response.ok) {
           throw new Error(`Erreur ${response.status}: ${response.statusText}`);
         }
 
-        const data: TVShow[] = await response.json();
+        const data: Movie[] = await response.json();
         setMovies(data); // Stocke les films dans le state
       } catch (error) {
         console.error("Erreur lors de la récupération des films:", error);
@@ -28,7 +28,7 @@ const NowPlaying = () => {
     };
 
     // Appel de la fonction pour récupérer les films au chargement de la page
-    fetchMovies();
+    fetchDiscover();
   }, []);
 
   return (
@@ -44,17 +44,17 @@ const NowPlaying = () => {
             <Card key={movie.id} className="w-40 min-w-[160px] bg-gray-800 flex-shrink-0 shadow-lg rounded-lg">
               <CardHeader className="p-0">
                 <Image
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt={movie.name}
+                  src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                  alt={movie.title}
                   className="rounded-t-lg"
                   width={160}
                   height={240}
-                  quality={100}
+                  quality={80}
                 />
               </CardHeader>
               <CardContent className="p-2">
-                <h2 className="text-md font-semibold text-center truncate">{movie.name}</h2>
-                <p className="text-sm text-gray-400 text-center">{movie.first_air_date}</p>
+                <h2 className="text-md font-semibold text-center truncate">{movie.title}</h2>
+                <p className="text-sm text-gray-400 text-center">{movie.release_date}</p>
                 <p className="text-sm text-yellow-400 text-center">⭐ {movie.vote_average} ({movie.vote_count})</p>
               </CardContent>
             </Card>

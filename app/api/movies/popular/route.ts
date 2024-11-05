@@ -15,25 +15,11 @@ export async function GET() {
     }
 
     const data = await response.json();
-    const movies: Movie[] = formatMovies(data.results);
+    const movies: Movie[] = data.results;
 
     return NextResponse.json(movies);
   } catch (error) {
     console.error("Erreur lors de la récupération des films:", error);
     return NextResponse.json({ error: "Une erreur est survenue." }, { status: 500 });
   }
-}
-
-function formatMovies(data: any[]): Movie[] {
-  return data.map(item => ({
-    id: item.id,
-    title: item.title,
-    poster_path: item.poster_path,
-    overview: item.overview,
-    genre_ids: item.genre_ids,
-    release_date: item.release_date,
-    vote_average: item.vote_average,
-    vote_count: item.vote_count,
-    popularity: item.popularity,
-  }));
 }
