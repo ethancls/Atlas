@@ -3,20 +3,6 @@
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-  overview: string;
-}
-
-interface TV {
-  id: number;
-  name: string;
-  poster_path: string;
-  overview: string;
-}
-
 const Discover = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [shows, setShows] = useState<TV[]>([]);
@@ -112,9 +98,9 @@ const Discover = () => {
               <Card key={show.id} className="w-40 min-w-[160px] bg-gray-800 flex-shrink-0 shadow-lg rounded-lg">
                 <CardHeader className="p-0">
                   <img
-                    src={`https://image.tmdb.org/t/p/original${show.poster_path}`}
-                    alt={show.name}
-                    className="rounded-t-lg"
+                  src={`https://image.tmdb.org/t/p/original${show.poster_path}`}
+                  alt={show.name}
+                  className="rounded-t-lg"
                   />
                 </CardHeader>
                 <CardContent className="p-2">
