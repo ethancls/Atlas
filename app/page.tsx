@@ -2,55 +2,48 @@
 
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Movie } from "@/app/entities/Movie";
+import { TVShow } from "@/app/entities/TVShow";
 
 const Discover = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [shows, setShows] = useState<TV[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [shows, setShows] = useState<TVShow[]>([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
-      try {
-        const response = await fetch(`https://api.themoviedb.org/3/trending/movie/week?language=fr-FR`, {
-          headers: {
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
-            'Accept': 'application/json',
-          }
-        });
-        
-        if (!response.ok) {
-          throw new Error(`Erreur ${response.status}: ${response.statusText}`);
-        }
 
-        const data = await response.json();
-        setMovies(data.results);
-        setError(null);
-      } catch (error: unknown) {
-          setError("Une erreur est survenue lors de l'appel à l'API.");
+      const response = await fetch(`https://api.themoviedb.org/3/trending/movie/week?language=fr-FR`, {
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+          'Accept': 'application/json',
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur ${response.status}: ${response.statusText}`);
       }
+
+      const data = await response.json();
+      setMovies(data.results);
     };
 
     const fetchShows = async () => {
-      try {
-        const response = await fetch(`https://api.themoviedb.org/3/trending/tv/week?language=fr-FR`, {
-          headers: {
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
-            'Accept': 'application/json',
-          }
-        });
-        
-        if (!response.ok) {
-          throw new Error(`Erreur ${response.status}: ${response.statusText}`);
-        }
 
-        const data = await response.json();
-        setShows(data.results);
-        setError(null);
-      } catch (error: unknown) {
-        setError("Une erreur est survenue lors de l'appel à l'API.");
+      const response = await fetch(`https://api.themoviedb.org/3/trending/tv/week?language=fr-FR`, {
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+          'Accept': 'application/json',
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur ${response.status}: ${response.statusText}`);
       }
+
+      const data = await response.json();
+      setShows(data.results);
     };
-    
+
     fetchMovies();
     fetchShows();
   }, []);
@@ -65,9 +58,7 @@ const Discover = () => {
       {/* Movies Section */}
       <section className="mt-20 mb-10">
         <h2 className="text-2xl font-semibold mb-4 pl-2">Films</h2>
-        {error ? (
-          <p className="text-red-500">{error}</p>
-        ) : (
+        {(
           <div className="flex space-x-4 overflow-x-auto pb-4">
             {movies.map((movie) => (
               <Card key={movie.id} className="w-40 min-w-[160px] bg-gray-800 flex-shrink-0 shadow-lg rounded-lg">
@@ -90,17 +81,15 @@ const Discover = () => {
       {/* TV Shows Section */}
       <section className="mb-10">
         <h2 className="text-2xl font-semibold mb-4 pl-2">Séries</h2>
-        {error ? (
-          <p className="text-red-500">{error}</p>
-        ) : (
+        {(
           <div className="flex space-x-4 overflow-x-auto pb-4">
             {shows.map((show) => (
               <Card key={show.id} className="w-40 min-w-[160px] bg-gray-800 flex-shrink-0 shadow-lg rounded-lg">
                 <CardHeader className="p-0">
                   <img
-                  src={`https://image.tmdb.org/t/p/original${show.poster_path}`}
-                  alt={show.name}
-                  className="rounded-t-lg"
+                    src={`https://image.tmdb.org/t/p/original${show.poster_path}`}
+                    alt={show.name}
+                    className="rounded-t-lg"
                   />
                 </CardHeader>
                 <CardContent className="p-2">
