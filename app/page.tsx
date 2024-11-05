@@ -1,107 +1,68 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Movie } from "@/app/entities/Movie";
-import { TVShow } from "@/app/entities/TVShow";
+import { TVShow } from './entities/TVShow';
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import Image from "next/image";
 
-const Discover = () => {
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [shows, setShows] = useState<TVShow[]>([]);
+const NowPlaying = () => {
+  const [movies, setMovies] = useState<TVShow[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Fonction pour récupérer les films
     const fetchMovies = async () => {
-
-      const response = await fetch(`https://api.themoviedb.org/3/trending/movie/week?language=fr-FR`, {
-        headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
-          'Accept': 'application/json',
+      try {
+        const response = await fetch('/api/shows/popular');
+        if (!response.ok) {
+          throw new Error(`Erreur ${response.status}: ${response.statusText}`);
         }
-      });
 
-      if (!response.ok) {
-        throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+        const data: TVShow[] = await response.json();
+        setMovies(data); // Stocke les films dans le state
+      } catch (error) {
+        console.error("Erreur lors de la récupération des films:", error);
+        setError("Une erreur est survenue lors de la récupération des films.");
       }
-
-      const data = await response.json();
-      setMovies(data.results);
     };
 
-    const fetchShows = async () => {
-
-      const response = await fetch(`https://api.themoviedb.org/3/trending/tv/week?language=fr-FR`, {
-        headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
-          'Accept': 'application/json',
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`Erreur ${response.status}: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      setShows(data.results);
-    };
-
+    // Appel de la fonction pour récupérer les films au chargement de la page
     fetchMovies();
-    fetchShows();
   }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white p-6">
-      {/* Header */}
-      <div className="fixed top-0 w-full bg-opacity-70 bg-black text-center py-4 z-10 shadow-lg">
-        <h1 className="text-3xl font-bold">Discover</h1>
-      </div>
+      {/* Titre */}
+      <h1 className="text-3xl font-bold mb-8">Films en Salle</h1>
 
-      {/* Movies Section */}
-      <section className="mt-20 mb-10">
-        <h2 className="text-2xl font-semibold mb-4 pl-2">Films</h2>
-        {(
-          <div className="flex space-x-4 overflow-x-auto pb-4">
-            {movies.map((movie) => (
-              <Card key={movie.id} className="w-40 min-w-[160px] bg-gray-800 flex-shrink-0 shadow-lg rounded-lg">
-                <CardHeader className="p-0">
-                  <img
-                    src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                    alt={movie.title}
-                    className="rounded-t-lg"
-                  />
-                </CardHeader>
-                <CardContent className="p-2">
-                  <h2 className="text-md font-semibold text-center truncate">{movie.title}</h2>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* TV Shows Section */}
-      <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-4 pl-2">Séries</h2>
-        {(
-          <div className="flex space-x-4 overflow-x-auto pb-4">
-            {shows.map((show) => (
-              <Card key={show.id} className="w-40 min-w-[160px] bg-gray-800 flex-shrink-0 shadow-lg rounded-lg">
-                <CardHeader className="p-0">
-                  <img
-                    src={`https://image.tmdb.org/t/p/original${show.poster_path}`}
-                    alt={show.name}
-                    className="rounded-t-lg"
-                  />
-                </CardHeader>
-                <CardContent className="p-2">
-                  <h2 className="text-md font-semibold text-center truncate">{show.name}</h2>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-      </section>
+      {error ? (
+        <p className="text-red-500">{error}</p>
+      ) : (
+        <div className="flex flex-wrap gap-4">
+          {movies.map((movie) => (
+            <Card key={movie.id} className="w-40 min-w-[160px] bg-gray-800 flex-shrink-0 shadow-lg rounded-lg">
+              <CardHeader className="p-0">
+                <Image
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  alt={movie.name}
+                  className="rounded-t-lg"
+                  width={160}
+                  height={240}
+                  quality={100}
+                />
+              </CardHeader>
+              <CardContent className="p-2">
+                <h2 className="text-md font-semibold text-center truncate">{movie.name}</h2>
+                <p className="text-sm text-gray-400 text-center">{movie.first_air_date}</p>
+                <p className="text-sm text-yellow-400 text-center">⭐ {movie.vote_average} ({movie.vote_count})</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-export default Discover;
+export default NowPlaying;
