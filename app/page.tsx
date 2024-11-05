@@ -25,8 +25,8 @@ const Discover = () => {
         const data = await response.json();
         setMovies(data.results);
         setError(null);
-      } catch (error: any) {
-        setError(error.message || "Une erreur est survenue lors de l'appel à l'API.");
+      } catch (error: unknown) {
+          setError("Une erreur est survenue lors de l'appel à l'API.");
       }
     };
 
@@ -46,8 +46,8 @@ const Discover = () => {
         const data = await response.json();
         setShows(data.results);
         setError(null);
-      } catch (error: any) {
-        setError(error.message || "Une erreur est survenue lors de l'appel à l'API.");
+      } catch (error: unknown) {
+        setError("Une erreur est survenue lors de l'appel à l'API.");
       }
     };
     
