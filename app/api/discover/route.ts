@@ -16,7 +16,7 @@ export async function GET() {
     }
 
     const data_movies = await response_movies.json();
-    const movies: Movie[] = formatMovies(data_movies.results);
+    const movies: Movie[] = data_movies.results;
 
     const response_shows = await fetch(`https://api.themoviedb.org/3/discover/tv`, {
       headers: {
@@ -30,40 +30,11 @@ export async function GET() {
     }
 
     const data_shows = await response_shows.json();
-    const shows: TVShow[] = formatTVShow(data_shows.results);
+    const shows: TVShow[] = data_shows.results;
 
     return NextResponse.json({ movies, shows });
   } catch (error) {
     console.error("Erreur lors de la récupération des films:", error);
     return NextResponse.json({ error: "Une erreur est survenue." }, { status: 500 });
   }
-}
-
-function formatMovies(data: any[]): Movie[] {
-  return data.map(item => ({
-    id: item.id,
-    title: item.title,
-    poster_path: item.poster_path,
-    overview: item.overview,
-    genre_ids: item.genre_ids,
-    release_date: item.release_date,
-    vote_average: item.vote_average,
-    vote_count: item.vote_count,
-    popularity: item.popularity,
-  }));
-}
-
-function formatTVShow(data: any[]): TVShow[] {
-  return data.map(item => ({
-    id: item.id,
-    name: item.name,
-    poster_path: item.poster_path,
-    overview: item.overview,
-    genre_ids: item.genre_ids,
-    origin_country: item.origin_country,
-    first_air_date: item.first_air_date,
-    vote_average: item.vote_average,
-    vote_count: item.vote_count,
-    popularity: item.popularity,
-  }));
 }

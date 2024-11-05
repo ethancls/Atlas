@@ -13,7 +13,7 @@ const NowPlaying = () => {
     // Fonction pour récupérer les films
     const fetchMovies = async () => {
       try {
-        const response = await fetch('/api/movies/now-playing');
+        const response = await fetch('/api/movies/top-rated');
         if (!response.ok) {
           throw new Error(`Erreur ${response.status}: ${response.statusText}`);
         }
