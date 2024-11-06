@@ -12,7 +12,7 @@ const NowPlayingShows = () => {
   useEffect(() => {
     const fetchShows = async () => {
       try {
-        const response = await fetch('/api/shows/now-playing');
+        const response = await fetch('/api/shows/on-the-air');
         if (!response.ok) {
           throw new Error(`Erreur ${response.status}: ${response.statusText}`);
         }
