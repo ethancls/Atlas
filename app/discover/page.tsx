@@ -48,7 +48,7 @@ const Discover = () => {
       {error ? (
         <p className="text-red-500 text-center">{error}</p>
       ) : (
-        <div className="flex overflow-x-auto gap-5 scrollbar-hide p-0">
+        <div className="flex overflow-x-auto gap-5 scrollbar-hide p-4">
           {movies.map((movie) => (
             <DisplayMovie key={movie.id} movie={movie} />
           ))}
@@ -64,7 +64,7 @@ const Discover = () => {
       {error ? (
         <p className="text-red-500 text-center">{error}</p>
       ) : (
-        <div className="flex overflow-x-auto gap-5 scrollbar-hide p-0">
+        <div className="flex overflow-x-auto gap-5 scrollbar-hide p-4">
           {shows.map((show) => (
             <DisplayShow key={show.id} show={show} />
           ))}
