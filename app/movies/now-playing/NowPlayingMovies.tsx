@@ -13,7 +13,7 @@ const NowPlaying = () => {
     // Fonction pour récupérer les films
     const fetchMovies = async () => {
       try {
-        const response = await fetch('/api/movies/popular');
+        const response = await fetch('/api/movies/now-playing');
         if (!response.ok) {
           throw new Error(`Erreur ${response.status}: ${response.statusText}`);
         }
@@ -33,7 +33,7 @@ const NowPlaying = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white p-6">
       {/* Titre */}
-      <h1 className="text-3xl font-bold mb-8">Films en Salle</h1>
+      <h1 className="text-3xl font-bold mb-8">Now Playing</h1>
 
       {error ? (
         <p className="text-red-500">{error}</p>
