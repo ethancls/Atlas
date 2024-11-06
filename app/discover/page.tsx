@@ -33,16 +33,16 @@ const Discover = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-orange-300 via-purple-400 to-blue-400 text-white p-6 sm:p-8 space-y-12 w-full">
+    <div className="min-h-screen bg-gradient-to-tr from-gray-300 via-orange-300 to-gray-300 text-black p-6 sm:p-8 space-y-12 w-full">
       {/* Discover Title with Icon */}
       <div className="flex items-center space-x-3 mb-8 justify-center w-full">
-        <MoonIcon className="h-8 w-8 text-white" />
+        <MoonIcon className="h-8 w-8 text-black" />
         <h1 className="text-4xl font-bold text-center">Discover</h1>
       </div>
 
       {/* Movies Section */}
       <div className="flex items-center space-x-2 mb-2">
-        <VideoIcon className="h-6 w-6 text-white" />
+        <VideoIcon className="h-6 w-6 text-black" />
         <h2 className="text-2xl font-semibold">Movies</h2>
       </div>
       {error ? (
@@ -58,7 +58,7 @@ const Discover = () => {
       {/* TV Shows Section */}
 
       <div className="flex items-center space-x-2 mb-2">
-        <SpeakerLoudIcon className="h-6 w-6 text-white" />
+        <SpeakerLoudIcon className="h-6 w-6 text-black" />
         <h2 className="text-2xl font-semibold">TV Shows</h2>
       </div>
       {error ? (
