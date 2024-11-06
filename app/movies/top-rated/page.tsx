@@ -33,7 +33,7 @@ const NowPlaying = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white p-6">
       {/* Titre */}
-      <h1 className="text-3xl font-bold mb-8">Films en Salle</h1>
+      <h1 className="text-3xl font-bold mb-8">Top Rated Movies</h1>
 
       {error ? (
         <p className="text-red-500">{error}</p>
