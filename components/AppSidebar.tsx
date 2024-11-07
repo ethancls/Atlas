@@ -16,11 +16,6 @@ import { PersonIcon } from "@radix-ui/react-icons"
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "/",
-    icon: Home,
-  },
-  {
     title: "Discover",
     url: "/discover",
     icon: Atom,
@@ -68,8 +63,8 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="flex gap-x-3">
-          <img src="https://atlas-seven-tau.vercel.app/favicon.ico" className="h-8 w-8" />
-          <h1 className="text-xl font-bold p-2">Atlas</h1>
+          <img src="https://atlas-seven-tau.vercel.app/favicon.ico" className="h-12 w-12" />
+          <h1 className="text-xl font-bold p-4">Atlas</h1>
         </div>
       </SidebarHeader>
       <SidebarContent>

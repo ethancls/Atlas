@@ -3,14 +3,24 @@
 import { useEffect, useState } from 'react';
 import { Movie } from "@/app/entities/Movie";
 import DisplayMovie from '@/components/DisplayMovie';
-import { PanelTopClose, PlayIcon, PopcornIcon, Tv2Icon } from 'lucide-react';
+import { PanelTopClose, PopcornIcon } from 'lucide-react';
+import { DefaultLayout } from '@/components/DefaultLayout';
 
-const NowPlaying = () => {
+import { useRouter } from 'next/navigation';
+import { getLogin } from '@/repository/auth';
+
+const Popular = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  if (getLogin() === false) {
+    const router = useRouter();
+    router.push('/login');
+  }
+  else {
+
   useEffect(() => {
-    const fetchNowPlaying= async () => {
+    const fetchPopular= async () => {
       try {
         const response = await fetch('/api/movies/popular');
         if (!response.ok) {
@@ -25,10 +35,11 @@ const NowPlaying = () => {
       }
     };
 
-    fetchNowPlaying();
+    fetchPopular();
   }, []);
 
   return (
+    <DefaultLayout>
     <div className="min-h-screen bg-gradient-to-tr from-gray-300 via-orange-300 to-gray-300 text-black p-6 sm:p-8 space-y-12 w-full">
       {/* Discover Title with Icon */}
       <div className="flex items-center space-x-3 mb-8 justify-center w-full">
@@ -50,7 +61,9 @@ const NowPlaying = () => {
         </div>
       )}
     </div>
+    </DefaultLayout>
   );
+}
 };
 
-export default NowPlaying;
+export default Popular;
