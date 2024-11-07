@@ -62,29 +62,6 @@ const shows = [
   }
 ]
 
-const others = [
-  {
-    title: "Movies",
-    url: "/api/movies",
-    icon: Calendar,
-  },
-  {
-    title: "Shows",
-    url: "/api/shows",
-    icon: Inbox,
-  },
-  {
-    title: "Discover",
-    url: "/api/discover",
-    icon: Search,
-  },
-  {
-    title: "Genres",
-    url: "/api/genres",
-    icon: Search,
-  }
-]
-
 export function AppSidebar() {
   return (
     <Sidebar>
@@ -139,23 +116,6 @@ export function AppSidebar() {
                     <a href={show.url}>
                       <show.icon />
                       <span>{show.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>API</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {others.map((other) => (
-                <SidebarMenuItem key={other.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={other.url}>
-                      <other.icon />
-                      <span>{other.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
