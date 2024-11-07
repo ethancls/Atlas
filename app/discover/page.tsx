@@ -47,7 +47,7 @@ const Discover = () => {
 
   return (
     <DefaultLayout>
-      <div className="min-h-screen bg-gradient-to-tr from-pink-300 via-violet-300 to-blue-300 text-black p-6 sm:p-8 space-y-12 w-full">
+      <div className="min-h-screen text-black p-6 sm:p-8 space-y-12 w-full">
         {/* Discover Title with Icon */}
         <div className="flex items-center space-x-3 mb-8 justify-center w-full">
           <MoonIcon className="h-8 w-8 text-black" />

@@ -43,7 +43,7 @@ const OnTheAir = () => {
 
   return (
     <DefaultLayout>
-      <div className="min-h-screen bg-gradient-to-tr from-gray-300 via-orange-300 to-gray-300 text-black p-6 sm:p-8 space-y-12 w-full">
+      <div className="min-h-screen text-black p-6 sm:p-8 space-y-12 w-full">
         <div className="flex items-center space-x-3 mb-8 justify-center w-full">
           <TrophyIcon className="h-8 w-8 text-black" />
           <h1 className="text-4xl font-bold text-center">Top Rated</h1>
