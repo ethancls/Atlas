@@ -44,7 +44,7 @@ export default function Dashboard() {
             </div>
             <div className="hidden bg-muted lg:block bg-gradient-to-bl from-blue-300 via-pink-500 to-blue-300">
                 <div className="flex items-center justify-center h-full">
-                    <Label className="flex justify-center font-semibold text-7xl text-center animate-pulse">
+                    <Label className="flex justify-center font-semibold text-7xl text-center">
                         Welcome to <br /> Atlas
                     </Label>
                 </div>
