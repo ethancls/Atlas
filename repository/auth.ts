@@ -1,26 +1,23 @@
-let isLogged = false;
-let error = '';
-
 import { user } from './user';
 
 export function login(username: string, password: string) {
   if (username === user.username && password === user.password) {
-    isLogged = true;
-    error = '';
+    localStorage.setItem('isLogged', 'true');
+    localStorage.removeItem('error');
   } else {
-    isLogged = false;
-    error = 'Nom d\'utilisateur ou mot de passe incorrect';
+    localStorage.setItem('isLogged', 'false');
+    localStorage.setItem('error', 'Nom d\'utilisateur ou mot de passe incorrect');
   }
 }
 
 export function logout() {
-  isLogged = false;
+  localStorage.setItem('isLogged', 'false');
 }
 
 export function getLogin() {
-  return isLogged;
+  return localStorage.getItem('isLogged') === 'true';
 }
 
 export function getError() {
-  return error;
+  return localStorage.getItem('error') || '';
 }

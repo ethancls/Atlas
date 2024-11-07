@@ -1,12 +1,16 @@
-import { Header } from '@/components/Header';
+"use client"
 import React from 'react';
+import { useRouter } from 'next/navigation';
+import { getLogin } from '@/repository/auth';
 
 const Page: React.FC = () => {
-    return (
-        <div>
-            <h1>Page</h1>
-        </div>
-    );
+    const router = useRouter();
+    if(!getLogin()) {
+        router.push('/login');
+    } else {
+        router.push('/discover');
+    }
+    return null;
 };
 
 export default Page;

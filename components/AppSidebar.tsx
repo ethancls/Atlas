@@ -1,8 +1,9 @@
-import { Atom, Calendar, Home, Inbox, LoaderPinwheelIcon, PlayIcon, Search, Settings, TrophyIcon } from "lucide-react"
+import { Atom, Calendar, Home, Inbox, LoaderPinwheelIcon, LogOut, PlayIcon, Search, Settings, TrophyIcon } from "lucide-react"
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -12,6 +13,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { PersonIcon } from "@radix-ui/react-icons"
+import { logout } from "@/repository/auth"
+import { Button } from "./ui/button"
 
 // Menu items.
 const items = [
@@ -119,6 +122,16 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <Button
+          onClick={() => {
+            logout()
+            window.location.href = "/login"
+          }}
+        >
+          <LogOut /> Logout
+        </Button>
+      </SidebarFooter>
     </Sidebar>
   )
 }
