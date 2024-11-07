@@ -44,15 +44,15 @@ const NowPlaying = () => {
 
   return (
     <DefaultLayout>
-      <div className="min-h-screen  text-black p-6 sm:p-8 space-y-12 w-full">
+      <div className="min-h-screen p-6 sm:p-8 space-y-12 w-full">
         {/* Discover Title with Icon */}
         <div className="flex items-center space-x-3 mb-8 justify-center w-full">
-          <PlayIcon className="h-8 w-8 text-black" />
+          <PlayIcon className="h-8 w-8" />
           <h1 className="text-4xl font-bold text-center">Now Playing</h1>
         </div>
 
         <div className="flex items-center space-x-2 mb-2">
-          <PopcornIcon className="h-6 w-6 text-black" />
+          <PopcornIcon className="h-6 w-6" />
           <h2 className="text-2xl font-semibold">Movies</h2>
         </div>
         {error ? (
