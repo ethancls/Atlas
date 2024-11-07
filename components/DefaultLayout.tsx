@@ -14,7 +14,7 @@ export const DefaultLayout = ({ children }: PropsWithChildren) => {
                 <Header>
                     <SidebarTrigger className="mt-3" />
                     <div className="flex w-50 items-center space-x-2 ml-auto">
-                        <Input placeholder="Search" />
+                        <Input type="search" placeholder="Search" />
                         <Button variant="default" size="icon">
                             <SearchIcon />
                         </Button>

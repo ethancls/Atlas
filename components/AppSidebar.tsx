@@ -1,4 +1,6 @@
-import { Atom, Calendar, Home, Inbox, LoaderPinwheelIcon, LogOut, PlayIcon, Search, Settings, TrophyIcon } from "lucide-react"
+import { Atom, LoaderPinwheelIcon, LogOut, MedalIcon, PlayIcon, TrophyIcon } from "lucide-react"
+import Image from "next/image"
+import icon from "@/assets/atlas.png"
 
 import {
   Sidebar,
@@ -12,7 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { PersonIcon } from "@radix-ui/react-icons"
+
 import { logout } from "@/repository/auth"
 import { Button } from "./ui/button"
 
@@ -34,25 +36,25 @@ const movies = [
   {
     title: "Popular",
     url: "/movies/popular",
-    icon: PersonIcon,
+    icon: MedalIcon,
   },
   {
     title: "Top Rated",
     url: "/movies/top-rated",
-    icon: TrophyIcon,
+    icon: MedalIcon,
   }
 ]
 
 const shows = [
   {
-    title: "On Air",
+    title: "On The Air",
     url: "/shows/on-the-air",
     icon: LoaderPinwheelIcon,
   },
   {
     title: "Popular",
     url: "/shows/popular",
-    icon: PersonIcon,
+    icon: MedalIcon,
   },
   {
     title: "Top Rated",
@@ -66,7 +68,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="flex gap-x-3">
-          <img src="https://atlas-seven-tau.vercel.app/favicon.ico" className="h-12 w-12" />
+          <Image src={icon} alt="Logo" className="h-12 w-12" />
           <h1 className="text-xl font-bold p-4">Atlas</h1>
         </div>
       </SidebarHeader>

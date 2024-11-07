@@ -15,14 +15,12 @@ const Discover = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [shows, setShows] = useState<TVShow[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
-  if (getLogin() === false) {
-    const router = useRouter();
-    router.push('/login');
-  }
-  else {
-
-    useEffect(() => {
+  useEffect(() => {
+    if (getLogin() === false) {
+      router.push('/login');
+    } else {
       const fetchDiscover = async () => {
         try {
           const response = await fetch('/api/discover');
@@ -40,48 +38,52 @@ const Discover = () => {
       };
 
       fetchDiscover();
-    }, []);
+    }
+  }, [router]);
 
-    return (
-      <DefaultLayout>
-        <div className="min-h-screen bg-gradient-to-tr from-pink-300 via-violet-300 to-blue-300 text-black p-6 sm:p-8 space-y-12 w-full">
-          {/* Discover Title with Icon */}
-          <div className="flex items-center space-x-3 mb-8 justify-center w-full">
-            <MoonIcon className="h-8 w-8 text-black" />
-            <h1 className="text-4xl font-bold text-center">Discover</h1>
-          </div>
-
-          <div className="flex items-center space-x-2 mb-2">
-            <PopcornIcon className="h-6 w-6 text-black" />
-            <h2 className="text-2xl font-semibold">Movies</h2>
-          </div>
-          {error ? (
-            <p className="text-red-500 text-center">{error}</p>
-          ) : (
-            <div className="flex flex-wrap gap-4">
-              {movies.map((movie) => (
-                <DisplayMovie key={movie.id} movie={movie} />
-              ))}
-            </div>
-          )}
-
-          <div className="flex items-center space-x-2 mb-2">
-            <Tv2Icon className="h-6 w-6 text-black" />
-            <h2 className="text-2xl font-semibold">TV Shows</h2>
-          </div>
-          {error ? (
-            <p className="text-red-500 text-center">{error}</p>
-          ) : (
-            <div className="flex flex-wrap gap-4">
-              {shows.map((show) => (
-                <DisplayShow key={show.id} show={show} />
-              ))}
-            </div>
-          )}
-        </div>
-      </DefaultLayout>
-    );
+  if (getLogin() === false) {
+    return null;
   }
+
+  return (
+    <DefaultLayout>
+      <div className="min-h-screen bg-gradient-to-tr from-pink-300 via-violet-300 to-blue-300 text-black p-6 sm:p-8 space-y-12 w-full">
+        {/* Discover Title with Icon */}
+        <div className="flex items-center space-x-3 mb-8 justify-center w-full">
+          <MoonIcon className="h-8 w-8 text-black" />
+          <h1 className="text-4xl font-bold text-center">Discover</h1>
+        </div>
+
+        <div className="flex items-center space-x-2 mb-2">
+          <PopcornIcon className="h-6 w-6 text-black" />
+          <h2 className="text-2xl font-semibold">Movies</h2>
+        </div>
+        {error ? (
+          <p className="text-red-500 text-center">{error}</p>
+        ) : (
+          <div className="flex flex-wrap gap-4">
+            {movies.map((movie) => (
+              <DisplayMovie key={movie.id} movie={movie} />
+            ))}
+          </div>
+        )}
+
+        <div className="flex items-center space-x-2 mb-2">
+          <Tv2Icon className="h-6 w-6 text-black" />
+          <h2 className="text-2xl font-semibold">TV Shows</h2>
+        </div>
+        {error ? (
+          <p className="text-red-500 text-center">{error}</p>
+        ) : (
+          <div className="flex flex-wrap gap-4">
+            {shows.map((show) => (
+              <DisplayShow key={show.id} show={show} />
+            ))}
+          </div>
+        )}
+      </div>
+    </DefaultLayout>
+  );
 };
 
 export default Discover;
