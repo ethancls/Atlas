@@ -32,7 +32,7 @@ export async function GET() {
     const data_shows = await response_shows.json();
     const shows: TVShow[] = data_shows.results;
 
-    return NextResponse.json({movies, shows });
+    return NextResponse.json({ movies, shows });
   } catch (error) {
     console.error("Erreur lors de la récupération des films:", error);
     return NextResponse.json({ error: "Une erreur est survenue." }, { status: 500 });
