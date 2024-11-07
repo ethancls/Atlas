@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { Atom, Calendar, Home, Inbox, LoaderPinwheelIcon, PlayIcon, Search, Settings, TrophyIcon } from "lucide-react"
 
 import {
   Sidebar,
@@ -11,6 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { PersonIcon } from "@radix-ui/react-icons"
 
 // Menu items.
 const items = [
@@ -22,7 +23,7 @@ const items = [
   {
     title: "Discover",
     url: "/discover",
-    icon: Inbox,
+    icon: Atom,
   }
 ]
 
@@ -30,17 +31,17 @@ const movies = [
   {
     title: "Now Playing",
     url: "/movies/now-playing",
-    icon: Calendar,
+    icon: PlayIcon,
   },
   {
     title: "Popular",
     url: "/movies/popular",
-    icon: Inbox,
+    icon: PersonIcon,
   },
   {
     title: "Top Rated",
     url: "/movies/top-rated",
-    icon: Search,
+    icon: TrophyIcon,
   }
 ]
 
@@ -48,17 +49,17 @@ const shows = [
   {
     title: "On Air",
     url: "/shows/on-the-air",
-    icon: Calendar,
+    icon: LoaderPinwheelIcon,
   },
   {
     title: "Popular",
     url: "/shows/popular",
-    icon: Inbox,
+    icon: PersonIcon,
   },
   {
     title: "Top Rated",
     url: "/shows/top-rated",
-    icon: Search,
+    icon: TrophyIcon,
   }
 ]
 
@@ -73,7 +74,6 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Movies</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

@@ -5,7 +5,8 @@ import { Movie } from "@/app/entities/Movie";
 import { TVShow } from '../entities/TVShow';
 import DisplayMovie from '@/components/DisplayMovie';
 import DisplayShow from '@/components/DisplayShow';
-import { MoonIcon, VideoIcon, SpeakerLoudIcon } from '@radix-ui/react-icons';
+import { MoonIcon} from '@radix-ui/react-icons';
+import { PopcornIcon, Tv2Icon } from 'lucide-react';
 
 const Discover = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -33,53 +34,40 @@ const Discover = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-gray-300 via-orange-300 to-gray-300 text-black p-6 sm:p-8 space-y-12 w-full">
+    <div className="min-h-screen bg-gradient-to-tr from-pink-300 via-violet-300 to-blue-300 text-black p-6 sm:p-8 space-y-12 w-full">
       {/* Discover Title with Icon */}
       <div className="flex items-center space-x-3 mb-8 justify-center w-full">
         <MoonIcon className="h-8 w-8 text-black" />
         <h1 className="text-4xl font-bold text-center">Discover</h1>
       </div>
 
-      {/* Movies Section */}
       <div className="flex items-center space-x-2 mb-2">
-        <VideoIcon className="h-6 w-6 text-black" />
+        <PopcornIcon className="h-6 w-6 text-black" />
         <h2 className="text-2xl font-semibold">Movies</h2>
       </div>
       {error ? (
         <p className="text-red-500 text-center">{error}</p>
       ) : (
-        <div className="flex overflow-x-auto gap-5 scrollbar-hide p-4">
+        <div className="flex flex-wrap gap-4">
           {movies.map((movie) => (
             <DisplayMovie key={movie.id} movie={movie} />
           ))}
         </div>
       )}
 
-      {/* TV Shows Section */}
-
       <div className="flex items-center space-x-2 mb-2">
-        <SpeakerLoudIcon className="h-6 w-6 text-black" />
+        <Tv2Icon className="h-6 w-6 text-black" />
         <h2 className="text-2xl font-semibold">TV Shows</h2>
       </div>
       {error ? (
         <p className="text-red-500 text-center">{error}</p>
       ) : (
-        <div className="flex overflow-x-auto gap-5 scrollbar-hide p-4">
+        <div className="flex flex-wrap gap-4">
           {shows.map((show) => (
             <DisplayShow key={show.id} show={show} />
           ))}
         </div>
       )}
-
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </div>
   );
 };

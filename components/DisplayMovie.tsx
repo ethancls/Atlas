@@ -34,7 +34,7 @@ const DisplayMovie: React.FC<DisplayMovieProps> = ({ movie }) => {
     <Card className="w-40 min-w-[180px] flex-shrink-0 shadow-lg rounded-lg bg-gradient-to-bl from-pink-200 to-blue-200 hover:shadow-xl hover:scale-105 transition-transform duration-300 hover">
       <CardHeader className="p-1">
         <Image
-          src={`https://image.tmdb.org/t/p/w400${movie.poster_path}`}
+          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt={movie.title}
           className="rounded-lg"
           width={180}
