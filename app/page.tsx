@@ -1,8 +1,11 @@
+import { Header } from '@/components/Header';
 import React from 'react';
 
 const Page: React.FC = () => {
     return (
-        <h1>Hello World</h1>
+        <div>
+            <h1>Page</h1>
+        </div>
     );
 };
 

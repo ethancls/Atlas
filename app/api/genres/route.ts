@@ -31,8 +31,8 @@ export async function GET() {
         const data_shows = await response_shows.json();
         const showGenres = data_shows.genres;
 
-        const uniqueGenres: Genres[] = showGenres.filter((showGenre: Genres) => !genres.some((movieGenre: Genres) => movieGenre.id === showGenre.id));
-        genres = genres.concat(uniqueGenres);
+        const unique: Genres[] = showGenres.filter((showGenre: Genres) => !genres.some((movieGenre: Genres) => movieGenre.id === showGenre.id));
+        genres = genres.concat(unique);
 
         return NextResponse.json({ genres });
     } catch (error) {
