@@ -11,6 +11,7 @@ import DisplayMovie from '@/components/DisplayMovie';
 const TopRated = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isLogged, setIsLogged] = useState(false);
   const router = useRouter();
 
 
@@ -19,6 +20,7 @@ const TopRated = () => {
       router.push('/login');
     }
     else {
+      setIsLogged(true);
       const fetchTopRated = async () => {
         try {
           const response = await fetch('/api/movies/top-rated');
@@ -38,7 +40,7 @@ const TopRated = () => {
     }
   }, [router]);
 
-  if (getLogin() === false) {
+  if (isLogged === false) {
     return null;
   }
 

@@ -11,6 +11,7 @@ import DisplayShow from '@/components/DisplayShow';
 const OnTheAir = () => {
   const [shows, setShows] = useState<TVShow[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isLogged, setIsLogged] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -18,6 +19,7 @@ const OnTheAir = () => {
       router.push('/login');
     }
     else {
+      setIsLogged(true);
       const fetchShows = async () => {
         try {
           const response = await fetch('/api/shows/popular');
@@ -36,6 +38,10 @@ const OnTheAir = () => {
       fetchShows();
     }
   }, [router]);
+
+  if (isLogged === false) {
+    return null;
+  }
 
   return (
     <DefaultLayout>

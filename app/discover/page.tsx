@@ -15,12 +15,14 @@ const Discover = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [shows, setShows] = useState<TVShow[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isLogged, setIsLogged] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     if (getLogin() === false) {
       router.push('/login');
     } else {
+      setIsLogged(true);
       const fetchDiscover = async () => {
         try {
           const response = await fetch('/api/discover');
@@ -41,7 +43,7 @@ const Discover = () => {
     }
   }, [router]);
 
-  if (getLogin() === false) {
+  if (!isLogged) {
     return null;
   }
 
@@ -55,7 +57,7 @@ const Discover = () => {
         </div>
 
         <div className="flex items-center space-x-2 mb-2">
-          <PopcornIcon className="h-6 w-6" />
+          <PopcornIcon className="h-6 w-6 " />
           <h2 className="text-2xl font-semibold">Movies</h2>
         </div>
         {error ? (

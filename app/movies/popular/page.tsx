@@ -12,6 +12,7 @@ import { getLogin } from '@/repository/auth';
 const Popular = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isLogged, setIsLogged] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -19,6 +20,7 @@ const Popular = () => {
       router.push('/login');
     }
     else {
+      setIsLogged(true);
       const fetchPopular = async () => {
         try {
           const response = await fetch('/api/movies/popular');
@@ -38,7 +40,7 @@ const Popular = () => {
     }
   }, [router]);
 
-  if (getLogin() === false) {
+  if (isLogged === false) {
     return null;
   }
 

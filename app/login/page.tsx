@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { login, getLogin, getError } from "../../repository/auth";
+import { get } from 'http';
 
 export default function Dashboard() {
   const [username, setUsername] = useState('');
@@ -21,7 +22,7 @@ export default function Dashboard() {
     setError(getError());
   };
 
-  if (isLogged) {
+  if (getLogin()) {
     router.push('/discover');
   }
 
