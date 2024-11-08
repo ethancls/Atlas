@@ -66,13 +66,9 @@ const shows = [
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader>
-        <div className="flex gap-x-3">
-          <Image src={icon} alt="Logo" className="h-12 w-12" />
-          <h1 className="text-xl font-bold p-4">Atlas</h1>
-          <ModeToggle />
-        </div>
+        <Image src={icon} alt="Logo" className="h-8 w-8 flex items-center justify-center" />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -133,7 +129,7 @@ export function AppSidebar() {
             window.location.href = "/login"
           }}
         >
-          <LogOut /> Logout
+          <LogOut />
         </Button>
       </SidebarFooter>
     </Sidebar>

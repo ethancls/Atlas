@@ -16,14 +16,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { ViewVerticalIcon } from "@radix-ui/react-icons"
+import { ChevronLeftIcon } from "lucide-react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
-const SIDEBAR_WIDTH = "16rem"
+const SIDEBAR_WIDTH = "10rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
-const SIDEBAR_KEYBOARD_SHORTCUT = "b"
+const SIDEBAR_KEYBOARD_SHORTCUT = "s"
 
 type SidebarContext = {
   state: "expanded" | "collapsed"
@@ -277,7 +277,7 @@ const SidebarTrigger = React.forwardRef<
       }}
       {...props}
     >
-      <ViewVerticalIcon />
+      <ChevronLeftIcon />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )
