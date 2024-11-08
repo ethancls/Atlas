@@ -1,4 +1,4 @@
-import { Genres } from "@/app/entities/Genre";
+import { Genre } from "@/app/entities/Genre";
 import { NextResponse } from 'next/server';
 
 export async function GET() {
@@ -15,7 +15,7 @@ export async function GET() {
         }
 
         const data_movies = await response_movies.json();
-        let genres: Genres[] = data_movies.genres;
+        let genres: Genre[] = data_movies.genres;
 
         const response_shows = await fetch(`https://api.themoviedb.org/3/genre/tv/list`, {
             headers: {
@@ -31,7 +31,7 @@ export async function GET() {
         const data_shows = await response_shows.json();
         const showGenres = data_shows.genres;
 
-        const unique: Genres[] = showGenres.filter((showGenre: Genres) => !genres.some((movieGenre: Genres) => movieGenre.id === showGenre.id));
+        const unique: Genre[] = showGenres.filter((showGenre: Genre) => !genres.some((movieGenre: Genre) => movieGenre.id === showGenre.id));
         genres = genres.concat(unique);
 
         return NextResponse.json({ genres });

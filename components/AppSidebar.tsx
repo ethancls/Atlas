@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/sidebar"
 
 import { logout } from "@/repository/auth"
-import { ModeToggle } from "./ModeToggle"
 import { Button } from "./ui/button"
 
 // Menu items.
@@ -42,7 +41,7 @@ const movies = [
   {
     title: "Top Rated",
     url: "/movies/top-rated",
-    icon: MedalIcon,
+    icon: TrophyIcon,
   }
 ]
 

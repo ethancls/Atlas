@@ -2,14 +2,14 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { TVShow } from "@/app/entities/TVShow";
-import { Genres } from "@/app/entities/Genre";
+import { Genre } from "@/app/entities/Genre";
 
 interface DisplayShowProps {
     show: TVShow;
 }
 
 const DisplayShow: React.FC<DisplayShowProps> = ({ show }) => {
-    const [genres, setGenres] = useState<Genres[]>([]);
+    const [genres, setGenres] = useState<Genre[]>([]);
 
     useEffect(() => {
         const fetchGenres = async () => {
