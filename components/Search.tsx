@@ -30,6 +30,7 @@ export const MovieDetailPage = ({ query }: { query: string }) => {
       const uniqueShows = new Set<TVShow>();
       const uniquePersons = new Set<Person>();
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data.results.forEach((result: any) => {
         if (result.media_type === 'movie') {
           if (result.poster_path === null || movies.some(movie => movie.id === result.id)) {
@@ -56,7 +57,7 @@ export const MovieDetailPage = ({ query }: { query: string }) => {
     };
 
     fetchMovies();
-  }, [query]);
+  }, [query, movies, persons, shows]);
 
   return (
     <div className="min-h-screen p-6 sm:p-8 space-y-12 w-full">
