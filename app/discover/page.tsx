@@ -40,19 +40,19 @@ const Discover = () => {
     <DefaultLayout>
       <div className="min-h-screen p-6 sm:p-8 space-y-12 w-full">
         {/* Discover Title with Icon */}
-        <div className="flex items-center space-x-3 mb-8 justify-center w-full">
-          <MoonIcon className="h-8 w-8 " />
-          <h1 className="text-4xl font-bold text-center">Discover</h1>
+        <div className="flex justify-center space-x-2 w-full">
+          <MoonIcon className="h-8 w-8 xl:h-12 xl-w-12" />
+          <h1 className="text-3xl lg:text-4xl font-bold text-center">Discover</h1>
         </div>
 
         <div className="flex items-center space-x-2 mb-2">
-          <PopcornIcon className="h-6 w-6 " />
-          <h2 className="text-2xl font-semibold">Movies</h2>
+          <PopcornIcon className="h-6 w-6 xl:h-10 xl-w-10" />
+          <h2 className="text-2xl font-semibold xl:text-3xl">Movies</h2>
         </div>
         {error ? (
           <p className="text-red-500 text-center">{error}</p>
         ) : (
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             {movies.map((movie) => (
               <DisplayMovie key={movie.id} movie={movie} />
             ))}
@@ -60,13 +60,13 @@ const Discover = () => {
         )}
 
         <div className="flex items-center space-x-2 mb-2">
-          <Tv2Icon className="h-6 w-6" />
-          <h2 className="text-2xl font-semibold">TV Shows</h2>
+          <Tv2Icon className="h-6 w-6 xl:h-10 xl-w-10" />
+          <h2 className="text-2xl font-semibold xl:text-3xl">TV Shows</h2>
         </div>
         {error ? (
           <p className="text-red-500 text-center">{error}</p>
         ) : (
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             {shows.map((show) => (
               <DisplayShow key={show.id} show={show} />
             ))}

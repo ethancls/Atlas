@@ -47,7 +47,7 @@ const OnTheAir = () => {
         {error ? (
           <p className="text-red-500 text-center">{error}</p>
         ) : (
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             {shows.map((show) => (
               <DisplayShow key={show.id} show={show} />
             ))}

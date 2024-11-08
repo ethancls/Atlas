@@ -38,7 +38,7 @@ const Popular = () => {
         {/* Discover Title with Icon */}
         <div className="flex items-center space-x-3 mb-8 justify-center w-full">
           <MedalIcon className="h-8 w-8 text-black" />
-          <h1 className="text-4xl font-bold text-center">Popular</h1>
+          <h1 className="text-3xl lg:text-4xl font-bold text-center">Popular</h1>
         </div>
 
         <div className="flex items-center space-x-2 mb-2">
@@ -48,7 +48,7 @@ const Popular = () => {
         {error ? (
           <p className="text-red-500 text-center">{error}</p>
         ) : (
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             {movies.map((movie) => (
               <DisplayMovie key={movie.id} movie={movie} />
             ))}

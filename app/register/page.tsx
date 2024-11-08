@@ -6,7 +6,14 @@ import { Label } from "@/components/ui/label"
 
 export default function Dashboard() {
     return (
-        <div className="flex flex-col-reverse h-screen w-screen lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+        <div className="flex flex-col h-screen w-screen lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+            <div className="flex flex-1  bg-muted lg:block bg-gradient-to-bl from-blue-300 via-pink-500 to-blue-300">
+                <div className="flex flex-1  items-center justify-center h-full">
+                    <Label className="flex justify-center font-semibold text-7xl text-center">
+                        Welcome to <br /> Atlas
+                    </Label>
+                </div>
+            </div>
             <div className="flex items-center justify-center py-12">
                 <div className="mx-auto grid w-[350px] gap-6">
                     <div className="grid gap-2 text-center">
@@ -42,13 +49,7 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-1  bg-muted lg:block bg-gradient-to-bl from-blue-300 via-pink-500 to-blue-300">
-                <div className="flex flex-1  items-center justify-center h-full">
-                    <Label className="flex justify-center font-semibold text-7xl text-center">
-                        Welcome to <br /> Atlas
-                    </Label>
-                </div>
-            </div>
+            
         </div>
     )
 }

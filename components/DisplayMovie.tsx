@@ -31,15 +31,15 @@ const DisplayMovie: React.FC<DisplayMovieProps> = ({ movie }) => {
   }, []);
 
   return (
-    <Card className="w-40 min-w-[180px] flex-shrink-0 shadow-lg rounded-lg bg-gradient-to-bl from-pink-200 to-blue-200 hover:shadow-xl hover:scale-105 transition-transform duration-300 hover">
+    <Card className="w-20 min-w-[140px] md:w-30 md:min-w-[160px] lg:w-40 lg:min-w-[180px] xl:w-50 xl:min-w-[200px] 2xl:w-60  2xl:min-w-[220px] flex-shrink-0 shadow-lg rounded-lg bg-gradient-to-bl from-pink-200 to-blue-200 hover:shadow-xl hover:scale-105 transition-transform duration-300 hover">
       <CardHeader className="p-1">
-        <Image
+          <Image
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt={movie.title}
-          className="rounded-lg"
           width={180}
           height={260}
           quality={100}
+          className="w-full h-full top-0 left-0 object-cover rounded-lg"
         />
       </CardHeader>
       <CardContent className="p-2">
