@@ -2,14 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import { TVShow } from "@/app/entities/TVShow";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import Image from "next/image";
+import { Tv2Icon, TrophyIcon } from 'lucide-react';
+import { DefaultLayout } from '@/components/DefaultLayout';
+import DisplayShow from '@/components/DisplayShow';
 
-const TopRatedShows = () => {
+const OnTheAir = () => {
   const [shows, setShows] = useState<TVShow[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+
     const fetchShows = async () => {
       try {
         const response = await fetch('/api/shows/top-rated');
@@ -17,11 +19,11 @@ const TopRatedShows = () => {
           throw new Error(`Erreur ${response.status}: ${response.statusText}`);
         }
 
-        const data: TVShow[] = await response.json();
+        const data = await response.json();
         setShows(data);
       } catch (error) {
-        console.error("Erreur lors de la récupération des séries:", error);
-        setError("Une erreur est survenue lors de la récupération des séries.");
+        console.error("Erreur lors de la récupération des films:", error);
+        setError("Une erreur est survenue lors de la récupération des films.");
       }
     };
 
@@ -29,36 +31,29 @@ const TopRatedShows = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white p-6">
-      <h1 className="text-3xl font-bold mb-8">Top Rated Shows</h1>
-
-      {error ? (
-        <p className="text-red-500">{error}</p>
-      ) : (
-        <div className="flex flex-wrap gap-4">
-          {shows.map((show) => (
-            <Card key={show.id} className="w-40 min-w-[160px] bg-gray-800 flex-shrink-0 shadow-lg rounded-lg">
-              <CardHeader className="p-0">
-                <Image
-                  src={`https://image.tmdb.org/t/p/original${show.poster_path}`}
-                  alt={show.name}
-                  className="rounded-t-lg"
-                  width={160}
-                  height={240}
-                  quality={80}
-                />
-              </CardHeader>
-              <CardContent className="p-2">
-                <h2 className="text-md font-semibold text-center truncate">{show.name}</h2>
-                <p className="text-sm text-gray-400 text-center">{show.first_air_date}</p>
-                <p className="text-sm text-yellow-400 text-center">⭐ {show.vote_average} ({show.vote_count})</p>
-              </CardContent>
-            </Card>
-          ))}
+    <DefaultLayout>
+      <div className="min-h-screen p-6 sm:p-8 space-y-12 w-full">
+        <div className="flex items-center space-x-3 mb-8 justify-center w-full">
+          <TrophyIcon className="h-8 w-8" />
+          <h1 className="text-4xl font-bold text-center">Top Rated</h1>
         </div>
-      )}
-    </div>
+
+        <div className="flex items-center space-x-2 mb-2">
+          <Tv2Icon className="h-6 w-6" />
+          <h2 className="text-2xl font-semibold">Movies</h2>
+        </div>
+        {error ? (
+          <p className="text-red-500 text-center">{error}</p>
+        ) : (
+          <div className="flex flex-wrap gap-4">
+            {shows.map((show) => (
+              <DisplayShow key={show.id} show={show} />
+            ))}
+          </div>
+        )}
+      </div>
+    </DefaultLayout>
   );
 };
 
-export default TopRatedShows;
+export default OnTheAir;

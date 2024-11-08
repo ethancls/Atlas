@@ -2,65 +2,58 @@
 
 import { useEffect, useState } from 'react';
 import { Movie } from "@/app/entities/Movie";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import Image from "next/image";
+import DisplayMovie from '@/components/DisplayMovie';
+import { PlayIcon, PopcornIcon } from 'lucide-react';
+import { DefaultLayout } from '@/components/DefaultLayout';
 
 const NowPlaying = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fonction pour récupérer les films
-    const fetchMovies = async () => {
+
+    const fetchPopular = async () => {
       try {
         const response = await fetch('/api/movies/now-playing');
         if (!response.ok) {
           throw new Error(`Erreur ${response.status}: ${response.statusText}`);
         }
 
-        const data: Movie[] = await response.json();
-        setMovies(data); // Stocke les films dans le state
+        const data = await response.json();
+        setMovies(data);
       } catch (error) {
         console.error("Erreur lors de la récupération des films:", error);
         setError("Une erreur est survenue lors de la récupération des films.");
       }
     };
 
-    // Appel de la fonction pour récupérer les films au chargement de la page
-    fetchMovies();
+    fetchPopular();
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white p-6">
-      {/* Titre */}
-      <h1 className="text-3xl font-bold mb-8">Now Playing</h1>
-
-      {error ? (
-        <p className="text-red-500">{error}</p>
-      ) : (
-        <div className="flex flex-wrap gap-4">
-          {movies.map((movie) => (
-            <Card key={movie.id} className="w-40 min-w-[160px] bg-gray-800 flex-shrink-0 shadow-lg rounded-lg">
-              <CardHeader className="p-0">
-                <Image
-                  src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                  alt={movie.title}
-                  className="rounded-t-lg"
-                  width={160}
-                  height={240}
-                  quality={80}
-                />
-              </CardHeader>
-              <CardContent className="p-2">
-                <h2 className="text-md font-semibold text-center truncate">{movie.title}</h2>
-                <p className="text-sm text-gray-400 text-center">{movie.release_date}</p>
-                <p className="text-sm text-yellow-400 text-center">⭐ {movie.vote_average} ({movie.vote_count})</p>
-              </CardContent>
-            </Card>
-          ))}
+    <DefaultLayout>
+      <div className="min-h-screen p-6 sm:p-8 space-y-12 w-full">
+        {/* Discover Title with Icon */}
+        <div className="flex items-center space-x-3 mb-8 justify-center w-full">
+          <PlayIcon className="h-8 w-8" />
+          <h1 className="text-4xl font-bold text-center">Now Playing</h1>
         </div>
-      )}
-    </div>
+
+        <div className="flex items-center space-x-2 mb-2">
+          <PopcornIcon className="h-6 w-6" />
+          <h2 className="text-2xl font-semibold">Movies</h2>
+        </div>
+        {error ? (
+          <p className="text-red-500 text-center">{error}</p>
+        ) : (
+          <div className="flex flex-wrap gap-4">
+            {movies.map((movie) => (
+              <DisplayMovie key={movie.id} movie={movie} />
+            ))}
+          </div>
+        )}
+      </div>
+    </DefaultLayout>
   );
 };
 
