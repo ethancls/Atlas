@@ -1,6 +1,6 @@
+import icon from "@/assets/atlas.png"
 import { Atom, LoaderPinwheelIcon, LogOut, MedalIcon, PlayIcon, TrophyIcon } from "lucide-react"
 import Image from "next/image"
-import icon from "@/assets/atlas.png"
 
 import {
   Sidebar,
@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sidebar"
 
 import { logout } from "@/repository/auth"
+import { ModeToggle } from "./ModeToggle"
 import { Button } from "./ui/button"
 
 // Menu items.
@@ -70,6 +71,7 @@ export function AppSidebar() {
         <div className="flex gap-x-3">
           <Image src={icon} alt="Logo" className="h-12 w-12" />
           <h1 className="text-xl font-bold p-4">Atlas</h1>
+          <ModeToggle />
         </div>
       </SidebarHeader>
       <SidebarContent>
