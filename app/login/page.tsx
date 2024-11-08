@@ -4,17 +4,22 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { login, getError } from "../../repository/auth";
+import { login, getError, getLogin } from "../../repository/auth";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const router = useRouter();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     login(username, password);
     setError(getError());
+    if (getLogin() === true) {
+      router.push('/discover');
+    }
   };
 
   return (
