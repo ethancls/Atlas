@@ -62,7 +62,6 @@ $RECYCLE.BIN/
 *.bak
 *.swp
 *.mtb
-*.db
 
 # c extensions
 *.so

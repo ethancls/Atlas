@@ -4,9 +4,6 @@ import bcrypt from 'bcryptjs';
 // Initialisez la base de données avec le fichier `atlas.db`
 const db = new Database('atlas.db');
 
-// Activez le mode WAL pour une meilleure gestion des transactions
-db.pragma('journal_mode = WAL');
-
 // Création de la table `users` si elle n'existe pas déjà
 db.prepare(`
   CREATE TABLE IF NOT EXISTS users (
@@ -52,18 +49,8 @@ async function createAdminUser() {
   }
 }
 
-export function getUserByUsername(username){
-  const stmt = db.prepare(`
-      SELECT id, username, password 
-      FROM users 
-      WHERE username = ?
-  `);
-  return stmt.get(username);
-}
-
 // Exécute la fonction pour créer l'utilisateur administrateur par défaut
 createAdminUser().catch(console.error);
-console.log(getUserByUsername('admin'));
 
 // Exportez l'instance de la base de données pour utilisation dans d'autres modules
 export default db;

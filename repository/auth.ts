@@ -28,14 +28,34 @@ export async function login(username: string, password: string) {
       body: JSON.stringify({ username, password }),
     });
 
-    console.log("LOGIN" + response);
-
     if (response.ok) {
       setCookie('isLogged', 'true', 7);
       localStorage.removeItem('error');
     } else {
       setCookie('isLogged', 'false', 7);
       localStorage.setItem('error', 'Nom d\'utilisateur ou mot de passe incorrect');
+    }
+  }
+}
+
+export async function register(username: string, password: string) {
+  if (typeof window !== 'undefined') {
+
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (response.ok) {
+      localStorage.removeItem('error');
+      return true;
+    } else {
+      const data = await response.json();
+      localStorage.setItem('error', data.error || 'Failed to register');
+      return false;
     }
   }
 }
