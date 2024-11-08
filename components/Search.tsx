@@ -2,9 +2,15 @@ import { Movie } from "@/app/entities/Movie";
 import DisplayMovie from "@/components/DisplayMovie";
 import { useEffect, useState } from "react";
 import { SearchIcon, ListChecksIcon } from "lucide-react";
+import { TVShow } from "@/app/entities/TVShow";
+import { Person } from "@/app/entities/Person";
+import DisplayShow from "./DisplayShow";
+import Displayperson from "./DisplayPerson";
 
 export const MovieDetailPage = ({ query }: { query: string }) => {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [shows, setShows] = useState<TVShow[]>([]);
+  const [persons, setPersons] = useState<Person[]>([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -13,13 +19,40 @@ export const MovieDetailPage = ({ query }: { query: string }) => {
         'Content-Type': 'application/json;charset=utf-8',
       };
 
-      const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${query}`, { headers });
+      const response = await fetch(`https://api.themoviedb.org/3/search/multi?query=${query}`, { headers });
       const data = await response.json();
       if (!response.ok) {
         console.error("Failed to fetch movies", data);
         return;
       }
-      setMovies(data.results);
+
+      const uniqueMovies = new Set<Movie>();
+      const uniqueShows = new Set<TVShow>();
+      const uniquePersons = new Set<Person>();
+
+      data.results.forEach((result: any) => {
+        if (result.media_type === 'movie') {
+          if (result.poster_path === null || movies.some(movie => movie.id === result.id)) {
+            return;
+          }
+          uniqueMovies.add(result);
+        } else if (result.media_type === 'tv') {
+          if (result.poster_path === null || shows.some(show => show.id === result.id)) {
+            return;
+          }
+          uniqueShows.add(result);
+        } else if (result.media_type === 'person') {
+          if (result.profile_path === null || persons.some(person => person.id === result.id)) {
+            return;
+          }
+          uniquePersons.add(result);
+        }
+      });
+      
+      setMovies(Array.from(uniqueMovies));
+      setShows(Array.from(uniqueShows));
+      setPersons(Array.from(uniquePersons));
+
     };
 
     fetchMovies();
@@ -35,12 +68,34 @@ export const MovieDetailPage = ({ query }: { query: string }) => {
 
       <div className="flex items-center space-x-2 mb-2">
         <ListChecksIcon className="h-6 w-6 xl:h-10 xl-w-10" />
-        <h2 className="text-2xl font-semibold xl:text-3xl">Results</h2>
+        <h2 className="text-2xl font-semibold xl:text-3xl">Movie Results</h2>
       </div>
       {(
         <div className="flex flex-wrap justify-center gap-4">
           {movies.map((movie) => (
             <DisplayMovie key={movie.id} movie={movie} />
+          ))}
+        </div>
+      )}
+      <div className="flex items-center space-x-2 mb-2">
+        <ListChecksIcon className="h-6 w-6 xl:h-10 xl-w-10" />
+        <h2 className="text-2xl font-semibold xl:text-3xl">TV Show Results</h2>
+      </div>
+      {(
+        <div className="flex flex-wrap justify-center gap-4">
+          {shows.map((show) => (
+            <DisplayShow key={show.id} show={show} />
+          ))}
+        </div>
+      )}
+      <div className="flex items-center space-x-2 mb-2">
+        <ListChecksIcon className="h-6 w-6 xl:h-10 xl-w-10" />
+        <h2 className="text-2xl font-semibold xl:text-3xl">Persons Results</h2>
+      </div>
+      {(
+        <div className="flex flex-wrap justify-center gap-4">
+          {persons.map((person) => (
+            <Displayperson key={person.id} person={person} />
           ))}
         </div>
       )}

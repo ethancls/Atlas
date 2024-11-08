@@ -48,7 +48,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
   }, [id]);
 
   if (!movie) {
-    return <p>Film non trouvé.</p>;
+    return <p>Movie not found.</p>;
   }
 
   return (
@@ -67,7 +67,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
 
       <div className="container mx-auto px-4 py-8 text-white">
         <button onClick={() => router.back()} className="text-white mb-4">
-          ← Retour
+          ← Back
         </button>
         
         <div className="flex flex-col md:flex-row items-start gap-6">
