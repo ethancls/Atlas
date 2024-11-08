@@ -2,7 +2,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { TVShow } from "@/app/entities/TVShow";
-import { Genres } from "@/app/entities/Genres";
+import { Genres } from "@/app/entities/Genre";
 
 interface DisplayShowProps {
     show: TVShow;

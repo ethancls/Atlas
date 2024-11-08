@@ -2,14 +2,20 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Movie } from "@/app/entities/Movie";
-import { Genres } from "@/app/entities/Genres";
+import { Genre } from "@/app/entities/Genre";
+import { useRouter } from "next/navigation";
 
 interface DisplayMovieProps {
   movie: Movie;
 }
 
 const DisplayMovie: React.FC<DisplayMovieProps> = ({ movie }) => {
-  const [genres, setGenres] = useState<Genres[]>([]);
+  const [genres, setGenres] = useState<Genre[]>([]);
+  const router = useRouter();
+
+  const handleClick=()=>{
+    router.push(`/movies/${movie.id}`);
+  }
 
   useEffect(() => {
     const fetchGenres = async () => {
@@ -31,6 +37,7 @@ const DisplayMovie: React.FC<DisplayMovieProps> = ({ movie }) => {
   }, []);
 
   return (
+    <div onClick={handleClick}>
     <Card className="w-20 min-w-[140px] md:w-30 md:min-w-[160px] lg:w-40 lg:min-w-[180px] xl:w-50 xl:min-w-[200px] 2xl:w-60  2xl:min-w-[220px] flex-shrink-0 shadow-lg rounded-lg bg-gradient-to-bl from-pink-200 to-blue-200 hover:shadow-xl hover:scale-105 transition-transform duration-300 hover">
       <CardHeader className="p-1">
           <Image
@@ -54,6 +61,7 @@ const DisplayMovie: React.FC<DisplayMovieProps> = ({ movie }) => {
         </div>
       </CardContent>
     </Card>
+    </div>
   );
 };
 

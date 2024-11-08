@@ -1,4 +1,4 @@
-import { Genres } from "@/app/entities/Genres";
+import { Genres } from "@/app/entities/Genre";
 import { NextResponse } from 'next/server';
 
 export async function GET() {

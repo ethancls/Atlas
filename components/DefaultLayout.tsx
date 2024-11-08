@@ -1,26 +1,36 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import { Header } from "./Header";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 import { AppSidebar } from "./AppSidebar";
 import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { SearchIcon } from "lucide-react"
+import { MovieDetailPage } from "@/components/Search";
+import icon from "@/assets/atlas.png";
+import Image from "next/image";
+import { ModeToggle } from "./ModeToggle";
 
 export const DefaultLayout = ({ children }: PropsWithChildren) => {
+    const [query, setQuery] = useState<string | null>(null);
+
+    const handleSearch = (query: string) => {
+        setQuery(query);
+    };
+
     return (
         <SidebarProvider>
             <AppSidebar />
-            <main>
+            <main className="w-full">
                 <Header>
-                    <SidebarTrigger/>
-                    <div className="flex w-50 items-center space-x-2 ml-auto p-3">
-                        <Input type="search" placeholder="Search" />
-                        <Button variant="default" size="icon">
-                            <SearchIcon className="space-x-2"/>
-                        </Button>
+                    <SidebarTrigger />
+                    <div className="flex items-center p-1 gap-x-1">
+                        <Image src={icon} alt="Logo" className="h-10 w-10" />
+                        <h1 className="text-xl font-bold p-2">Atlas</h1>
+                    </div>
+                    <div className="flex w-30  md:w-50 lg:w-80 items-center space-x-2 ml-auto p-3">
+                        <ModeToggle />
+                        <Input onChange={(e) => handleSearch(e.target.value)} type="search" placeholder="Search..." className="flex-grow" />
                     </div>
                 </Header>
-                {children}
+                {query ? <MovieDetailPage query={query} /> : children}
             </main>
         </SidebarProvider>
     );
