@@ -1,33 +1,24 @@
 "use client";
 import { useState } from 'react';
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { login, getLogin, getError } from "../../repository/auth";
-import { get } from 'http';
+import { login, getError } from "../../repository/auth";
 
 export default function Dashboard() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLogged, setIsLogged] = useState(false);
   const [error, setError] = useState('');
-  const router = useRouter();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     login(username, password);
-    setIsLogged(getLogin());
     setError(getError());
   };
 
-  if (getLogin()) {
-    router.push('/discover');
-  }
-
   return (
-    <div className="h-screen w-screen lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+    <div className="flex flex-col-reverse h-screen w-screen lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
@@ -73,8 +64,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="hidden bg-muted lg:block bg-gradient-to-bl from-orange-300 via-violet-400 to-blue-300">
-        <div className="flex items-center justify-center h-full">
+      <div className="flex flex-1 bg-muted lg:block bg-gradient-to-bl from-orange-300 via-violet-400 to-blue-300">
+        <div className="flex flex-1 items-center justify-center h-full">
           <Label className="flex justify-center font-semibold text-7xl text-center">
             Welcome to <br /> Atlas
           </Label>

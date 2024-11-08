@@ -12,11 +12,11 @@ export const DefaultLayout = ({ children }: PropsWithChildren) => {
             <AppSidebar />
             <main>
                 <Header>
-                    <SidebarTrigger className="mt-3" />
-                    <div className="flex w-50 items-center space-x-2 ml-auto">
+                    <SidebarTrigger/>
+                    <div className="flex w-50 items-center space-x-2 ml-auto p-3">
                         <Input type="search" placeholder="Search" />
                         <Button variant="default" size="icon">
-                            <SearchIcon />
+                            <SearchIcon className="space-x-2"/>
                         </Button>
                     </div>
                 </Header>

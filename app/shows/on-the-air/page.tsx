@@ -4,44 +4,32 @@ import { useEffect, useState } from 'react';
 import { TVShow } from "@/app/entities/TVShow";
 import { LoaderPinwheelIcon, Tv2Icon } from 'lucide-react';
 import { DefaultLayout } from '@/components/DefaultLayout';
-import { useRouter } from 'next/navigation';
-import { getLogin } from '@/repository/auth';
 import DisplayShow from '@/components/DisplayShow';
 
 const OnTheAir = () => {
   const [shows, setShows] = useState<TVShow[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [isLogged, setIsLogged] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
-    if (getLogin() === false) {
-      router.push('/login');
-    }
-    else {
-      setIsLogged(true);
-      const fetchShows = async () => {
-        try {
-          const response = await fetch('/api/shows/on-the-air');
-          if (!response.ok) {
-            throw new Error(`Erreur ${response.status}: ${response.statusText}`);
-          }
 
-          const data = await response.json();
-          setShows(data);
-        } catch (error) {
-          console.error("Erreur lors de la récupération des films:", error);
-          setError("Une erreur est survenue lors de la récupération des films.");
+    const fetchShows = async () => {
+      try {
+        const response = await fetch('/api/shows/on-the-air');
+        if (!response.ok) {
+          throw new Error(`Erreur ${response.status}: ${response.statusText}`);
         }
-      };
 
-      fetchShows();
-    }
-  }, [router]);
+        const data = await response.json();
+        setShows(data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des films:", error);
+        setError("Une erreur est survenue lors de la récupération des films.");
+      }
+    };
 
-  if (isLogged === false) {
-    return null;
-  }
+    fetchShows();
+
+  }, []);
 
   return (
     <DefaultLayout>

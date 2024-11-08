@@ -8,44 +8,33 @@ import DisplayShow from '@/components/DisplayShow';
 import { MoonIcon } from '@radix-ui/react-icons';
 import { PopcornIcon, Tv2Icon } from 'lucide-react';
 import { DefaultLayout } from '@/components/DefaultLayout';
-import { useRouter } from 'next/navigation';
-import { getLogin } from '@/repository/auth';
 
 const Discover = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [shows, setShows] = useState<TVShow[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [isLogged, setIsLogged] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
-    if (getLogin() === false) {
-      router.push('/login');
-    } else {
-      setIsLogged(true);
-      const fetchDiscover = async () => {
-        try {
-          const response = await fetch('/api/discover');
-          if (!response.ok) {
-            throw new Error(`Erreur ${response.status}: ${response.statusText}`);
-          }
 
-          const data = await response.json();
-          setMovies(data.movies);
-          setShows(data.shows);
-        } catch (error) {
-          console.error("Erreur lors de la récupération des films:", error);
-          setError("Une erreur est survenue lors de la récupération des films.");
+    const fetchDiscover = async () => {
+      try {
+        const response = await fetch('/api/discover');
+        if (!response.ok) {
+          throw new Error(`Erreur ${response.status}: ${response.statusText}`);
         }
-      };
 
-      fetchDiscover();
-    }
-  }, [router]);
+        const data = await response.json();
+        setMovies(data.movies);
+        setShows(data.shows);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des films:", error);
+        setError("Une erreur est survenue lors de la récupération des films.");
+      }
+    };
 
-  if (!isLogged) {
-    return null;
-  }
+    fetchDiscover();
+
+  }, []);
 
   return (
     <DefaultLayout>

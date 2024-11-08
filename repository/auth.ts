@@ -1,12 +1,30 @@
 import { user } from './user';
 
-export function login(username: string, password:string) {
+function setCookie(name: string, value: string, days: number) {
+  const date = new Date();
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  const expires = "expires=" + date.toUTCString();
+  document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+
+function getCookie(name: string) {
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+
+export function login(username: string, password: string) {
   if (typeof window !== 'undefined') {
     if (username === user.username && password === user.password) {
-      localStorage.setItem('isLogged', 'true');
+      setCookie('isLogged', 'true', 7);
       localStorage.removeItem('error');
     } else {
-      localStorage.setItem('isLogged', 'false');
+      setCookie('isLogged', 'false', 7);
       localStorage.setItem('error', 'Nom d\'utilisateur ou mot de passe incorrect');
     }
   }
@@ -14,13 +32,13 @@ export function login(username: string, password:string) {
 
 export function logout() {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('isLogged', 'false');
+    setCookie('isLogged', 'false', 7);
   }
 }
 
 export function getLogin() {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('isLogged') === 'true';
+    return getCookie('isLogged') === 'true';
   }
   return false;
 }

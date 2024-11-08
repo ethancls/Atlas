@@ -5,44 +5,32 @@ import { Movie } from "@/app/entities/Movie";
 import DisplayMovie from '@/components/DisplayMovie';
 import { MedalIcon, PopcornIcon } from 'lucide-react';
 import { DefaultLayout } from '@/components/DefaultLayout';
-import { useRouter } from 'next/navigation';
-import { getLogin } from '@/repository/auth';
 
 
 const Popular = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [isLogged, setIsLogged] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
-    if (getLogin() === false) {
-      router.push('/login');
-    }
-    else {
-      setIsLogged(true);
-      const fetchPopular = async () => {
-        try {
-          const response = await fetch('/api/movies/popular');
-          if (!response.ok) {
-            throw new Error(`Erreur ${response.status}: ${response.statusText}`);
-          }
 
-          const data = await response.json();
-          setMovies(data);
-        } catch (error) {
-          console.error("Erreur lors de la récupération des films:", error);
-          setError("Une erreur est survenue lors de la récupération des films.");
+    const fetchPopular = async () => {
+      try {
+        const response = await fetch('/api/movies/popular');
+        if (!response.ok) {
+          throw new Error(`Erreur ${response.status}: ${response.statusText}`);
         }
-      };
 
-      fetchPopular();
-    }
-  }, [router]);
+        const data = await response.json();
+        setMovies(data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des films:", error);
+        setError("Une erreur est survenue lors de la récupération des films.");
+      }
+    };
 
-  if (isLogged === false) {
-    return null;
-  }
+    fetchPopular();
+
+  }, []);
 
   return (
     <DefaultLayout>
