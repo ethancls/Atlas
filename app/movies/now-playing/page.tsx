@@ -7,28 +7,28 @@ import { PlayIcon, PopcornIcon } from 'lucide-react';
 import { DefaultLayout } from '@/components/DefaultLayout';
 
 const NowPlaying = () => {
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  
+    const [movies, setMovies] = useState<Movie[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+    useEffect(() => {
+        // Function to fetch movies
+        const fetchMovies = async () => {
+            try {
+                const response = await fetch('/api/movies/now-playing');
+                if (!response.ok) {
+                    throw new Error(`Error ${response.status}: ${response.statusText}`);
+                }
 
-    const fetchPopular = async () => {
-      try {
-        const response = await fetch('/api/movies/now-playing');
-        if (!response.ok) {
-          throw new Error(`Erreur ${response.status}: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        setMovies(data);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des films:", error);
-        setError("Une erreur est survenue lors de la récupération des films.");
-      }
-    };
-
-    fetchPopular();
-  }, []);
+                const data: Movie[] = await response.json();
+                setMovies(data); // Store movies in state
+            } catch (error) {
+                console.error("Error fetching movies:", error);
+                setError("An error occurred while fetching movies.");
+            }
+        };
+        fetchMovies();
+    }, []);
 
   return (
     <DefaultLayout>
