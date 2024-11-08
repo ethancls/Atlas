@@ -234,6 +234,7 @@ pull_request_template.md
 # .eslintrc.js
 # .vscodeignore
 package-lock.json
+package-lock.*
 
 # latex
 *.aux          
