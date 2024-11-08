@@ -17,6 +17,7 @@ import {
 
 import { logout } from "@/repository/auth"
 import { Button } from "./ui/button"
+import { PersonIcon } from "@radix-ui/react-icons"
 
 // Menu items.
 const items = [
@@ -60,6 +61,14 @@ const shows = [
     title: "Top Rated",
     url: "/shows/top-rated",
     icon: TrophyIcon,
+  }
+]
+
+const persons = [
+  {
+    title: "Popular",
+    url: "/persons",
+    icon: PersonIcon,
   }
 ]
 
@@ -113,6 +122,23 @@ export function AppSidebar() {
                     <a href={show.url}>
                       <show.icon />
                       <span>{show.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Persons</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {persons.map((person) => (
+                <SidebarMenuItem key={person.title}>
+                  <SidebarMenuButton asChild>
+                    <a href={person.url}>
+                      <person.icon />
+                      <span>{person.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

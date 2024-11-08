@@ -5,7 +5,7 @@ import { SearchIcon, ListChecksIcon } from "lucide-react";
 import { TVShow } from "@/app/entities/TVShow";
 import { Person } from "@/app/entities/Person";
 import DisplayShow from "./DisplayShow";
-import Displayperson from "./DisplayPerson";
+import DisplayPerson from "./DisplayPerson";
 
 export const MovieDetailPage = ({ query }: { query: string }) => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -48,7 +48,7 @@ export const MovieDetailPage = ({ query }: { query: string }) => {
           uniquePersons.add(result);
         }
       });
-      
+
       setMovies(Array.from(uniqueMovies));
       setShows(Array.from(uniqueShows));
       setPersons(Array.from(uniquePersons));
@@ -95,7 +95,7 @@ export const MovieDetailPage = ({ query }: { query: string }) => {
       {(
         <div className="flex flex-wrap justify-center gap-4">
           {persons.map((person) => (
-            <Displayperson key={person.id} person={person} />
+            <DisplayPerson key={person.id} person={person} />
           ))}
         </div>
       )}

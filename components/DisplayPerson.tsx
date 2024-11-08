@@ -4,11 +4,11 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Person } from "@/app/entities/Person";
 import { useRouter } from "next/navigation";
 
-interface DisplaypersonProps {
+interface DisplayPersonProps {
   person: Person;
 }
 
-const Displayperson: React.FC<DisplaypersonProps> = ({ person }) => {
+const DisplayPerson: React.FC<DisplayPersonProps> = ({ person }) => {
   const router = useRouter();
 
   const handleClick=()=>{
@@ -44,4 +44,4 @@ const Displayperson: React.FC<DisplaypersonProps> = ({ person }) => {
   );
 };
 
-export default Displayperson;
+export default DisplayPerson;

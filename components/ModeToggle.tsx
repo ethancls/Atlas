@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Moon, Sun } from 'lucide-react';
+import { Monitor, Moon, MoonStarIcon, Sun, SunDimIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 export function ModeToggle() {
-    const { setTheme } = useTheme();
+    const { theme, setTheme } = useTheme();
+    const [usedTheme, setUsedTheme] = React.useState(theme);
+
+    const handleThemeChange = (newTheme: string) => {
+        setTheme(newTheme);
+        setUsedTheme(newTheme);
+    };
 
     return (
         <DropdownMenu>
@@ -25,14 +31,23 @@ export function ModeToggle() {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme('light')}>
-                    Light
+                <DropdownMenuItem onClick={() => handleThemeChange('light')}>
+                    <div className={`flex space-x-2 items-center justify-center ${usedTheme === 'light' ? 'text-cyan-300' : ''}`}>
+                        <SunDimIcon className="h-4 w-4" />
+                        <p className="font-semibold">Light</p>
+                    </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('dark')}>
-                    Dark
+                <DropdownMenuItem onClick={() => handleThemeChange('dark')}>
+                    <div className={`flex space-x-2 items-center justify-center ${usedTheme === 'dark' ? 'text-blue-300' : ''}`}>
+                        <MoonStarIcon className="h-4 w-4" />
+                        <p className="font-semibold">Dark</p>
+                    </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('system')}>
-                    System
+                <DropdownMenuItem onClick={() => handleThemeChange('system')}>
+                    <div className={`flex space-x-2 items-center justify-center ${usedTheme === 'system' ? 'text-blue-300' : ''}`}>
+                        <Monitor className="h-4 w-4" />
+                        <p className="font-semibold">System</p>
+                    </div>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
