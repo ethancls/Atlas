@@ -46,14 +46,3 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(favorite, { status: 201 });
 }
-
-// Handler pour gérer différentes méthodes HTTP si nécessaire
-export async function handler(req: NextRequest) {
-    if (req.method === 'GET') {
-        return GET();
-    } else if (req.method === 'POST') {
-        return POST(req);
-    } else {
-        return NextResponse.json({ error: `Method ${req.method} Not Allowed` }, { status: 405 });
-    }
-}
