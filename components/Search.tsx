@@ -57,7 +57,8 @@ export const MovieDetailPage = ({ query }: { query: string }) => {
     };
 
     fetchMovies();
-  }, [query, movies, persons, shows]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
 
   return (
     <div className="min-h-screen p-6 sm:p-8 space-y-12 w-full">

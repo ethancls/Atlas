@@ -1,5 +1,5 @@
 import icon from "@/assets/atlas.png"
-import { Atom, LoaderPinwheelIcon, LogOut, MedalIcon, PlayIcon, TrophyIcon } from "lucide-react"
+import { Atom, LoaderPinwheelIcon, LogOut, MedalIcon, PlayIcon, StarIcon, TrophyIcon } from "lucide-react"
 import Image from "next/image"
 
 import {
@@ -69,6 +69,11 @@ const persons = [
     title: "Popular",
     url: "/persons",
     icon: PersonIcon,
+  },
+  {
+    title: "Favorites",
+    url: "/favorites",
+    icon: StarIcon,
   }
 ]
 
@@ -130,7 +135,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>Persons</SidebarGroupLabel>
+          <SidebarGroupLabel>Others</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {persons.map((person) => (
