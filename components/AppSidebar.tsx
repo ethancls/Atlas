@@ -1,6 +1,7 @@
 import icon from "@/assets/atlas.png"
 import { Atom, LoaderPinwheelIcon, LogOut, MedalIcon, PlayIcon, StarIcon, TrophyIcon } from "lucide-react"
 import Image from "next/image"
+import Link from 'next/link';
 
 import {
   Sidebar,
@@ -83,85 +84,98 @@ export function AppSidebar() {
       <SidebarHeader>
         <Image src={icon} alt="Logo" className="h-8 w-8 flex items-center justify-center" />
       </SidebarHeader>
+      
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
+                  <Link href={item.url} passHref>
+                    <SidebarMenuButton asChild>
+                      <div className="flex items-center space-x-2">
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </div>
+                    </SidebarMenuButton>
+                  </Link>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        
         <SidebarGroup>
           <SidebarGroupLabel>Movies</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {movies.map((movie) => (
                 <SidebarMenuItem key={movie.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={movie.url}>
-                      <movie.icon />
-                      <span>{movie.title}</span>
-                    </a>
-                  </SidebarMenuButton>
+                  <Link href={movie.url} passHref>
+                    <SidebarMenuButton asChild>
+                      <div className="flex items-center space-x-2">
+                        <movie.icon />
+                        <span>{movie.title}</span>
+                      </div>
+                    </SidebarMenuButton>
+                  </Link>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        
         <SidebarGroup>
           <SidebarGroupLabel>Shows</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {shows.map((show) => (
                 <SidebarMenuItem key={show.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={show.url}>
-                      <show.icon />
-                      <span>{show.title}</span>
-                    </a>
-                  </SidebarMenuButton>
+                  <Link href={show.url} passHref>
+                    <SidebarMenuButton asChild>
+                      <div className="flex items-center space-x-2">
+                        <show.icon />
+                        <span>{show.title}</span>
+                      </div>
+                    </SidebarMenuButton>
+                  </Link>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        
         <SidebarGroup>
           <SidebarGroupLabel>Others</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {persons.map((person) => (
                 <SidebarMenuItem key={person.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={person.url}>
-                      <person.icon />
-                      <span>{person.title}</span>
-                    </a>
-                  </SidebarMenuButton>
+                  <Link href={person.url} passHref>
+                    <SidebarMenuButton asChild>
+                      <div className="flex items-center space-x-2">
+                        <person.icon />
+                        <span>{person.title}</span>
+                      </div>
+                    </SidebarMenuButton>
+                  </Link>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      
       <SidebarFooter>
         <Button
           onClick={() => {
-            logout()
-            window.location.href = "/login"
+            logout();
+            window.location.href = "/login";
           }}
         >
           <LogOut />
         </Button>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

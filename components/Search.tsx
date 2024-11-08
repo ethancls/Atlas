@@ -7,7 +7,7 @@ import { Person } from "@/app/entities/Person";
 import DisplayShow from "./DisplayShow";
 import DisplayPerson from "./DisplayPerson";
 
-export const MovieDetailPage = ({ query }: { query: string }) => {
+export const MultiSearch = ({ query }: { query: string }) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [shows, setShows] = useState<TVShow[]>([]);
   const [persons, setPersons] = useState<Person[]>([]);
@@ -57,7 +57,7 @@ export const MovieDetailPage = ({ query }: { query: string }) => {
     };
 
     fetchMovies();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   return (
@@ -90,6 +90,180 @@ export const MovieDetailPage = ({ query }: { query: string }) => {
           ))}
         </div>
       )}
+      <div className="flex items-center space-x-2 mb-2">
+        <ListChecksIcon className="h-6 w-6 xl:h-10 xl-w-10" />
+        <h2 className="text-2xl font-semibold xl:text-3xl">Persons Results</h2>
+      </div>
+      {(
+        <div className="flex flex-wrap justify-center gap-4">
+          {persons.map((person) => (
+            <DisplayPerson key={person.id} person={person} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const MovieSearch = ({ query }: { query: string }) => {
+  const [movies, setMovies] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      const headers = {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+        'Content-Type': 'application/json;charset=utf-8',
+      };
+
+      const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${query}`, { headers });
+      const data = await response.json();
+      if (!response.ok) {
+        console.error("Failed to fetch movies", data);
+        return;
+      }
+
+      const uniqueMovies = new Set<Movie>();
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data.results.forEach((result: any) => {
+
+        if (result.poster_path === null || movies.some(movie => movie.id === result.id)) {
+          return;
+        }
+        uniqueMovies.add(result);
+
+      });
+
+      setMovies(Array.from(uniqueMovies));
+
+    };
+
+    fetchMovies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
+
+  return (
+    <div className="min-h-screen p-6 sm:p-8 space-y-12 w-full">
+      {/* Discover Title with Icon */}
+      <div className="flex justify-center space-x-2 w-full">
+        <SearchIcon className="h-8 w-8 xl:h-12 xl-w-12" />
+        <h1 className="text-3xl lg:text-4xl font-bold text-center">Search</h1>
+      </div>
+
+      <div className="flex items-center space-x-2 mb-2">
+        <ListChecksIcon className="h-6 w-6 xl:h-10 xl-w-10" />
+        <h2 className="text-2xl font-semibold xl:text-3xl">Movie Results</h2>
+      </div>
+      {(
+        <div className="flex flex-wrap justify-center gap-4">
+          {movies.map((movie) => (
+            <DisplayMovie key={movie.id} movie={movie} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const TVShowSearch = ({ query }: { query: string }) => {
+  const [shows, setShows] = useState<TVShow[]>([]);
+
+  useEffect(() => {
+    const fetchShows = async () => {
+      const headers = {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+        'Content-Type': 'application/json;charset=utf-8',
+      };
+
+      const response = await fetch(`https://api.themoviedb.org/3/search/tv?query=${query}`, { headers });
+      const data = await response.json();
+      if (!response.ok) {
+        console.error("Failed to fetch shows", data);
+        return;
+      }
+
+      const uniqueShows = new Set<TVShow>();
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data.results.forEach((result: any) => {
+        if (result.poster_path === null || shows.some(show => show.id === result.id)) {
+          return;
+        }
+        uniqueShows.add(result);
+      });
+
+      setShows(Array.from(uniqueShows));
+    };
+
+    fetchShows();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
+
+  return (
+    <div className="min-h-screen p-6 sm:p-8 space-y-12 w-full">
+      {/* Discover Title with Icon */}
+      <div className="flex justify-center space-x-2 w-full">
+        <SearchIcon className="h-8 w-8 xl:h-12 xl-w-12" />
+        <h1 className="text-3xl lg:text-4xl font-bold text-center">Search</h1>
+      </div>
+
+      <div className="flex items-center space-x-2 mb-2">
+        <ListChecksIcon className="h-6 w-6 xl:h-10 xl-w-10" />
+        <h2 className="text-2xl font-semibold xl:text-3xl">TV Show Results</h2>
+      </div>
+      {(
+        <div className="flex flex-wrap justify-center gap-4">
+          {shows.map((show) => (
+            <DisplayShow key={show.id} show={show} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const PersonSearch = ({ query }: { query: string }) => {
+  const [persons, setPersons] = useState<Person[]>([]);
+
+  useEffect(() => {
+    const fetchPersons = async () => {
+      const headers = {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+        'Content-Type': 'application/json;charset=utf-8',
+      };
+
+      const response = await fetch(`https://api.themoviedb.org/3/search/person?query=${query}`, { headers });
+      const data = await response.json();
+      if (!response.ok) {
+        console.error("Failed to fetch persons", data);
+        return;
+      }
+
+      const uniquePersons = new Set<Person>();
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data.results.forEach((result: any) => {
+        if (result.profile_path === null || persons.some(person => person.id === result.id)) {
+          return;
+        }
+        uniquePersons.add(result);
+      });
+
+      setPersons(Array.from(uniquePersons));
+    };
+
+    fetchPersons();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
+
+  return (
+    <div className="min-h-screen p-6 sm:p-8 space-y-12 w-full">
+      {/* Discover Title with Icon */}
+      <div className="flex justify-center space-x-2 w-full">
+        <SearchIcon className="h-8 w-8 xl:h-12 xl-w-12" />
+        <h1 className="text-3xl lg:text-4xl font-bold text-center">Search</h1>
+      </div>
+
       <div className="flex items-center space-x-2 mb-2">
         <ListChecksIcon className="h-6 w-6 xl:h-10 xl-w-10" />
         <h2 className="text-2xl font-semibold xl:text-3xl">Persons Results</h2>

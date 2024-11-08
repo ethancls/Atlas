@@ -1,4 +1,19 @@
-export const user = {
-    username: 'admin',
-    password: '$2y$10$pkQONHCxW5DfcN2JLWL86uekLDWkm7M8rxLxscFilD1R8hwepfPmq',
-};
+import db from '../db';
+
+// Définition de l'interface `User
+export interface User {
+    id: number;
+    username: string;
+    password: string;
+}
+
+// Fonction pour récupérer l'utilisateur par `username`
+export function getUserByUsername(username: string): User | undefined {
+    const stmt = db.prepare(`
+        SELECT id, username, password 
+        FROM users 
+        WHERE username = ?
+    `);
+
+    return stmt.get(username) as User | undefined;
+}

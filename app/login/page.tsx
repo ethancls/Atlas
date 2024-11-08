@@ -13,12 +13,18 @@ export default function Dashboard() {
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(username, password);
+    await login(username, password);
     setError(getError());
     if (getLogin() === true) {
       router.push('/discover');
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleLogin(e as unknown as React.FormEvent);
     }
   };
 
@@ -39,7 +45,7 @@ export default function Dashboard() {
               Enter your username below to login to your account
             </p>
           </div>
-          <form onSubmit={handleLogin} className="grid gap-4">
+          <form onSubmit={handleLogin} className="grid gap-4" onKeyDown={handleKeyPress}>
             <div className="grid gap-2">
               <Label htmlFor="username">Username</Label>
               <Input

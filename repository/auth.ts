@@ -1,5 +1,4 @@
-import { user } from './user';
-
+// Objective: Manage the authentication of the user.
 function setCookie(name: string, value: string, days: number) {
   const date = new Date();
   date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -18,9 +17,20 @@ function getCookie(name: string) {
   return null;
 }
 
-export function login(username: string, password: string) {
+export async function login(username: string, password: string) {
   if (typeof window !== 'undefined') {
-    if (username === user.username && password === user.password) {
+
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    console.log("LOGIN" + response);
+
+    if (response.ok) {
       setCookie('isLogged', 'true', 7);
       localStorage.removeItem('error');
     } else {
