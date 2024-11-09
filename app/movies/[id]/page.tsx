@@ -1,4 +1,5 @@
 "use client";
+import { CalendarDays, Clapperboard, MoveLeftIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -18,6 +19,7 @@ interface CastMember {
   id: number;
   name: string;
   profile_path: string;
+  character: string;
 }
 
 const MovieDetailPage = ({ params }: { params: { id: string } }) => {
@@ -25,6 +27,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const [movie, setMovie] = useState<Movie | null>(null);
   const [credits, setCredits] = useState<CastMember[]>([]);
+  const [imagesData, setImagesData] = useState<{ backdrops: { file_path: string }[] }>({ backdrops: [] });
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -33,15 +36,21 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
         'Content-Type': 'application/json;charset=utf-8',
       };
 
-      // Récupérer les détails du film depuis l'API de TMDB
+      // Fetch movie details
       const movieResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}`, { headers });
       const movieData: Movie = await movieResponse.json();
       setMovie(movieData);
 
-      // Récupérer les crédits du film
+      // Fetch credits
       const creditsResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits`, { headers });
       const creditsData = await creditsResponse.json();
       setCredits(creditsData.cast);
+
+      // Fetch images
+      const imagesResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}/images`, { headers });
+      const imagesData = await imagesResponse.json();
+      setImagesData(imagesData);
+      console.log(imagesData);
     };
 
     fetchMovieDetails();
@@ -52,8 +61,8 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="relative min-h-screen">
-      {/* Image de fond floue */}
+    <div className="relative flex min-h-screen min-w-full bg-cover">
+      {/* Background */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <Image
           src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
@@ -62,51 +71,83 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
           objectFit="cover"
           className="blur-lg opacity-70"
         />
-        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="absolute inset-0 bg-black/70"></div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 text-white">
-        <button onClick={() => router.back()} className="text-white mb-4">
-          ← Back
+      {/* Content */}
+      <div className="flex-1 flex flex-col gap-4 backdrop-blur-2xl bg-slate-800/40 p-6 lg:p-12 overflow-hidden">
+        <button
+          onClick={() => router.back()}
+          className="mb-4 flex items-center gap-2 text-base md:text-lg hover:-translate-x-5 transition-transform"
+        >
+          <MoveLeftIcon className="h-4 w-4 md:h-5 md:w-5" /> Back
         </button>
-        
-        <div className="flex flex-col md:flex-row items-start gap-6">
-          {/* Affiche du film */}
-          <div className="w-full md:w-1/3 lg:w-1/4 flex-shrink-0">
+
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          {/* Movie Poster */}
+          <div className="flex-shrink-0 mx-auto lg:mx-0">
             <Image
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
               alt={movie.title}
-              width={300}
-              height={450}
+              width={200}
+              height={300}
               quality={100}
-              className="rounded-lg shadow-lg"
+              className="rounded-lg shadow-lg w-[150px] md:w-[200px] lg:w-[300px] h-auto"
             />
           </div>
 
-          {/* Détails du film */}
+          {/* Movie Details */}
           <div className="flex-1">
-            <h1 className="text-4xl font-bold mb-2">{movie.title}</h1>
-            <p className="text-gray-400 italic mb-4">
-              {movie.genres.map((genre: { id: number; name: string }) => genre.name).join(', ')} • {new Date(movie.release_date).toLocaleDateString()}
-            </p>
-            <p className="text-gray-300 mb-4">{movie.overview}</p>
-
-            {/* Section des crédits */}
-            <h2 className="text-2xl font-semibold mb-2">Crédits</h2>
-            <div className="flex overflow-x-scroll space-x-4">
-              {credits.slice(0, 10).map((credit: CastMember) => (
-                <div key={credit.id} className="flex-shrink-0 w-24 text-center">
-                  <Image
-                    src={`https://image.tmdb.org/t/p/w185${credit.profile_path}`}
-                    alt={credit.name}
-                    width={96}
-                    height={144}
-                    className="rounded-lg"
-                  />
-                  <p className="text-sm mt-2 text-gray-300">{credit.name}</p>
-                </div>
-              ))}
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">{movie.title}</h1>
+            <div className="flex flex-wrap items-center gap-2 md:gap-4 text-gray-300 text-sm md:text-base mb-4">
+              <p className="flex items-center gap-1">
+                <Clapperboard className="h-4 w-4 md:h-5 md:w-5" />
+                {movie.genres.map((genre) => genre.name).join(', ')}
+              </p>
+              <p className="flex items-center gap-1">
+                <CalendarDays className="h-4 w-4 md:h-5 md:w-5" />
+                {new Date(movie.release_date).toLocaleDateString()}
+              </p>
             </div>
+            <p className="text-gray-300 text-sm md:text-base mb-6">{movie.overview}</p>
+          </div>
+        </div>
+
+        {/* Credits */}
+        <div>
+          <h2 className="text-xl md:text-2xl font-semibold mb-4">Credits</h2>
+          <div className="flex gap-4 overflow-x-auto">
+            {credits.slice(0, 10).map((credit) => (
+              <div key={credit.id} className="min-w-[100px] text-center">
+                <Image
+                  src={`https://image.tmdb.org/t/p/w185${credit.profile_path}`}
+                  alt={credit.name}
+                  width={100}
+                  height={150}
+                  className="rounded-lg shadow-md"
+                />
+                <p className="text-xs md:text-sm mt-2">{credit.name}</p>
+                <p className="text-xs text-gray-400">{credit.character}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Images */}
+        <div>
+          <h2 className="text-xl md:text-2xl font-semibold mb-4">Images</h2>
+          <div className="flex gap-4 overflow-x-auto">
+            {imagesData.backdrops.slice(0, 10).map((image: { file_path: string }) => (
+              <div key={image.file_path} className="min-w-[200px] text-center">
+                <Image
+                  src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
+                  alt="Movie backdrop"
+                  width={200}
+                  height={112}
+                  className="rounded-lg shadow-md"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
