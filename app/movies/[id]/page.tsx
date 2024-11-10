@@ -22,12 +22,16 @@ interface CastMember {
   character: string;
 }
 
+interface ImageData {
+  file_path: string;
+}
+
 const MovieDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const router = useRouter();
   const [movie, setMovie] = useState<Movie | null>(null);
   const [credits, setCredits] = useState<CastMember[]>([]);
-  const [imagesData, setImagesData] = useState<{ backdrops: { file_path: string }[] }>({ backdrops: [] });
+  const [imagesData, setImagesData] = useState<ImageData[]>([]);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -36,21 +40,24 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
         'Content-Type': 'application/json;charset=utf-8',
       };
 
-      // Fetch movie details
-      const movieResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}`, { headers });
-      const movieData: Movie = await movieResponse.json();
-      setMovie(movieData);
+      try {
+        // Fetch movie details
+        const movieResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}`, { headers });
+        const movieData: Movie = await movieResponse.json();
+        setMovie(movieData);
 
-      // Fetch credits
-      const creditsResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits`, { headers });
-      const creditsData = await creditsResponse.json();
-      setCredits(creditsData.cast);
+        // Fetch credits
+        const creditsResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits`, { headers });
+        const creditsData = await creditsResponse.json();
+        setCredits(creditsData.cast);
 
-      // Fetch images
-      const imagesResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}/images`, { headers });
-      const imagesData = await imagesResponse.json();
-      setImagesData(imagesData);
-      console.log(imagesData);
+        // Fetch images
+        const imagesResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}/images`, { headers });
+        const imagesData = await imagesResponse.json();
+        setImagesData(imagesData.backdrops); // Update to handle 'backdrops'
+      } catch (error) {
+        console.error("Error fetching movie data:", error);
+      }
     };
 
     fetchMovieDetails();
@@ -78,7 +85,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
       <div className="flex-1 flex flex-col gap-4 backdrop-blur-2xl bg-slate-800/40 p-6 lg:p-12 overflow-hidden">
         <button
           onClick={() => router.back()}
-          className="mb-4 flex items-center gap-2 text-base md:text-lg hover:-translate-x-5 transition-transform"
+          className="self-start transition-transform duration-300 ease-out text-white flex gap-1 items-center hover:scale-110 hover:shadow-lg"
         >
           <MoveLeftIcon className="h-4 w-4 md:h-5 md:w-5" /> Back
         </button>
@@ -137,7 +144,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
         <div>
           <h2 className="text-xl md:text-2xl font-semibold mb-4">Images</h2>
           <div className="flex gap-4 overflow-x-auto">
-            {imagesData.backdrops.slice(0, 10).map((image: { file_path: string }) => (
+            {imagesData.slice(0, 10).map((image) => (
               <div key={image.file_path} className="min-w-[200px] text-center">
                 <Image
                   src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
