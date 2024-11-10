@@ -3,6 +3,28 @@ import { CalendarDays, Clapperboard, MoveLeftIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+
+const ScoreEvaluation = ({ score }: { score: number }) => {
+  return (
+    <div className="outer_ring relative flex justify-center items-center w-16 h-16">
+      <div className="user_score_chart absolute inset-0">
+        <CircularProgressbar
+          value={score}
+          styles={buildStyles({
+            textSize: '0px', // Уберем стандартное число внутри
+            pathColor: `#21d07a`, // Зеленый цвет
+            trailColor: '#204529', // Темный цвет для трека
+          })}
+        />
+      </div>
+      <div className="percent flex flex-col justify-center items-center">
+        <span className="text-white text-xs md:text-sm font-bold">{`${score}%`}</span>
+      </div>
+    </div>
+  );
+};
 
 interface Movie {
   id: number;
@@ -107,15 +129,22 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
           <div className="flex-1">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">{movie.title}</h1>
             <div className="flex flex-wrap items-center gap-2 md:gap-4 text-gray-300 text-sm md:text-base mb-4">
+              <span className="block w-full"></span>
               <p className="flex items-center gap-1">
                 <Clapperboard className="h-4 w-4 md:h-5 md:w-5" />
                 {movie.genres.map((genre) => genre.name).join(', ')}
               </p>
+              <span className="block w-full h-0"></span>
+              <p className="flex items-center gap-1">
+                <ScoreEvaluation score={Math.round(movie.vote_average * 10)} />
+              </p>
+              <span className="block w-full"></span>
               <p className="flex items-center gap-1">
                 <CalendarDays className="h-4 w-4 md:h-5 md:w-5" />
                 {new Date(movie.release_date).toLocaleDateString()}
               </p>
             </div>
+            <span className="block w-full"></span>
             <p className="text-gray-300 text-sm md:text-base mb-6">{movie.overview}</p>
           </div>
         </div>
@@ -123,18 +152,21 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
         {/* Credits */}
         <div>
           <h2 className="text-xl md:text-2xl font-semibold mb-4">Credits</h2>
-          <div className="flex gap-4 overflow-x-auto">
+          <div className="flex gap-6 overflow-x-auto">
             {credits.slice(0, 10).map((credit) => (
-              <div key={credit.id} className="min-w-[100px] text-center">
+              <div
+                key={credit.id}
+                className="min-w-[150px] flex-shrink-0 text-center rounded-lg shadow-lg bg-slate-700 p-4 hover:scale-105 transition-transform duration-300"
+              >
                 <Image
-                  src={`https://image.tmdb.org/t/p/w185${credit.profile_path}`}
+                  src={`https://image.tmdb.org/t/p/w300${credit.profile_path}`}
                   alt={credit.name}
-                  width={100}
-                  height={150}
-                  className="rounded-lg shadow-md"
+                  width={150}
+                  height={225}
+                  className="rounded-lg shadow-md mb-3"
                 />
-                <p className="text-xs md:text-sm mt-2">{credit.name}</p>
-                <p className="text-xs text-gray-400">{credit.character}</p>
+                <p className="text-sm md:text-base font-semibold text-white">{credit.name}</p>
+                <p className="text-xs md:text-sm text-gray-400 italic">{credit.character}</p>
               </div>
             ))}
           </div>

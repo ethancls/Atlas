@@ -95,3 +95,19 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+@layer components {
+
+    .outer_ring {
+        @apply relative flex justify-center items-center w-16 h-16;
+    }
+
+    .user_score_chart {
+        @apply absolute inset-0;
+    }
+
+    .percent span {
+        @apply text-white text-xs md:text-sm font-bold;
+    }
+}
