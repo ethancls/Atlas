@@ -98,9 +98,8 @@ body {
 
 
 @layer components {
-
     .outer_ring {
-        @apply relative flex justify-center items-center w-16 h-16;
+        @apply relative flex justify-center items-center w-12 h-12;
     }
 
     .user_score_chart {

@@ -1,5 +1,5 @@
 "use client";
-import { CalendarDays, Clapperboard, MoveLeftIcon } from 'lucide-react';
+import { CalendarDays, Clapperboard, HourglassIcon, InfoIcon, MoveLeftIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -7,15 +7,21 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 const ScoreEvaluation = ({ score }: { score: number }) => {
+  const getColor = (score: number) => {
+    if (score > 75) return '#21d07a'; // Light green
+    if (score >= 25) return '#f1c40f'; // Light yellow
+    return '#e74c3c'; // Red
+  };
+
   return (
-    <div className="outer_ring relative flex justify-center items-center w-16 h-16">
+    <div className="outer_ring relative flex flex-col justify-center items-center w-16 h-16">
       <div className="user_score_chart absolute inset-0">
         <CircularProgressbar
           value={score}
           styles={buildStyles({
-            textSize: '0px', // Уберем стандартное число внутри
-            pathColor: `#21d07a`, // Зеленый цвет
-            trailColor: '#204529', // Темный цвет для трека
+            textSize: '0px',
+            pathColor: getColor(score),
+            trailColor: '#204529',
           })}
         />
       </div>
@@ -35,6 +41,7 @@ interface Movie {
   release_date: string;
   genres: { id: number; name: string }[];
   vote_average: number;
+  runtime: number;
 }
 
 interface CastMember {
@@ -131,21 +138,29 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
             <div className="flex flex-wrap items-center gap-2 md:gap-4 text-gray-300 text-sm md:text-base mb-4">
               <span className="block w-full"></span>
               <p className="flex items-center gap-1">
-                <Clapperboard className="h-4 w-4 md:h-5 md:w-5" />
+                <Clapperboard className="h-5 w-5 md:h-6 md:w-6 mr-2" />
                 {movie.genres.map((genre) => genre.name).join(', ')}
-              </p>
-              <span className="block w-full h-0"></span>
-              <p className="flex items-center gap-1">
-                <ScoreEvaluation score={Math.round(movie.vote_average * 10)} />
               </p>
               <span className="block w-full"></span>
               <p className="flex items-center gap-1">
-                <CalendarDays className="h-4 w-4 md:h-5 md:w-5" />
+                <CalendarDays className="h-5 w-5 md:h-6 md:w-6 mr-2" />
                 {new Date(movie.release_date).toLocaleDateString()}
               </p>
+              <span className="block w-full"></span>
+              <p className="flex items-center gap-1">
+                <HourglassIcon className="h-5 w-5 md:h-6 md:w-6 mr-2" />
+                {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m
+              </p>
+              <span className="block w-full h-0"></span>
+              <p className="flex items-center gap-2">
+                <ScoreEvaluation score={Math.round(movie.vote_average * 10)} />
+                <span className="text-white text-xs md:text-sm font-bold">User Score</span>
+              </p>
+              <p className="flex items-center gap-1">
+                <InfoIcon className="h-5 w-5 md:h-6 md:w-6 mr-2" />
+                {movie.overview}
+              </p>
             </div>
-            <span className="block w-full"></span>
-            <p className="text-gray-300 text-sm md:text-base mb-6">{movie.overview}</p>
           </div>
         </div>
 
@@ -156,13 +171,13 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
             {credits.slice(0, 10).map((credit) => (
               <div
                 key={credit.id}
-                className="min-w-[150px] flex-shrink-0 text-center rounded-lg shadow-lg bg-slate-700 p-4 hover:scale-105 transition-transform duration-300"
+                className="min-w-[220px] w-[220px] transition-transform duration-300 ease-out hover:scale-105"
               >
                 <Image
                   src={`https://image.tmdb.org/t/p/w300${credit.profile_path}`}
                   alt={credit.name}
-                  width={150}
-                  height={225}
+                  width={200}
+                  height={275}
                   className="rounded-lg shadow-md mb-3"
                 />
                 <p className="text-sm md:text-base font-semibold text-white">{credit.name}</p>
@@ -177,12 +192,15 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
           <h2 className="text-xl md:text-2xl font-semibold mb-4">Images</h2>
           <div className="flex gap-4 overflow-x-auto">
             {imagesData.slice(0, 10).map((image) => (
-              <div key={image.file_path} className="min-w-[200px] text-center">
+              <div
+                key={image.file_path}
+                className="min-w-[350px] w-[350px] transition-transform duration-300 ease-out hover:scale-105"
+              >
                 <Image
                   src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
                   alt="Movie backdrop"
-                  width={200}
-                  height={112}
+                  width={350}
+                  height={200}
                   className="rounded-lg shadow-md"
                 />
               </div>
