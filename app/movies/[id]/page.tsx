@@ -179,6 +179,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                   width={200}
                   height={275}
                   className="rounded-lg shadow-md mb-3"
+                // style={{ width: 'auto', height: 'auto' }}
                 />
                 <p className="text-sm md:text-base font-semibold text-white">{credit.name}</p>
                 <p className="text-xs md:text-sm text-gray-400 italic">{credit.character}</p>
