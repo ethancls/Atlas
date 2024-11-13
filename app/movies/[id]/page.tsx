@@ -14,7 +14,7 @@ const ScoreEvaluation = ({ score }: { score: number }) => {
   };
 
   return (
-    <div className="outer_ring relative flex flex-col justify-center items-center w-16 h-16">
+    <div className="outer_ring relative flex flex-col justify-center items-center w-12 h-12">
       <div className="user_score_chart absolute inset-0">
         <CircularProgressbar
           value={score}
@@ -121,11 +121,22 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Movie Poster */}
-          <div className="flex-shrink-0 mx-auto lg:mx-0">
+          <div className="flex-shrink-0 mx-auto lg:mx-0 duration-300 ease-out hover:scale-105 cursor-pointer p-2" onClick={() => {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80';
+            modal.onclick = () => modal.remove();
+
+            const img = document.createElement('img');
+            img.src = `https://image.tmdb.org/t/p/original${movie.poster_path}`;
+            img.className = 'max-h-[80vh] max-w-[80vw] object-contain rounded-lg shadow-lg';
+
+            modal.appendChild(img);
+            document.body.appendChild(modal);
+          }}>
             <Image
-              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
               alt={movie.title}
-              width={200}
+              width={300}
               height={300}
               quality={100}
               className="rounded-lg shadow-lg w-[150px] md:w-[200px] lg:w-[300px] h-auto"
@@ -154,7 +165,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
               <span className="block w-full h-0"></span>
               <p className="flex items-center gap-2">
                 <ScoreEvaluation score={Math.round(movie.vote_average * 10)} />
-                <span className="text-white text-xs md:text-sm font-bold">User Score</span>
+                <span className="text-white text-xs md:text-sm font-bold">Popularity</span>
               </p>
               <p className="flex items-center gap-1">
                 <InfoIcon className="h-5 w-5 md:h-6 md:w-6 mr-2" />
@@ -167,14 +178,15 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
         {/* Credits */}
         <div>
           <h2 className="text-xl md:text-2xl font-semibold mb-4">Credits</h2>
-          <div className="flex gap-6 overflow-x-auto">
+          <div className="flex gap-6 p-2 overflow-x-auto scrollbar-hide">
             {credits.slice(0, 10).map((credit) => (
               <div
                 key={credit.id}
-                className="min-w-[220px] w-[220px] transition-transform duration-300 ease-out hover:scale-105"
+                className="min-w-[160px] w-[180px] transition-transform duration-300 ease-out hover:scale-105 cursor-pointer"
+                onClick={() => router.push(`/persons/${credit.id}`)}
               >
                 <Image
-                  src={`https://image.tmdb.org/t/p/w300${credit.profile_path}`}
+                  src={`https://image.tmdb.org/t/p/original${credit.profile_path}`}
                   alt={credit.name}
                   width={200}
                   height={275}
@@ -191,17 +203,30 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
         {/* Images */}
         <div>
           <h2 className="text-xl md:text-2xl font-semibold mb-4">Images</h2>
-          <div className="flex gap-4 overflow-x-auto">
+          <div className="flex gap-4 p-2 overflow-x-auto scrollbar-hide">
             {imagesData.slice(0, 10).map((image) => (
               <div
                 key={image.file_path}
-                className="min-w-[350px] w-[350px] transition-transform duration-300 ease-out hover:scale-105"
+                className="min-w-[350px] w-[350px] transition-transform duration-300 ease-out hover:scale-105 cursor-pointer"
+                onClick={() => {
+                  const modal = document.createElement('div');
+                  modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80';
+                  modal.onclick = () => modal.remove();
+
+                  const img = document.createElement('img');
+                  img.src = `https://image.tmdb.org/t/p/original${image.file_path}`;
+                  img.className = 'max-h-[70vh] max-w-[70vw] object-contain rounded-lg shadow-lg';
+
+                  modal.appendChild(img);
+                  document.body.appendChild(modal);
+                }}
               >
                 <Image
-                  src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
+                  src={`https://image.tmdb.org/t/p/original${image.file_path}`}
                   alt="Movie backdrop"
-                  width={350}
-                  height={200}
+                  width={500}
+                  height={500}
+                  quality={100}
                   className="rounded-lg shadow-md"
                 />
               </div>
