@@ -32,7 +32,7 @@ const Discover = () => {
           release_date: item.releaseDate,
           poster_path: item.posterPath,
         })));
-        setShows(data.filter((item: any) => item.type === 'tv').map((item: any) => ({
+        setShows(data.filter((item: any) => item.type === 'show').map((item: any) => ({
           id: item.id,
           name: item.name,
           vote_average: item.voteAverage,

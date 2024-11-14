@@ -61,10 +61,10 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
           {/* Affiche du film */}
           <div className="w-full md:w-1/3 lg:w-1/4 flex-shrink-0">
             <Image
-              src={`https://image.tmdb.org/t/p/w500${person.profile_path}`}
+              src={`https://image.tmdb.org/t/p/original${person.profile_path}`}
               alt={person.name}
-              width={300}
-              height={450}
+              width={500}
+              height={500}
               quality={100}
               className="rounded-lg shadow-lg"
             />

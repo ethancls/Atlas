@@ -1,11 +1,51 @@
 [
   {
+    "id": 236594,
+    "type": "show",
+    "title": "Big Brother: Late & Live",
+    "posterPath": "/4neSwqJjJLtK6Zuqpx5j70z5CPs.jpg",
+    "releaseDate": "2023-10-08",
+    "voteAverage": 4.2
+  },
+  {
+    "id": 94722,
+    "type": "show",
+    "title": "Tagesschau",
+    "posterPath": "/7dFZJ2ZJJdcmkp05B9NWlqTJ5tq.jpg",
+    "releaseDate": "1952-12-26",
+    "voteAverage": 6.739
+  },
+  {
+    "id": 81329,
+    "type": "show",
+    "title": "Chronicles of the Sun",
+    "posterPath": "/t6jVlbPMtZOJoAOfeoR4yQmnjXM.jpg",
+    "releaseDate": "2018-08-27",
+    "voteAverage": 7
+  },
+  {
     "id": 933260,
     "type": "movie",
     "title": "The Substance",
     "posterPath": "/lqoMzCcZYEFK729d6qzt349fB4o.jpg",
     "releaseDate": "2024-09-07",
-    "voteAverage": 7.282
+    "voteAverage": 7.3
+  },
+  {
+    "id": 945961,
+    "type": "movie",
+    "title": "Alien: Romulus",
+    "posterPath": "/b33nnKl1GSFbao4l3fZDDqsMx0F.jpg",
+    "releaseDate": "2024-08-13",
+    "voteAverage": 7.3
+  },
+  {
+    "id": 335983,
+    "type": "movie",
+    "title": "Venom",
+    "posterPath": "/2uNW4WbgBXL25BAbXGLnLqX71Sw.jpg",
+    "releaseDate": "2018-09-28",
+    "voteAverage": 6.835
   },
   {
     "id": 1034541,
@@ -13,6 +53,30 @@
     "title": "Terrifier 3",
     "posterPath": "/63xYQj1BwRFielxsBDXvHIJyXVm.jpg",
     "releaseDate": "2024-10-09",
-    "voteAverage": 7.118
+    "voteAverage": 7.308
+  },
+  {
+    "id": 912649,
+    "type": "movie",
+    "title": "Venom: The Last Dance",
+    "posterPath": "/k42Owka8v91trK1qMYwCQCNwJKr.jpg",
+    "releaseDate": "2024-10-22",
+    "voteAverage": 6.72
+  },
+  {
+    "id": 1184918,
+    "type": "movie",
+    "title": "The Wild Robot",
+    "posterPath": "/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg",
+    "releaseDate": "2024-09-12",
+    "voteAverage": 8.5
+  },
+  {
+    "id": 82708,
+    "type": "show",
+    "title": "The First Years",
+    "posterPath": "/klPqN1oITjVub0Yss0Kqnx8NfY3.jpg",
+    "releaseDate": "2014-05-26",
+    "voteAverage": 4.6
   }
 ]
