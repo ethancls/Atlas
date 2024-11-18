@@ -216,7 +216,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
           </div>
 
           {/* Movie Details and Trailer */}
-          <div className="flex-1 flex flex-col-reverse lg:flex-row gap-6">
+          <div className="flex-1 flex flex-col lg:flex-row gap-6">
             <div className="flex-1">
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 flex items-center gap-5">
                 {movie.title}
@@ -254,18 +254,24 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
 
             {/* Trailer */}
             {trailerLink && (
-              <div className="flex-shrink-0 lg:w-[60%] w-full relative rounded-xl overflow-hidden shadow-md">
-                <div className="aspect-w-16 aspect-h-9">
-                  <iframe
-                    src={trailerLink}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="absolute inset-0 w-full h-full object-cover"
-                    title="Movie Trailer"
-                  ></iframe>
-                </div>
-              </div>
-            )}
+  <div className="flex flex-shrink-0 w-full lg:w-[60%] relative rounded-xl overflow-hidden shadow-md">
+    <div
+      className="relative w-full"
+      style={{
+        paddingBottom: '56.25%', // Maintain a 16:9 aspect ratio for all screen sizes
+        position: 'relative',
+      }}
+    >
+      <iframe
+        src={trailerLink}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        className="absolute top-0 left-0 w-full h-full object-cover"
+        title="Movie Trailer"
+      ></iframe>
+    </div>
+  </div>
+)}
           </div>
         </div>
 
