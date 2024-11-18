@@ -71,6 +71,7 @@ const ShowDetailPage = ({ params }: { params: { id: string } }) => {
   const [show, setShow] = useState<TVShow | null>(null);
   const [credits, setCredits] = useState<CastMember[]>([]);
   const [imagesData, setImagesData] = useState<ImageData[]>([]);
+  const [trailerLink, setTrailerLink] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchShowDetails = async () => {
@@ -94,6 +95,15 @@ const ShowDetailPage = ({ params }: { params: { id: string } }) => {
         const imagesResponse = await fetch(`https://api.themoviedb.org/3/tv/${id}/images`, { headers });
         const imagesData = await imagesResponse.json();
         setImagesData(imagesData.backdrops); // Update to handle 'backdrops'
+
+        // Fetch YouTube trailer link
+        const youtubeResponse = await fetch(`/api/youtube?search=${encodeURIComponent(showData.name + ' tv trailer season 1 ep 1 official')}`);
+        const youtubeData = await youtubeResponse.json();
+
+        // Extract the video ID
+        if (youtubeData?.result?.[0]?.id) {
+          setTrailerLink(`https://www.youtube.com/embed/${youtubeData.result[0].id}?autoplay=1`);
+        }
       } catch (error) {
         console.error("Error fetching show data:", error);
       }
@@ -186,6 +196,19 @@ const ShowDetailPage = ({ params }: { params: { id: string } }) => {
               </p>
             </div>
           </div>
+          {trailerLink && (
+            <div className="flex-shrink-0 lg:w-[60%] w-full relative rounded-xl overflow-hidden shadow-md">
+              <div className="aspect-w-16 aspect-h-9">
+                <iframe
+                  src={trailerLink}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full object-cover"
+                  title="TVShow Trailer"
+                ></iframe>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Credits */}
