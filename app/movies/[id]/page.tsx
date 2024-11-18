@@ -150,7 +150,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
 
         // Extract the video ID
         if (youtubeData?.result?.[0]?.id) {
-          setTrailerLink(`https://www.youtube.com/embed/${youtubeData.result[0].id}?autoplay=1`);
+          setTrailerLink(`https://www.youtube.com/embed/${youtubeData.result[0].id}?autoplay=1&vq=hd2160&modestbranding=1&rel=0`);
         }
       } catch (error) {
         console.error("Error fetching movie data:", error);
