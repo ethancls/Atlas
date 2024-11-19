@@ -22,18 +22,29 @@ interface Person {
   profile_path: string;
 }
 
-interface KnownForMovie {
+interface Movies {
   id: number;
   title?: string;
   name?: string;
   poster_path: string;
+  release_date?: string;
+  popularity: number;
+}
+
+interface TVShows {
+  id: number;
+  title?: string;
+  name?: string;
+  poster_path: string;
+  popularity: number;
 }
 
 const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const router = useRouter();
   const [person, setPerson] = useState<Person | null>(null);
-  const [knownFor, setKnownFor] = useState<KnownForMovie[]>([]);
+  const [Movies, setMovies] = useState<Movies[]>([]);
+  const [TVShows, setTVShows] = useState<TVShows[]>([]);
 
   useEffect(() => {
     const fetchPersonDetails = async () => {
@@ -49,16 +60,31 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
 
         setPerson(data);
 
-        // Fetch "Known For" data (movie credits)
-        const creditsResponse = await fetch(`https://api.themoviedb.org/3/person/${id}/movie_credits`, { headers });
-        const creditsData = await creditsResponse.json();
+        // Fetch to Movies
+        const moviesCreditsResponse = await fetch(`https://api.themoviedb.org/3/person/${id}/movie_credits`, { headers });
+        const moviesCreditsData = await moviesCreditsResponse.json();
+        // Fileter out movies without poster and duplicates
+        const validMovies = moviesCreditsData.cast.filter((movie: Movies, index: number, self: Movies[]) =>
+          movie.poster_path !== null && index === self.findIndex((m) => m.id === movie.id)
+        );
+        // Sort by popularity
+        const sortedMovies = validMovies.sort((a: Movies, b: Movies) => b.popularity - a.popularity);
+        setMovies(sortedMovies);
 
-        setKnownFor(creditsData.cast.slice(0, 6)); // Top 6 known movies
+        // Fetch TV Shows
+        const tvShowsCreditsResponse = await fetch(`https://api.themoviedb.org/3/person/${id}/tv_credits`, { headers });
+        const tvShowsCreditsData = await tvShowsCreditsResponse.json();
+        // Filter out TV shows without poster and duplicates
+        const validTVShows = tvShowsCreditsData.cast.filter((show: TVShows, index: number, self: TVShows[]) =>
+          show.poster_path !== null && index === self.findIndex((s) => s.id === show.id)
+        );
+        // Sort by popularity
+        const sortedTVShows = validTVShows.sort((a: TVShows, b: TVShows) => b.popularity - a.popularity);
+        setTVShows(sortedTVShows);
       } catch (error) {
         console.error('Error fetching person data:', error);
       }
     };
-
     fetchPersonDetails();
   }, [id]);
 
@@ -72,18 +98,6 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="relative flex min-h-screen min-w-full bg-cover">
-      {/* Background */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <Image
-          src="/path/to/your/background/image.jpg" // Replace with your background image path
-          alt="Background"
-          layout="fill"
-          objectFit="cover"
-          className="opacity-90"
-        />
-        <div className="absolute inset-0 bg-black/70"></div>
-      </div>
-
       {/* Content */}
       <div className="flex-1 flex flex-col gap-4 backdrop-blur-2xl bg-slate-800/40 p-6 lg:p-12 overflow-hidden">
         <button
@@ -144,11 +158,12 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
 
-        {/* Known For */}
+        {/* Movies */}
         <div>
-          <h2 className="text-xl md:text-2xl font-semibold mb-4">Known For</h2>
+          <div className="mb-6"></div>
+          <h2 className="text-xl md:text-2xl font-semibold mb-4">Movies</h2>
           <div className="flex gap-6 p-2 overflow-x-auto scrollbar-hide">
-            {knownFor.map((movie) => (
+            {Movies.map((movie) => (
               <div
                 key={movie.id}
                 className="min-w-[160px] w-[180px] transition-transform duration-300 ease-out hover:scale-105 cursor-pointer"
@@ -169,6 +184,37 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
                   className="rounded-lg shadow-md mb-3"
                 />
                 <p className="text-sm md:text-base font-semibold text-white">{movie.title || movie.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* TV Shows */}
+        <div>
+          <div className="mb-6"></div>
+          <h2 className="text-xl md:text-2xl font-semibold mb-4">TV Shows</h2>
+          <div className="flex gap-6 p-2 overflow-x-auto scrollbar-hide">
+            {TVShows.map((show) => (
+              <div
+                key={show.id}
+                className="min-w-[160px] w-[180px] transition-transform duration-300 ease-out hover:scale-105 cursor-pointer"
+                onClick={() => router.push(`/shows/${show.id}`)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    router.push(`/shows/${show.id}`);
+                  }
+                }}
+              >
+                <Image
+                  src={`https://image.tmdb.org/t/p/original${show.poster_path}`}
+                  alt={show.title ?? show.name ?? 'Unknown title'}
+                  width={200}
+                  height={275}
+                  className="rounded-lg shadow-md mb-3"
+                />
+                <p className="text-sm md:text-base font-semibold text-white">{show.title || show.name}</p>
               </div>
             ))}
           </div>
