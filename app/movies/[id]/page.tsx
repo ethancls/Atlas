@@ -154,6 +154,45 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
           setTrailerLink(`https://www.youtube.com/embed/${youtubeData.result[0].id}?autoplay=1&vq=hd2160&modestbranding=1&rel=0`);
         }
 
+        // Define a mapping of raw certifications to user-friendly descriptions
+        /**
+         * A map of movie and TV show certification ratings to their corresponding age recommendations.
+         * 
+         * Source: The age recommendations are based on common rating systems used in the United States,
+         * including the Motion Picture Association (MPA) for movies and the TV Parental Guidelines for television.
+         * 
+         * - 'G': General audiences, suitable for all ages (0+)
+         * - 'PG': Parental guidance suggested, some material may not be suitable for children under 10 (10+)
+         * - 'PG-13': Parents strongly cautioned, some material may be inappropriate for children under 13 (13+)
+         * - 'R': Restricted, under 17 requires accompanying parent or adult guardian (17+)
+         * - 'NC-17': No one 17 and under admitted (18+)
+         * - 'R+': Restricted, similar to 'R' (17+)
+         * - 'NR': Not rated
+         * - 'UR': Unrated, similar to 'NR'
+         * - 'TV-Y': All children, suitable for all ages (0+)
+         * - 'TV-Y7': Directed to older children, suitable for children age 7 and above (7+)
+         * - 'TV-G': General audience, suitable for all ages (0+)
+         * - 'TV-PG': Parental guidance suggested, some material may not be suitable for children under 10 (10+)
+         * - 'TV-14': Parents strongly cautioned, some material may be inappropriate for children under 14 (14+)
+         * - 'TV-MA': Mature audience only, suitable for adults 17 and above (17+)
+         */
+        const certificationMap: { [key: string]: string } = {
+          'G': '0+',
+          'PG': '10+',
+          'PG-13': '13+',
+          'R': '17+',
+          'NC-17': '18+',
+          'R+': '17+',
+          'NR': 'Not Rated',
+          'UR': 'Not Rated',
+          'TV-Y': '0+',
+          'TV-Y7': '7+',
+          'TV-G': '0+',
+          'TV-PG': '10+',
+          'TV-14': '14+',
+          'TV-MA': '17+',
+        };
+
         // Fetch certification
         const certificationResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}/release_dates`, { headers });
         const certificationData = await certificationResponse.json();
@@ -161,7 +200,9 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
         if (usRelease) {
           const usCertification = usRelease.release_dates.find((release: { certification: string }) => release.certification);
           if (usCertification) {
-            setCertification(usCertification.certification);
+            // Map the raw certification to a user-friendly description
+            const userFriendlyCertification = certificationMap[usCertification.certification] || usCertification.certification;
+            setCertification(userFriendlyCertification);
           }
         }
       } catch (error) {
@@ -254,7 +295,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                 {certification && (
                   <p className="flex items-center gap-1">
                     <ShieldAlert className="h-5 w-5 md:h-6 md:w-6 mr-2" />
-                    <span className="text-gray-300">{certification.replace('PG-', '')}+</span>
+                    <span className="text-gray-300">{certification}</span>
                   </p>
                 )}
                 {movie.vote_average > 0 && (<p className="flex items-center gap-1">
