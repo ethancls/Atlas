@@ -1,5 +1,6 @@
 "use client";
-import { CalendarDays, Clapperboard, HourglassIcon, InfoIcon, MoveLeftIcon } from 'lucide-react';
+import { Favorite } from '@/app/entities/Favorite';
+import { CalendarDays, Clapperboard, HourglassIcon, MoveLeftIcon, StarIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -71,6 +72,48 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
   const [movie, setMovie] = useState<Movie | null>(null);
   const [credits, setCredits] = useState<CastMember[]>([]);
   const [imagesData, setImagesData] = useState<ImageData[]>([]);
+  const [trailerLink, setTrailerLink] = useState<string | null>(null);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  async function handleFavoriteClick(movie: Movie): Promise<void> {
+    if (!isFavorite) {
+      const favorite: Favorite = {
+        id: movie.id,
+        type: 'movie',
+        title: movie.title,
+        posterPath: movie.poster_path,
+        releaseDate: movie.release_date,
+        voteAverage: movie.vote_average,
+      };
+
+      const response = await fetch('/api/favorites', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(favorite),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error(errorData);
+      } else {
+        setIsFavorite(!isFavorite);
+      }
+    }
+    else {
+      const response = await fetch(`/api/favorites/${movie.id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error(errorData);
+      } else {
+        setIsFavorite(!isFavorite);
+      }
+    }
+  }
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -85,6 +128,12 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
         const movieData: Movie = await movieResponse.json();
         setMovie(movieData);
 
+        const response = await fetch(`/api/favorites/${movieData.id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setIsFavorite(data.isFavorite);
+        }
+
         // Fetch credits
         const creditsResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits`, { headers });
         const creditsData = await creditsResponse.json();
@@ -94,6 +143,15 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
         const imagesResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}/images`, { headers });
         const imagesData = await imagesResponse.json();
         setImagesData(imagesData.backdrops); // Update to handle 'backdrops'
+
+        // Fetch YouTube trailer link
+        const youtubeResponse = await fetch(`/api/youtube?search=${encodeURIComponent(movieData.title + ' trailer official 4k')}`);
+        const youtubeData = await youtubeResponse.json();
+
+        // Extract the video ID
+        if (youtubeData?.result?.[0]?.id) {
+          setTrailerLink(`https://www.youtube.com/embed/${youtubeData.result[0].id}?autoplay=1&vq=hd2160&modestbranding=1&rel=0`);
+        }
       } catch (error) {
         console.error("Error fetching movie data:", error);
       }
@@ -119,7 +177,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
           alt={movie.title}
           layout="fill"
           objectFit="cover"
-          className="blur-lg opacity-70"
+          className="opacity-90"
         />
         <div className="absolute inset-0 bg-black/70"></div>
       </div>
@@ -157,34 +215,63 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
             />
           </div>
 
-          {/* Movie Details */}
-          <div className="flex-1">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 flex items-center gap-5">
-              {movie.title}
-              <ScoreEvaluation score={Math.round(movie.vote_average * 10)} />
-            </h1>
-            <div className="flex flex-wrap items-center gap-2 md:gap-4 text-gray-300 text-sm md:text-base mb-4">
-              <span className="block w-full"></span>
-              <p className="flex items-center gap-1">
-                <Clapperboard className="h-5 w-5 md:h-6 md:w-6 mr-2" />
-                {movie.genres.map((genre) => genre.name).join(', ')}
-              </p>
-              <span className="block w-full"></span>
-              <p className="flex items-center gap-1">
-                <CalendarDays className="h-5 w-5 md:h-6 md:w-6 mr-2" />
-                {new Date(movie.release_date).toLocaleDateString()}
-              </p>
-              <span className="block w-full"></span>
-              <p className="flex items-center gap-1">
-                <HourglassIcon className="h-5 w-5 md:h-6 md:w-6 mr-2" />
-                {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m
-              </p>
-              <span className="block w-full"></span>
-              <p className="flex items-center gap-1">
-                <InfoIcon className="h-5 w-5 md:h-6 md:w-6 mr-2" />
-                {movie.overview}
-              </p>
+          {/* Movie Details and Trailer */}
+          <div className="flex-1 flex flex-col lg:flex-row gap-6">
+            <div className="flex-1">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 flex items-center gap-5">
+                {movie.title}
+                <div onClick={() => handleFavoriteClick(movie)}>
+                  <StarIcon className={`h-5 w-5 lg:h-7 lg:w-7 hover:scale-105 cursor-pointer ${isFavorite ? 'text-yellow-300' : 'text-gray-300'}`} />
+                </div>
+              </h1>
+              <div className="flex flex-col gap-2 md:gap-4 text-gray-300 text-sm md:text-base mb-4">
+                <p className="flex items-center gap-1">
+                  <Clapperboard className="h-5 w-5 md:h-6 md:w-6 mr-2" />
+                  {movie.genres.map((genre) => genre.name).join(', ')}
+                </p>
+                <p className="flex items-center gap-1">
+                  <CalendarDays className="h-5 w-5 md:h-6 md:w-6 mr-2" />
+                  {new Date(movie.release_date).toLocaleDateString()}
+                </p>
+                {movie.runtime > 0 && (
+                  <p className="flex items-center gap-1">
+                    <HourglassIcon className="h-5 w-5 md:h-6 md:w-6 mr-2" />
+                    {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m
+                  </p>
+                )}
+                {movie.vote_average > 0 && (<p className="flex items-center gap-1">
+                  <ScoreEvaluation score={Math.round(movie.vote_average * 10)} />
+                </p>
+                )}
+                <div className="flex items-center gap-1 p-4 border-l-2 border-r-2 border-gray-300 rounded-lg">
+                  <p className="text-justify text-gray-300">
+                    {movie.overview}
+                  </p>
+                </div>
+
+              </div>
             </div>
+
+            {/* Trailer */}
+            {trailerLink && (
+  <div className="flex flex-shrink-0 w-full lg:w-[60%] relative rounded-xl overflow-hidden shadow-md">
+    <div
+      className="relative w-full"
+      style={{
+        paddingBottom: '56.25%', // Maintain a 16:9 aspect ratio for all screen sizes
+        position: 'relative',
+      }}
+    >
+      <iframe
+        src={trailerLink}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        className="absolute top-0 left-0 w-full h-full object-cover"
+        title="Movie Trailer"
+      ></iframe>
+    </div>
+  </div>
+)}
           </div>
         </div>
 
@@ -193,22 +280,23 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
           <h2 className="text-xl md:text-2xl font-semibold mb-4">Credits</h2>
           <div className="flex gap-6 p-2 overflow-x-auto scrollbar-hide">
             {credits.slice(0, 10).map((credit) => (
+              credit.profile_path && (
               <div
                 key={credit.id}
                 className="min-w-[160px] w-[180px] transition-transform duration-300 ease-out hover:scale-105 cursor-pointer"
                 onClick={() => router.push(`/persons/${credit.id}`)}
               >
                 <Image
-                  src={`https://image.tmdb.org/t/p/original${credit.profile_path}`}
-                  alt={credit.name}
-                  width={200}
-                  height={275}
-                  className="rounded-lg shadow-md mb-3"
-                // style={{ width: 'auto', height: 'auto' }}
+                src={`https://image.tmdb.org/t/p/original${credit.profile_path}`}
+                alt={credit.name}
+                width={200}
+                height={275}
+                className="rounded-lg shadow-md mb-3"
                 />
                 <p className="text-sm md:text-base font-semibold text-white">{credit.name}</p>
                 <p className="text-xs md:text-sm text-gray-400 italic">{credit.character}</p>
               </div>
+              )
             ))}
           </div>
         </div>
@@ -247,7 +335,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

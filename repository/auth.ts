@@ -32,7 +32,7 @@ export async function login(username: string, password: string) {
       setCookie('isLogged', 'true', 7);
       localStorage.removeItem('error');
     } else {
-      setCookie('isLogged', 'false', 7);
+      setCookie('isLogged', 'true', 7);
       localStorage.setItem('error', 'Nom d\'utilisateur ou mot de passe incorrect');
     }
   }
