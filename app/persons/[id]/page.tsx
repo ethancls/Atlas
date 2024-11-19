@@ -141,33 +141,36 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">{person.name}</h1>
             <h2 className="text-xl font-semibold mb-4">Biography</h2>
             <p className="text-gray-300 mb-6">{person.biography || 'No biography available.'}</p>
+          </div>
+        </div>
 
-            <h2 className="text-xl font-semibold mb-4">Known For</h2>
-            <div className="flex gap-4 overflow-x-auto">
-              {knownFor.map((movie) => (
-                <div
-                  key={movie.id}
-                  className="flex-shrink-0 w-36 transition-transform duration-300 ease-out hover:scale-105 cursor-pointer"
-                  onClick={() => router.push(`/movies/${movie.id}`)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      router.push(`/movies/${movie.id}`);
-                    }
-                  }}
-                >
-                  <Image
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                    alt={movie.title ?? movie.name ?? 'Unknown title'}
-                    width={144}
-                    height={216}
-                    className="rounded-lg shadow-md"
-                  />
-                  <p className="text-sm text-center mt-2">{movie.title || movie.name}</p>
-                </div>
-              ))}
-            </div>
+        {/* Known For */}
+        <div>
+          <h2 className="text-xl md:text-2xl font-semibold mb-4">Known For</h2>
+          <div className="flex gap-6 p-2 overflow-x-auto scrollbar-hide">
+            {knownFor.map((movie) => (
+              <div
+                key={movie.id}
+                className="min-w-[160px] w-[180px] transition-transform duration-300 ease-out hover:scale-105 cursor-pointer"
+                onClick={() => router.push(`/movies/${movie.id}`)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    router.push(`/movies/${movie.id}`);
+                  }
+                }}
+              >
+                <Image
+                  src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                  alt={movie.title ?? movie.name ?? 'Unknown title'}
+                  width={200}
+                  height={275}
+                  className="rounded-lg shadow-md mb-3"
+                />
+                <p className="text-sm md:text-base font-semibold text-white">{movie.title || movie.name}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
