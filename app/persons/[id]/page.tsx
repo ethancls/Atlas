@@ -109,7 +109,6 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
               modal.appendChild(img);
               document.body.appendChild(modal);
             }}
-            role="button"
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
@@ -125,6 +124,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
                 document.body.appendChild(modal);
               }
             }}
+            aria-label="View profile picture"
           >
             <Image
               src={`https://image.tmdb.org/t/p/original${person.profile_path}`}
