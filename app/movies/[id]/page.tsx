@@ -1,6 +1,6 @@
 "use client";
 import { Favorite } from '@/app/entities/Favorite';
-import { CalendarDays, Clapperboard, HourglassIcon, MoveLeftIcon, StarIcon } from 'lucide-react';
+import { CalendarDays, Clapperboard, HourglassIcon, MoveLeftIcon, ShieldAlert, StarIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -74,6 +74,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
   const [imagesData, setImagesData] = useState<ImageData[]>([]);
   const [trailerLink, setTrailerLink] = useState<string | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [certification, setCertification] = useState<string | null>(null);
 
   async function handleFavoriteClick(movie: Movie): Promise<void> {
     if (!isFavorite) {
@@ -151,6 +152,17 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
         // Extract the video ID
         if (youtubeData?.result?.[0]?.id) {
           setTrailerLink(`https://www.youtube.com/embed/${youtubeData.result[0].id}?autoplay=1&vq=hd2160&modestbranding=1&rel=0`);
+        }
+
+        // Fetch certification
+        const certificationResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}/release_dates`, { headers });
+        const certificationData = await certificationResponse.json();
+        const usRelease = certificationData.results.find((release: { iso_3166_1: string }) => release.iso_3166_1 === 'US');
+        if (usRelease) {
+          const usCertification = usRelease.release_dates.find((release: { certification: string }) => release.certification);
+          if (usCertification) {
+            setCertification(usCertification.certification);
+          }
         }
       } catch (error) {
         console.error("Error fetching movie data:", error);
@@ -239,6 +251,12 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                     {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m
                   </p>
                 )}
+                {certification && (
+                  <p className="flex items-center gap-1">
+                    <ShieldAlert className="h-5 w-5 md:h-6 md:w-6 mr-2" />
+                    <span className="text-gray-300">{certification.replace('PG-', '')}+</span>
+                  </p>
+                )}
                 {movie.vote_average > 0 && (<p className="flex items-center gap-1">
                   <ScoreEvaluation score={Math.round(movie.vote_average * 10)} />
                 </p>
@@ -254,24 +272,24 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
 
             {/* Trailer */}
             {trailerLink && (
-  <div className="flex flex-shrink-0 w-full lg:w-[60%] relative rounded-xl overflow-hidden shadow-md">
-    <div
-      className="relative w-full"
-      style={{
-        paddingBottom: '56.25%', // Maintain a 16:9 aspect ratio for all screen sizes
-        position: 'relative',
-      }}
-    >
-      <iframe
-        src={trailerLink}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        className="absolute top-0 left-0 w-full h-full object-cover"
-        title="Movie Trailer"
-      ></iframe>
-    </div>
-  </div>
-)}
+              <div className="flex flex-shrink-0 w-full lg:w-[60%] relative rounded-xl overflow-hidden shadow-md">
+                <div
+                  className="relative w-full"
+                  style={{
+                    paddingBottom: '56.25%', // Maintain a 16:9 aspect ratio for all screen sizes
+                    position: 'relative',
+                  }}
+                >
+                  <iframe
+                    src={trailerLink}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute top-0 left-0 w-full h-full object-cover"
+                    title="Movie Trailer"
+                  ></iframe>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -281,21 +299,21 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
           <div className="flex gap-6 p-2 overflow-x-auto scrollbar-hide">
             {credits.slice(0, 10).map((credit) => (
               credit.profile_path && (
-              <div
-                key={credit.id}
-                className="min-w-[160px] w-[180px] transition-transform duration-300 ease-out hover:scale-105 cursor-pointer"
-                onClick={() => router.push(`/persons/${credit.id}`)}
-              >
-                <Image
-                src={`https://image.tmdb.org/t/p/original${credit.profile_path}`}
-                alt={credit.name}
-                width={200}
-                height={275}
-                className="rounded-lg shadow-md mb-3"
-                />
-                <p className="text-sm md:text-base font-semibold text-white">{credit.name}</p>
-                <p className="text-xs md:text-sm text-gray-400 italic">{credit.character}</p>
-              </div>
+                <div
+                  key={credit.id}
+                  className="min-w-[160px] w-[180px] transition-transform duration-300 ease-out hover:scale-105 cursor-pointer"
+                  onClick={() => router.push(`/persons/${credit.id}`)}
+                >
+                  <Image
+                    src={`https://image.tmdb.org/t/p/original${credit.profile_path}`}
+                    alt={credit.name}
+                    width={200}
+                    height={275}
+                    className="rounded-lg shadow-md mb-3"
+                  />
+                  <p className="text-sm md:text-base font-semibold text-white">{credit.name}</p>
+                  <p className="text-xs md:text-sm text-gray-400 italic">{credit.character}</p>
+                </div>
               )
             ))}
           </div>
