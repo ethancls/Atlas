@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
 // Function to get user by username
 function getUserByUsername(username: string) {
-  const filePath = path.join(process.cwd(), 'app/api/auth/atlas.json');
+  const filePath = path.join(process.cwd(), '/public/atlas.json');
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, JSON.stringify([]));
   }

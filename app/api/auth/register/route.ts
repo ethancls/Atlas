@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
   }
 }
 function saveUser(username: string, password: string) {
-  const filePath = path.join(process.cwd(), 'app/api/auth/atlas.json');
+  const filePath = path.join(process.cwd(), '/public/atlas.json');
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, JSON.stringify([]));
   }
@@ -33,7 +33,7 @@ function saveUser(username: string, password: string) {
 }
 
 async function createUser(username: string, password: string) {
-  const filePath = path.join(process.cwd(), 'app/api/auth/atlas.json');
+  const filePath = path.join(process.cwd(), '/public/atlas.json');
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, JSON.stringify([]));
   }
