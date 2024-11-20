@@ -85,11 +85,11 @@ const Biography = ({ person }: { person: Person }) => {
 
             const modalContent = document.createElement('div');
             modalContent.className =
-              'bg-gray-200 rounded-lg max-w-[80vw] max-h-[80vh] overflow-auto flex flex-col shadow-lg shadow-black/50';
+              'rounded-lg shadow-md shadow-black/50 bg-gradient-to-b from-gray-50 to-gray-400 dark:from-[rgb(24,24,27)] dark:to-[rgb(48,48,61)] max-w-[80vw] max-h-[80vh] overflow-auto flex flex-col';
 
             // Header with name
             const header = document.createElement('h2');
-            header.className = 'mt-4 text-black text-2xl font-bold text-center';
+            header.className = 'mt-4 text-2xl font-bold text-center';
             header.innerText = person.name;
 
             // Divider line
@@ -98,7 +98,7 @@ const Biography = ({ person }: { person: Person }) => {
 
             // Biography text
             const bio = document.createElement('p');
-            bio.className = 'text-black text-lg mb-2 p-6 text-justify';
+            bio.className = 'text-lg mb-2 p-6 text-justify';
             bio.innerText = person.biography;
 
             // "Done" button
@@ -207,7 +207,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
           </button>
         </div>
 
-        <div className="flex flex-col items-center md:flex-row gap-6 lg:gap-8 p-4 rounded-lg shadow-md shadow-black/30 bg-gradient-to-b from-gray-100 to-gray-200 dark:from-[rgb(24,24,27)] dark:to-[rgb(48,48,51)]">
+        <div className="flex flex-col items-center md:flex-row gap-6 lg:gap-8 p-4 rounded-lg shadow-md shadow-black/30 bg-gradient-to-b from-gray-50 to-gray-300 dark:from-[rgb(24,24,27)] dark:to-[rgb(48,48,51)]">
           {/* Profile Picture */}
           <div className="flex-shrink-0 mx-auto md:mx-0 w-[50%] flex relative justify-center md:justify-end md:pr-[5%]">
             <button
