@@ -10,6 +10,7 @@ import Image from "next/image";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { MovieDetail } from "../entities/MovieDetail";
+import { useRouter } from "next/navigation";
 
 import rotten from "@/assets/rotten.png"
 import splash from "@/assets/splash.png"
@@ -19,6 +20,7 @@ const Discover = () => {
   const [shows, setShows] = useState<TVShow[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [movieDetail, setMovieDetail] = useState<MovieDetail[] | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchDiscover = async () => {
@@ -85,16 +87,16 @@ const Discover = () => {
     <DefaultLayout>
         {/* Carousel Section */}
         <div className="relative">
-          {movies.length > 0 && (
+          {movieDetail && movieDetail.length > 0 && (
             <Carousel
-              autoPlay
-              infiniteLoop
+              autoPlay={true}
+              infiniteLoop={true}
               showThumbs={false}
               showStatus={false}
-              interval={5000}
+              interval={3000}
             >
               {movieDetail?.map((detail) => (
-                <div key={detail.id} className="relative h-[80vh]">
+                <div key={detail.id} className="relative h-[80vh]" onClick={() => router.push(`/movies/${detail.id}`)}>
                   {/* Backdrop Image */}
                   <Image
                     src={`https://image.tmdb.org/t/p/original${detail.backdrop_path}`}

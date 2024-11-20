@@ -15,7 +15,7 @@ const DisplayMovie: React.FC<DisplayMovieProps> = ({ movie }) => {
   }
 
   return (
-    <Card className="w-20 min-w-[140px] md:w-30 md:min-w-[160px] lg:w-40 lg:min-w-[180px] xl:w-50 xl:min-w-[200px] 2xl:w-60  2xl:min-w-[220px] flex-shrink-0 shadow-lg rounded-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 hover">
+    <Card className="w-20 min-w-[140px] md:w-30 md:min-w-[160px] lg:w-40 lg:min-w-[180px] xl:w-50 xl:min-w-[200px] 2xl:w-60  2xl:min-w-[220px] flex-shrink-0 shadow-lg rounded-lg">
       <CardHeader className="p-1 relative">
         <div onClick={handleClick} className="cursor-pointer">
           <Image
