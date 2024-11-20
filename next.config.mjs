@@ -1,8 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-      domains: ['image.tmdb.org'], // Autoriser le domaine pour les images
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'image.tmdb.org',
+            },
+        ],
     },
-  };
-  
-  export default nextConfig;
+};
+
+export default nextConfig;
