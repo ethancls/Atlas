@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { ChevronLeftIcon } from "lucide-react";
+import { ChevronLeftIcon, Pause, Play, Volume2, VolumeX } from "lucide-react";
 
 import rotten from "@/assets/rotten.png"
 
@@ -48,6 +48,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [trailerLink, setTrailerLink] = useState<string | null>(null);
     const [showTrailer, setShowTrailer] = useState(false);
+    const [isMuted, setIsMuted] = useState(true);
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
@@ -112,14 +113,14 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
 
                 const youtubeResponse = await fetch(
                     `/api/youtube?search=${encodeURIComponent(
-                        movieData.title + movieData.release_date + " trailer official"
+                        movieData.title + new Date(movieData.release_date).getFullYear() + " 4k trailer official movie english"
                     )}`,
                     { cache: "no-store" }
                 );
                 const youtubeData = await youtubeResponse.json();
                 if (youtubeData?.result?.[0]?.id) {
                     setTrailerLink(
-                        `https://www.youtube.com/embed/${youtubeData.result[0].id}?autoplay=1&vq=hd1080&modestbranding=1&rel=0`
+                        `https://www.youtube.com/embed/${youtubeData.result[0].id}?autoplay=1&vq=hd1080&mute=1&enablejsapi=1&modestbranding=1&rel=0&controls=0&showinfo=1@iv_load_policy=3&autohide=1&playsinline=1`
                     );
                 }
             } catch (error) {
@@ -149,6 +150,34 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
         );
     }
 
+    const toggleMute = () => {
+        const iframe = document.getElementById("trailer-iframe") as HTMLIFrameElement;
+        if (iframe?.contentWindow) {
+            iframe.contentWindow.postMessage(
+                JSON.stringify({
+                    event: "command",
+                    func: isMuted ? "unMute" : "mute",
+                }),
+                "*"
+            );
+            setIsMuted(!isMuted);
+        }
+    };
+
+    const togglePlayPause = () => {
+        const iframe = document.getElementById("trailer-iframe") as HTMLIFrameElement;
+        if (iframe?.contentWindow) {
+            iframe.contentWindow.postMessage(
+                JSON.stringify({
+                    event: "command",
+                    func: showTrailer ? "pauseVideo" : "playVideo",
+                }),
+                "*"
+            );
+            setShowTrailer(!showTrailer);
+        }
+    };
+
     return (
         <div className="relative">
             {/* Backdrop or Trailer */}
@@ -161,17 +190,21 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                             className="absolute top-[-60px] left-0 w-full h-full"
-                            onLoad={() => {
-                                const iframe = document.querySelector("iframe");
-                                if (iframe) {
-                                    iframe.contentWindow?.postMessage(
-                                        '{"event":"command","func":"playVideo","args":""}',
-                                        "*"
-                                    );
-                                }
-                            }}
                             onEnded={handleVideoEnd}
+                            id="trailer-iframe"
                         ></iframe>
+                        <button
+                            onClick={() => { toggleMute(); }}
+                            className="absolute top-4 right-4 z-30 p-2 text-white"
+                        >
+                            {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                        </button>
+                        <button
+                            onClick={() => { togglePlayPause(); }}
+                            className="absolute top-4 right-16 z-30 p-2 text-white"
+                        >
+                            {showTrailer ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+                        </button>
                     </div>
                 ) : (
                     <>
@@ -187,6 +220,12 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                             fill
                             className="object-cover block md:hidden"
                         />
+                        <button
+                            onClick={() => { setShowTrailer(true); togglePlayPause(); }}
+                            className="absolute top-4 right-16 z-30 p-2 text-white"
+                        >
+                            {showTrailer ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+                        </button>
                     </>
                 )}
 
@@ -257,7 +296,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                     {relatedMovies.map((related) => (
                         <div
                             key={related.id}
-                            onClick={() => router.push(`/movie/${related.id}`)}
+                            onClick={() => router.push(`/movies/${related.id}`)}
                             className="flex-shrink-0 w-[200px] cursor-pointer hover:opacity-80"
                         >
                             <Image
