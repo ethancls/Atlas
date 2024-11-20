@@ -50,13 +50,94 @@ const addEscapeKeyListener = (modal: HTMLDivElement) => {
   document.addEventListener('keydown', handleKeyDown);
 };
 
+const Biography = ({ person }: { person: Person }) => {
+  const [maxLength, setMaxLength] = useState(window.innerWidth < 768 ? 100 : 600);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMaxLength(window.innerWidth < 768 ? 100 : 600);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  return (
+    <p className="text-gray-300 mb-6 text-left">
+      {person.biography.length > maxLength
+        ? `${person.biography.substring(0, maxLength)}...`
+        : person.biography}
+      {person.biography.length > maxLength && (
+        <button
+          onClick={() => {
+            const modal = document.createElement('div');
+            modal.className =
+              'fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4';
+
+            // Close modal function
+            const closeModal = () => {
+              modal.remove();
+            };
+
+            const modalContent = document.createElement('div');
+            modalContent.className =
+              'bg-gray-200 rounded-lg max-w-[80vw] max-h-[80vh] overflow-auto flex flex-col shadow-lg shadow-black/50';
+
+            // Header with name
+            const header = document.createElement('h2');
+            header.className = 'mt-4 text-black text-2xl font-bold text-center shadow-md';
+            header.innerText = person.name;
+
+            // Divider line
+            const divider = document.createElement('hr');
+            divider.className = 'border-t border-gray-400 my-3';
+
+            // Biography text
+            const bio = document.createElement('p');
+            bio.className = 'text-black text-lg mb-2 p-6';
+            bio.innerText = person.biography;
+
+            // "Done" button
+            const doneButton = document.createElement('button');
+            doneButton.className =
+              'px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300 self-end mb-6 mr-8';
+            doneButton.innerText = 'Done';
+            doneButton.onclick = closeModal;
+
+            modalContent.appendChild(header);
+            modalContent.appendChild(divider);
+            modalContent.appendChild(bio);
+            modalContent.appendChild(doneButton);
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+
+            // Close modal with Escape key
+            const handleKeyDown = (e: KeyboardEvent) => {
+              if (e.key === 'Escape') {
+                closeModal();
+                document.removeEventListener('keydown', handleKeyDown);
+              }
+            };
+
+            document.addEventListener('keydown', handleKeyDown);
+          }}
+          className="text-blue-500 ml-2"
+        >
+          read more
+        </button>
+      )}
+    </p>
+  );
+};
+
 const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const router = useRouter();
   const [person, setPerson] = useState<Person | null>(null);
   const [Movies, setMovies] = useState<Movies[]>([]);
   const [TVShows, setTVShows] = useState<TVShows[]>([]);
-  const [showFullBiography] = useState(false);
 
   useEffect(() => {
     const fetchPersonDetails = async () => {
@@ -176,66 +257,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
           {/* Details Section */}
           <div className="flex-1 text-center md:text-left pr-4 md:pr-6 lg:pr-8 person-details w-[60%] h-full flex flex-col justify-center">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">{person.name}</h1>
-            <p className="text-gray-300 mb-6 text-left">
-              {showFullBiography ? person.biography : `${person.biography.substring(0, window.innerWidth < 768 ? 100 : 600)}...`}
-              {person.biography.length > (window.innerWidth < 768 ? 100 : 600) && (
-                <button
-                  onClick={() => {
-                    const modal = document.createElement('div');
-                    modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4';
-
-                    // Close modal function
-                    const closeModal = () => {
-                      modal.remove();
-                    };
-
-                    const modalContent = document.createElement('div');
-                    modalContent.className =
-                      'bg-gray-200 rounded-lg max-w-[80vw] max-h-[80vh] overflow-auto flex flex-col shadow-lg shadow-black/50';
-
-                    // Header with name
-                    const header = document.createElement('h2');
-                    header.className = 'mt-4 text-black text-2xl font-bold text-center';
-                    header.innerText = person.name;
-                    // Divider line
-                    const divider = document.createElement('hr');
-                    divider.className = 'border-t border-gray-400 my-3';
-
-                    // Biography text
-                    const bio = document.createElement('p');
-                    bio.className = 'text-black text-lg mb-2 p-6';
-                    bio.innerText = person.biography;
-
-                    // "Done" button
-                    const doneButton = document.createElement('button');
-                    doneButton.className =
-                      'px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300 self-end mb-6 mr-8';
-                    doneButton.innerText = 'Done';
-                    doneButton.onclick = closeModal;
-
-                    modalContent.appendChild(header);
-                    modalContent.appendChild(divider);
-                    modalContent.appendChild(bio);
-                    modalContent.appendChild(doneButton);
-                    modal.appendChild(modalContent);
-                    document.body.appendChild(modal);
-
-                    // Close modal with Escape key
-                    const handleKeyDown = (e: KeyboardEvent) => {
-                      if (e.key === 'Escape') {
-                        closeModal();
-                        document.removeEventListener('keydown', handleKeyDown);
-                      }
-                    };
-
-                    document.addEventListener('keydown', handleKeyDown);
-                  }}
-                  className="text-blue-500 ml-2"
-                >
-                  read more
-                </button>
-              )}
-            </p>
+            <Biography person={person} />
           </div>
         </div>
 
