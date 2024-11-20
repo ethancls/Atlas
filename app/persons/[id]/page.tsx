@@ -257,7 +257,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
           </div>
 
           {/* Person Details */}
-          <div className="flex-1 text-center md:text-left pr-2 md:pr-4 lg:pr-6 person-details h-full flex flex-col justify-center max-w-[30%]">
+          <div className="flex-1 text-center md:text-left pr-2 md:pr-4 lg:pr-6 person-details h-full flex flex-col justify-center max-w-[70%] md:max-w-[30%]">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 pb-8">{person.name}</h1>
             <Biography person={person} />
           </div>
