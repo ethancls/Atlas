@@ -268,6 +268,19 @@ const ShowDetailPage = ({ params }: { params: { id: string } }) => {
               ))}
             </div>
           </div>
+          {trailerLink && (
+            <div className="flex-shrink-0 lg:w-[60%] w-full relative rounded-xl overflow-hidden shadow-md">
+              <div className="aspect-w-16 aspect-h-9">
+                <iframe
+                  src={trailerLink}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full object-cover"
+                  title="TVShow Trailer"
+                ></iframe>
+              </div>
+            </div>
+          )}
         </div>
       </div>
   );

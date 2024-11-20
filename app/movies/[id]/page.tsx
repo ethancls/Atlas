@@ -288,7 +288,7 @@ const MovieDetailPage = ({params}: { params: { id: string } }) => {
                     ))}
                 </div>
             </div>
-
+        
             {/* Images */}
             <div className="p-6 lg:p-12">
                 <h2 className="text-xl font-semibold mb-4">Images</h2>
