@@ -270,31 +270,25 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
         </div>
 
         {/* Movies */}
-        <div>
-          <h2 className="text-xl md:text-2xl font-semibold mb-4 pt-8">Movies</h2>
-          <div className="flex gap-6 p-2 overflow-x-auto scrollbar-hide">
+        <div className="p-6 lg:p-12">
+          <h2 className="text-xl font-semibold mb-4 pt-8">Movies</h2>
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
             {Movies.map((movie) => (
-              <div
-                key={movie.id}
-                className="min-w-[160px] w-[180px] transition-transform duration-300 ease-out hover:scale-105 cursor-pointer"
-                onClick={() => router.push(`/movies/${movie.id}`)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    router.push(`/movies/${movie.id}`);
-                  }
-                }}
-              >
-                <Image
-                  src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                  alt={movie.title ?? movie.name ?? 'Unknown title'}
-                  width={200}
-                  height={275}
-                  className="rounded-lg shadow-md mb-3"
-                />
-                <p className="text-sm md:text-base font-semibold text-white">{movie.title || movie.name}</p>
-              </div>
+              movie.poster_path && (
+                <div
+                  key={movie.id}
+                  onClick={() => router.push(`/movies/${movie.id}`)}
+                  className="flex-shrink-0 w-[200px] cursor-pointer hover:opacity-80"
+                >
+                  <Image
+                    src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                    alt={movie.title ?? movie.name ?? 'Unknown title'}
+                    width={200}
+                    height={225}
+                    className="rounded-md shadow-md"
+                  />
+                </div>
+              )
             ))}
           </div>
         </div>
