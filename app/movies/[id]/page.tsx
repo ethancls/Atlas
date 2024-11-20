@@ -105,14 +105,14 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
 
                 const youtubeResponse = await fetch(
                     `/api/youtube?search=${encodeURIComponent(
-                        movieData.title + new Date(movieData.release_date).getFullYear() + " 4k trailer official movie english"
+                        movieData.title + new Date(movieData.release_date).getFullYear() + " 4k trailer official movie"
                     )}`,
                     { cache: "no-store" }
                 );
                 const youtubeData = await youtubeResponse.json();
                 if (youtubeData?.result?.[0]?.id) {
                     setTrailerLink(
-                        `https://www.youtube.com/embed/${youtubeData.result[0].id}?autoplay=1&vq=hd1080&mute=1&enablejsapi=1&modestbranding=1&rel=0&controls=0&showinfo=1@iv_load_policy=3&autohide=1&playsinline=1`
+                        `https://www.youtube.com/embed/${youtubeData.result[0].id}?autoplay=1&vq=hd2160&mute=1&enablejsapi=1&modestbranding=1&rel=0&controls=0&showinfo=1@iv_load_policy=3&autohide=1&playsinline=1&loop=1`
                     );
                 }
 
@@ -231,9 +231,8 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                             className="absolute top-[-60px] left-0 w-full h-full"
-                            onEnded={() => setShowTrailer(false)}
                             id="trailer-iframe"
-                        ></iframe>
+                        />
                         <button
                             onClick={() => { toggleMute(); }}
                             className="absolute top-4 right-8 z-30 p-2 text-white"
@@ -315,7 +314,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                         </div>
                         {movie.runtime > 0 && (
                             <div className="flex items-center">
-                                {Math.floor(movie.runtime / 60)}h{movie.runtime % 60}
+                                {Math.floor(movie.runtime / 60)} h {movie.runtime % 60} min
                             </div>
                         )}
                         <div className="flex items-center px-1 gap-1">
@@ -370,7 +369,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                 </div>
             </div>
 
-            <hr className="border-gray-300 my-1 w-[95%] mx-auto" />
+            <hr className="border-gray-500 my-1 w-[95%] mx-auto" />
 
             {/* Recommendations */
             }
@@ -451,7 +450,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                                 width={300}
                                 height={200}
                                 quality={100}
-                                className="rounded-lg shadow-md"
+                                className="rounded-lg shadow-md hover:opacity-80"
                             />
                         </div>
                     ))}
@@ -465,7 +464,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                     {imagesData.filter(image => image.type === "poster").map((image) => (
                         <div
                             key={image.file_path}
-                            className="flex-shrink-0 w-[150px] cursor-pointer"
+                            className="flex-shrink-0 w-[150px] cursor-pointer hover:opacity-80"
                             onClick={() => {
                                 const modal = document.createElement("div");
                                 modal.className =
@@ -494,7 +493,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                 </div>
             </div>
 
-            <hr className="border-gray-300 my-1 w-[95%] mx-auto" />
+            <hr className="border-gray-500 my-1 w-[95%] mx-auto" />
 
             {/* Columns Section */}
             <div className="p-6 lg:p-12 grid grid-cols-1 md:grid-cols-3 gap-8">
