@@ -113,32 +113,10 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
 
         <div className="flex flex-col items-center md:flex-row gap-6 lg:gap-8 bg-slate-700/50 p-4 rounded-lg shadow-md">
           {/* Profile Picture */}
-          <button
-            className="flex-shrink-0 mx-auto md:mx-0 w-[50%] cursor-pointer"
-            onClick={() => {
-              const modal = document.createElement('div');
-              modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80';
-              modal.onclick = () => modal.remove();
-
-              const img = document.createElement('img');
-              img.src = `https://image.tmdb.org/t/p/original${person.profile_path}`;
-              img.className = 'max-h-[80vh] max-w-[80vw] object-contain rounded-lg shadow-lg';
-
-              modal.appendChild(img);
-              document.body.appendChild(modal);
-
-              const handleKeyDown = (e: KeyboardEvent) => {
-                if (e.key === 'Escape') {
-                  modal.remove();
-                  document.removeEventListener('keydown', handleKeyDown);
-                }
-              };
-
-              document.addEventListener('keydown', handleKeyDown);
-            }}
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
+          <div className="flex-shrink-0 mx-auto md:mx-0 w-[50%]">
+            <button
+              className="cursor-pointer"
+              onClick={() => {
                 const modal = document.createElement('div');
                 modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80';
                 modal.onclick = () => modal.remove();
@@ -158,11 +136,25 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
                 };
 
                 document.addEventListener('keydown', handleKeyDown);
-              }
-            }}
-            aria-label="View profile picture"
-          >
-            <div className="flex justify-center items-center h-full translate-x-15">
+              }}
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  const modal = document.createElement('div');
+                  modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80';
+                  modal.onclick = () => modal.remove();
+
+                  const img = document.createElement('img');
+                  img.src = `https://image.tmdb.org/t/p/original${person.profile_path}`;
+                  img.className = 'max-h-[80vh] max-w-[80vw] object-contain rounded-lg shadow-lg';
+
+                  modal.appendChild(img);
+                  document.body.appendChild(modal);
+
+                }
+              }}
+              aria-label="View profile picture"
+            >
               <Image
                 src={`https://image.tmdb.org/t/p/original${person.profile_path}`}
                 alt={person.name}
@@ -171,8 +163,8 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
                 quality={100}
                 className="rounded-full shadow-lg w-[150px] md:w-[200px] lg:w-[300px] h-auto duration-300 ease-out hover:scale-105"
               />
-            </div>
-          </button>
+            </button>
+          </div>
 
           {/* Details Section */}
           <div className="flex-1 text-center md:text-left pr-4 md:pr-6 lg:pr-8 person-details">
