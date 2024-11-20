@@ -126,9 +126,9 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
 
         <div className="flex flex-col items-center md:flex-row gap-6 lg:gap-8 p-4 rounded-lg shadow-md shadow-black/30 bg-gradient-to-b from-gray-100 to-gray-200 dark:from-[rgb(24,24,27)] dark:to-[rgb(48,48,51)]">
           {/* Profile Picture */}
-          <div className="flex-shrink-0 mx-auto md:mx-0 w-[50%] flex justify-center relative">
+          <div className="flex-shrink-0 mx-auto md:mx-0 w-[50%] flex relative justify-center md:justify-end md:pr-[5%]">
             <button
-              className="cursor-pointer relative translate-x-[45%]" // Move the image-button righter that center on 20%
+              className="cursor-pointer relative"
               onClick={() => {
                 const modal = document.createElement('div');
                 modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80';
@@ -165,10 +165,10 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
               <Image
                 src={`https://image.tmdb.org/t/p/original${person.profile_path}`}
                 alt={person.name}
-                width={300}
-                height={450}
+                width={250}
+                height={375}
                 quality={100}
-                className="rounded-full shadow-lg shadow-black/50 w-[150px] md:w-[200px] lg:w-[300px] h-auto duration-300 ease-out hover:scale-105"
+                className="rounded-lg shadow-lg shadow-black/50 w-[125px] md:w-[175px] lg:w-[250px] h-auto duration-300 ease-out hover:scale-105"
               />
             </button>
           </div>
@@ -176,9 +176,9 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
           {/* Details Section */}
           <div className="flex-1 text-center md:text-left pr-4 md:pr-6 lg:pr-8 person-details w-[60%] h-full flex flex-col justify-center">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">{person.name}</h1>
-            <p className="text-gray-300 mb-6">
-              {showFullBiography ? person.biography : `${person.biography.substring(0, 400)}...`}
-              {person.biography.length > 400 && (
+            <p className="text-gray-300 mb-6 text-left">
+              {showFullBiography ? person.biography : `${person.biography.substring(0, window.innerWidth < 768 ? 100 : 600)}...`}
+              {person.biography.length > (window.innerWidth < 768 ? 100 : 600) && (
                 <button
                   onClick={() => {
                     const modal = document.createElement('div');
