@@ -1,6 +1,6 @@
 "use client";
 
-import { MoveLeftIcon } from 'lucide-react';
+import { ChevronLeftIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -101,17 +101,20 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
     <div className="relative flex min-h-screen min-w-full bg-cover">
       {/* Content */}
       <div className="flex-1 flex flex-col gap-4 backdrop-blur-2xl bg-slate-800/40 p-6 lg:p-12 overflow-hidden">
+        {/* Bouton de retour */}
         <button
           onClick={() => router.back()}
-          className="self-start transition-transform duration-300 ease-out text-white flex gap-1 items-center hover:scale-110 hover:shadow-lg"
+          className="absolute top-4 left-4 z-30 flex items-center gap-2 p-2"
+          title="Go back"
         >
-          <MoveLeftIcon className="h-4 w-4 md:h-5 md:w-5" /> Back
+          <ChevronLeftIcon className="h-7 w-7 text-white" />
+          <span className="text-white font-medium"></span>
         </button>
 
-        <div className="flex flex-col items-center md:flex-row gap-6 lg:gap-8">
+        <div className="flex flex-col items-center md:flex-row gap-6 lg:gap-8 bg-slate-700/50 p-4 rounded-lg shadow-md">
           {/* Profile Picture */}
           <button
-            className="flex-shrink-0 mx-auto md:mx-0 duration-300 ease-out hover:scale-105 cursor-pointer p-2"
+            className="flex-shrink-0 mx-auto md:mx-0 w-[50%] cursor-pointer"
             onClick={() => {
               const modal = document.createElement('div');
               modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80';
@@ -123,6 +126,15 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
 
               modal.appendChild(img);
               document.body.appendChild(modal);
+
+              const handleKeyDown = (e: KeyboardEvent) => {
+                if (e.key === 'Escape') {
+                  modal.remove();
+                  document.removeEventListener('keydown', handleKeyDown);
+                }
+              };
+
+              document.addEventListener('keydown', handleKeyDown);
             }}
             tabIndex={0}
             onKeyDown={(e) => {
@@ -137,22 +149,33 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
 
                 modal.appendChild(img);
                 document.body.appendChild(modal);
+
+                const handleKeyDown = (e: KeyboardEvent) => {
+                  if (e.key === 'Escape') {
+                    modal.remove();
+                    document.removeEventListener('keydown', handleKeyDown);
+                  }
+                };
+
+                document.addEventListener('keydown', handleKeyDown);
               }
             }}
             aria-label="View profile picture"
           >
-            <Image
-              src={`https://image.tmdb.org/t/p/original${person.profile_path}`}
-              alt={person.name}
-              width={300}
-              height={450}
-              quality={100}
-              className="rounded-full shadow-lg w-[150px] md:w-[200px] lg:w-[300px] h-auto"
-            />
+            <div className="flex justify-center items-center h-full translate-x-15">
+              <Image
+                src={`https://image.tmdb.org/t/p/original${person.profile_path}`}
+                alt={person.name}
+                width={300}
+                height={450}
+                quality={100}
+                className="rounded-full shadow-lg w-[150px] md:w-[200px] lg:w-[300px] h-auto duration-300 ease-out hover:scale-105"
+              />
+            </div>
           </button>
 
           {/* Details Section */}
-          <div className="flex-1 text-center md:text-left">
+          <div className="flex-1 text-center md:text-left pr-4 md:pr-6 lg:pr-8 person-details">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">{person.name}</h1>
             <p className="text-gray-300 mb-6">
               {showFullBiography ? person.biography : `${person.biography.substring(0, 200)}...`}
