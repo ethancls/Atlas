@@ -235,13 +235,13 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                         />
                         <button
                             onClick={() => { toggleMute(); }}
-                            className="absolute top-4 right-8 z-30 p-2 text-white"
+                            className="absolute top-4 right-8 z-30 p-2 text-white hover:bg-black/50 rounded"
                         >
                             {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
                         </button>
                         <button
                             onClick={() => { togglePlayPause(); }}
-                            className="absolute top-4 right-20 z-30 p-2 text-white"
+                            className="absolute top-4 right-20 z-30 p-2 text-white hover:bg-black/50 rounded"
                         >
                             {showTrailer ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
                         </button>
@@ -262,7 +262,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                         />
                         <button
                             onClick={() => { setShowTrailer(true); togglePlayPause(); }}
-                            className="absolute top-4 right-20 z-30 p-2 text-white"
+                            className="absolute top-4 right-20 z-30 p-2 text-white hover:bg-black/50 rounded"
                         >
                             {showTrailer ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
                         </button>
@@ -277,10 +277,9 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                 {/* Bouton de retour */}
                 <button
                     onClick={() => router.back()}
-                    className="absolute top-4 left-4 z-30 flex items-center gap-2 p-2"
+                    className="absolute top-4 left-4 z-30 flex items-center gap-2 p-1 hover:bg-black/50 rounded"
                 >
                     <ChevronLeftIcon className="h-7 w-7 text-white" />
-                    <span className="text-white font-medium"></span>
                 </button>
 
                 {/* Title and Info */}

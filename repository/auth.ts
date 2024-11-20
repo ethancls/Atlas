@@ -32,7 +32,7 @@ export async function login(username: string, password: string) {
       setCookie('isLogged', 'true', 7);
       localStorage.removeItem('error');
     } else {
-      setCookie('isLogged', 'true', 7);
+      setCookie('isLogged', 'false', 7);
       localStorage.setItem('error', 'Nom d\'utilisateur ou mot de passe incorrect');
     }
   }
@@ -51,6 +51,7 @@ export async function register(username: string, password: string) {
 
     if (response.ok) {
       localStorage.removeItem('error');
+      setCookie('isLogged', 'true', 7);
       return true;
     } else {
       const data = await response.json();
