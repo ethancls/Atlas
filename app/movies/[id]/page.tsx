@@ -1,9 +1,9 @@
 "use client";
 
-import {useEffect, useState} from "react";
-import {useRouter} from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import {ChevronLeftIcon} from "lucide-react";
+import { ChevronLeftIcon } from "lucide-react";
 
 import rotten from "@/assets/rotten.png"
 
@@ -13,6 +13,7 @@ interface Movie {
     overview: string;
     backdrop_path: string;
     release_date: string;
+    poster_path: string;
     genres: { id: number; name: string }[];
     vote_average: number;
     runtime: number;
@@ -37,8 +38,8 @@ interface ImageData {
     file_path: string;
 }
 
-const MovieDetailPage = ({params}: { params: { id: string } }) => {
-    const {id} = params;
+const MovieDetailPage = ({ params }: { params: { id: string } }) => {
+    const { id } = params;
     const router = useRouter();
 
     const [movie, setMovie] = useState<Movie | null>(null);
@@ -58,14 +59,14 @@ const MovieDetailPage = ({params}: { params: { id: string } }) => {
             try {
                 const movieResponse = await fetch(
                     `https://api.themoviedb.org/3/movie/${id}`,
-                    {headers}
+                    { headers }
                 );
                 const movieData: Movie = await movieResponse.json();
                 setMovie(movieData);
 
                 const imagesResponse = await fetch(
                     `https://api.themoviedb.org/3/movie/${id}/images`,
-                    {headers}
+                    { headers }
                 );
                 const imagesData = await imagesResponse.json();
                 setImagesData([
@@ -97,14 +98,14 @@ const MovieDetailPage = ({params}: { params: { id: string } }) => {
 
                 const creditsResponse = await fetch(
                     `https://api.themoviedb.org/3/movie/${id}/credits`,
-                    {headers}
+                    { headers }
                 );
                 const creditsData = await creditsResponse.json();
                 setCredits(creditsData.cast);
 
                 const relatedResponse = await fetch(
                     `https://api.themoviedb.org/3/movie/${id}/recommendations`,
-                    {headers}
+                    { headers }
                 );
                 const relatedData = await relatedResponse.json();
                 setRelatedMovies(relatedData.results);
@@ -113,7 +114,7 @@ const MovieDetailPage = ({params}: { params: { id: string } }) => {
                     `/api/youtube?search=${encodeURIComponent(
                         movieData.title + movieData.release_date + " trailer official"
                     )}`,
-                    {cache: "no-store"}
+                    { cache: "no-store" }
                 );
                 const youtubeData = await youtubeResponse.json();
                 if (youtubeData?.result?.[0]?.id) {
@@ -173,12 +174,20 @@ const MovieDetailPage = ({params}: { params: { id: string } }) => {
                         ></iframe>
                     </div>
                 ) : (
-                    <Image
-                        src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-                        alt={movie.title}
-                        fill
-                        className="object-cover"
-                    />
+                    <>
+                        <Image
+                            src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+                            alt={movie.title}
+                            fill
+                            className="object-cover hidden md:block"
+                        />
+                        <Image
+                            src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                            alt={movie.title}
+                            fill
+                            className="object-cover block md:hidden"
+                        />
+                    </>
                 )}
 
                 {/* Conteneur transparent pour désactiver l'interaction */}
@@ -191,7 +200,7 @@ const MovieDetailPage = ({params}: { params: { id: string } }) => {
                     onClick={() => router.back()}
                     className="absolute top-4 left-4 z-30 flex items-center gap-2 p-2"
                 >
-                    <ChevronLeftIcon className="h-7 w-7 text-white"/>
+                    <ChevronLeftIcon className="h-7 w-7 text-white" />
                     <span className="text-white font-medium"></span>
                 </button>
 
@@ -288,7 +297,7 @@ const MovieDetailPage = ({params}: { params: { id: string } }) => {
                     ))}
                 </div>
             </div>
-        
+
             {/* Images */}
             <div className="p-6 lg:p-12">
                 <h2 className="text-xl font-semibold mb-4">Images</h2>
