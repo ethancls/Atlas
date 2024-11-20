@@ -1,78 +1,170 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { Movie } from "@/app/entities/Movie";
-import { TVShow } from '../entities/TVShow';
-import DisplayMovie from '@/components/DisplayMovie';
-import DisplayShow from '@/components/DisplayShow';
-import { MoonIcon } from '@radix-ui/react-icons';
-import { PopcornIcon, Tv2Icon } from 'lucide-react';
-import { DefaultLayout } from '@/components/DefaultLayout';
+import { TVShow } from "@/app/entities/TVShow";
+import DisplayMovie from "@/components/DisplayMovie";
+import DisplayShow from "@/components/DisplayShow";
+import { DefaultLayout } from "@/components/DefaultLayout";
+import Image from "next/image";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { MovieDetail } from "../entities/MovieDetail";
+
+import rotten from "@/assets/rotten.png"
+import splash from "@/assets/splash.png"
 
 const Discover = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [shows, setShows] = useState<TVShow[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [movieDetail, setMovieDetail] = useState<MovieDetail[] | null>(null);
 
   useEffect(() => {
-
     const fetchDiscover = async () => {
+      const headers = {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+        "Content-Type": "application/json;charset=utf-8",
+      };
+
       try {
-        const response = await fetch('/api/discover');
+        const response = await fetch("/api/discover");
         if (!response.ok) {
-          throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
 
         const data = await response.json();
         setMovies(data.movies);
         setShows(data.shows);
+
+        const movieDetailsPromises = data.movies.slice(0, 10).map(async (movie: MovieDetail) => {
+          const imagesResponse = await fetch(
+            `https://api.themoviedb.org/3/movie/${movie.id}/images`,
+            { headers }
+          );
+          const imagesData = await imagesResponse.json();
+
+          const logos = imagesData.logos.filter((image: { iso_639_1: string }) =>
+            image.iso_639_1 === "en" || image.iso_639_1 === null
+          );
+
+          movie.logo_path = logos.length > 0 ? logos[0].file_path : null;
+
+          const movieResponse = await fetch(
+            `https://api.themoviedb.org/3/movie/${movie.id}`,
+            { headers }
+          );
+          const movieData = await movieResponse.json();
+
+          movie = { ...movie, ...movieData };
+          return movie;
+        });
+
+        const movieDetails = await Promise.all(movieDetailsPromises);
+        setMovieDetail(movieDetails);
       } catch (error) {
-        console.error("Erreur lors de la récupération des films:", error);
-        setError("Une erreur est survenue lors de la récupération des films.");
+        console.error("Error fetching movies:", error);
+        setError("An error occurred while fetching the data.");
       }
     };
 
     fetchDiscover();
-
   }, []);
+
+  if (error) {
+    return (
+      <DefaultLayout>
+        <div className="flex justify-center items-center min-h-screen">
+          <p className="text-red-500 text-lg">{error}</p>
+        </div>
+      </DefaultLayout>
+    );
+  }
 
   return (
     <DefaultLayout>
-      <div className="min-h-screen p-6 sm:p-8 space-y-12 w-full">
-        {/* Discover Title with Icon */}
-        <div className="flex justify-center space-x-2 w-full">
-          <MoonIcon className="h-8 w-8 xl:h-12 xl-w-12" />
-          <h1 className="text-3xl lg:text-4xl font-bold text-center">Discover</h1>
+        {/* Carousel Section */}
+        <div className="relative">
+          {movies.length > 0 && (
+            <Carousel
+              autoPlay
+              infiniteLoop
+              showThumbs={false}
+              showStatus={false}
+              interval={5000}
+            >
+              {movieDetail?.map((detail) => (
+                <div key={detail.id} className="relative h-[80vh]">
+                  {/* Backdrop Image */}
+                  <Image
+                    src={`https://image.tmdb.org/t/p/original${detail.backdrop_path}`}
+                    alt={detail.title}
+                    fill
+                    className="object-cover"
+                  />
+
+                  {/* Content Overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/50 to-transparent p-6">
+                    {detail.logo_path && (
+                      <Image
+                        src={`https://image.tmdb.org/t/p/original${detail.logo_path}`}
+                        alt={detail.title}
+                        width={1500}
+                        height={1500}
+                        className="object-cover w-[150px]"
+                      />
+                    )}
+                    <p className="text-sm lg:text-md text-gray-300 mt-20">{detail.overview}</p>
+                    <div className="flex items-center gap-2 mt-2 text-sm text-gray-400">
+                      <div className="flex items-center">
+                        {detail.genres.map((genre) => genre.name).join(", ")}
+                      </div>
+                      <div className="text-2xl">·</div>
+                      <div className="flex items-center">
+                        {new Date(detail.release_date).getFullYear()}
+                      </div>
+                      <div className="text-2xl">·</div>
+                      {detail.runtime > 0 && (
+                        <div className="flex items-center">
+                          {Math.floor(detail.runtime / 60)}h {detail.runtime % 60}m
+                        </div>
+                      )}
+                      <div className="flex items-center px-1 gap-1">
+                        <Image
+                          src={detail.vote_average > 5 ? rotten : splash}
+                          alt={detail.vote_average > 5 ? "Rotten Tomatoes" : "Splash"}
+                          width={15}
+                          height={15}
+                        />
+                        <span>{Math.round(detail.vote_average * 10)}%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </Carousel>
+          )}
         </div>
 
-        <div className="flex items-center space-x-2 mb-2">
-          <PopcornIcon className="h-6 w-6 xl:h-10 xl-w-10" />
-          <h2 className="text-2xl font-semibold xl:text-3xl">Movies</h2>
-        </div>
-        {error ? (
-          <p className="text-red-500 text-center">{error}</p>
-        ) : (
-          <div className="flex overflow-x-auto scrollbar-hide gap-4 p-4">
+        {/* Movies Section */}
+        <div className="p-6 lg:p-12">
+          <h2 className="text-2xl font-semibold mb-4">Movies</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
             {movies.map((movie) => (
               <DisplayMovie key={movie.id} movie={movie} />
             ))}
           </div>
-        )}
-
-        <div className="flex items-center space-x-2 mb-2">
-          <Tv2Icon className="h-6 w-6 xl:h-10 xl-w-10" />
-          <h2 className="text-2xl font-semibold xl:text-3xl">TV Shows</h2>
         </div>
-        {error ? (
-          <p className="text-red-500 text-center">{error}</p>
-        ) : (
-            <div className="flex overflow-x-auto scrollbar-hide gap-4 p-4">
+
+        {/* TV Shows Section */}
+        <div className="p-6 lg:p-12">
+          <h2 className="text-2xl font-semibold mb-4">TV Shows</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
             {shows.map((show) => (
               <DisplayShow key={show.id} show={show} />
             ))}
-            </div>
-        )}
-      </div>
+          </div>
+        </div>
     </DefaultLayout>
   );
 };

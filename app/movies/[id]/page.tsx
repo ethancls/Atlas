@@ -6,18 +6,9 @@ import Image from "next/image";
 import { ChevronLeftIcon, Pause, Play, Volume2, VolumeX } from "lucide-react";
 
 import rotten from "@/assets/rotten.png"
+import splash from "@/assets/splash.png"
 
-interface Movie {
-    id: number;
-    title: string;
-    overview: string;
-    backdrop_path: string;
-    release_date: string;
-    poster_path: string;
-    genres: { id: number; name: string }[];
-    vote_average: number;
-    runtime: number;
-}
+import { MovieDetail } from "@/app/entities/MovieDetail";
 
 interface CastMember {
     id: number;
@@ -42,13 +33,14 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
     const { id } = params;
     const router = useRouter();
 
-    const [movie, setMovie] = useState<Movie | null>(null);
+    const [movie, setMovie] = useState<MovieDetail | null>(null);
     const [credits, setCredits] = useState<CastMember[]>([]);
     const [relatedMovies, setRelatedMovies] = useState<RelatedMovie[]>([]);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [trailerLink, setTrailerLink] = useState<string | null>(null);
     const [showTrailer, setShowTrailer] = useState(false);
     const [isMuted, setIsMuted] = useState(true);
+    const [certification, setCertification] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
@@ -62,7 +54,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                     `https://api.themoviedb.org/3/movie/${id}`,
                     { headers }
                 );
-                const movieData: Movie = await movieResponse.json();
+                const movieData: MovieDetail = await movieResponse.json();
                 setMovie(movieData);
 
                 const imagesResponse = await fetch(
@@ -123,6 +115,59 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                         `https://www.youtube.com/embed/${youtubeData.result[0].id}?autoplay=1&vq=hd1080&mute=1&enablejsapi=1&modestbranding=1&rel=0&controls=0&showinfo=1@iv_load_policy=3&autohide=1&playsinline=1`
                     );
                 }
+
+                // Define a mapping of raw certifications to user-friendly descriptions
+                /**
+                  * A map of movie and TV show certification ratings to their corresponding age recommendations.
+                  * 
+                  * Source: The age recommendations are based on common rating systems used in the United States,
+                  * including the Motion Picture Association (MPA) for movies and the TV Parental Guidelines for television.
+                  * 
+                  * - 'G': General audiences, suitable for all ages (0+)
+                  * - 'PG': Parental guidance suggested, some material may not be suitable for children under 10 (10+)
+                  * - 'PG-13': Parents strongly cautioned, some material may be inappropriate for children under 13 (13+)
+                  * - 'R': Restricted, under 17 requires accompanying parent or adult guardian (17+)
+                  * - 'NC-17': No one 17 and under admitted (18+)
+                  * - 'R+': Restricted, similar to 'R' (17+)
+                  * - 'NR': Not rated
+                  * - 'UR': Unrated, similar to 'NR'
+                  * - 'TV-Y': All children, suitable for all ages (0+)
+                  * - 'TV-Y7': Directed to older children, suitable for children age 7 and above (7+)
+                  * - 'TV-G': General audience, suitable for all ages (0+)
+                  * - 'TV-PG': Parental guidance suggested, some material may not be suitable for children under 10 (10+)
+                  * - 'TV-14': Parents strongly cautioned, some material may be inappropriate for children under 14 (14+)
+                  * - 'TV-MA': Mature audience only, suitable for adults 17 and above (17+)
+                  */
+                const certificationMap: { [key: string]: string } = {
+                    'G': '0+',
+                    'PG': '10+',
+                    'PG-13': '13+',
+                    'R': '17+',
+                    'NC-17': '18+',
+                    'R+': '17+',
+                    'NR': 'Not Rated',
+                    'UR': 'Not Rated',
+                    'TV-Y': '0+',
+                    'TV-Y7': '7+',
+                    'TV-G': '0+',
+                    'TV-PG': '10+',
+                    'TV-14': '14+',
+                    'TV-MA': '17+',
+                };
+
+                // Fetch certification
+                const certificationResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}/release_dates`, { headers });
+                const certificationData = await certificationResponse.json();
+                const usRelease = certificationData.results.find((release: { iso_3166_1: string }) => release.iso_3166_1 === 'US');
+                if (usRelease) {
+                    const usCertification = usRelease.release_dates.find((release: { certification: string }) => release.certification);
+                    if (usCertification) {
+                        // Map the raw certification to a user-friendly description
+                        const userFriendlyCertification = certificationMap[usCertification.certification] || usCertification.certification;
+                        setCertification(userFriendlyCertification);
+                    }
+                }
+                
             } catch (error) {
                 console.error("Error fetching movie data:", error);
             }
@@ -137,10 +182,6 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
         }, 3000);
         return () => clearTimeout(timeout);
     }, [trailerLink]);
-
-    const handleVideoEnd = () => {
-        setShowTrailer(false); // Revenir au backdrop une fois la vidéo terminée
-    };
 
     if (!movie) {
         return (
@@ -190,18 +231,18 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                             className="absolute top-[-60px] left-0 w-full h-full"
-                            onEnded={handleVideoEnd}
+                            onEnded={() => setShowTrailer(false)}
                             id="trailer-iframe"
                         ></iframe>
                         <button
                             onClick={() => { toggleMute(); }}
-                            className="absolute top-4 right-4 z-30 p-2 text-white"
+                            className="absolute top-4 right-8 z-30 p-2 text-white"
                         >
                             {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
                         </button>
                         <button
                             onClick={() => { togglePlayPause(); }}
-                            className="absolute top-4 right-16 z-30 p-2 text-white"
+                            className="absolute top-4 right-20 z-30 p-2 text-white"
                         >
                             {showTrailer ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
                         </button>
@@ -222,7 +263,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                         />
                         <button
                             onClick={() => { setShowTrailer(true); togglePlayPause(); }}
-                            className="absolute top-4 right-16 z-30 p-2 text-white"
+                            className="absolute top-4 right-20 z-30 p-2 text-white"
                         >
                             {showTrailer ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
                         </button>
@@ -250,43 +291,86 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                         <Image
                             src={`https://image.tmdb.org/t/p/original${imagesData.filter(image => image.type === "logo")[0].file_path}`}
                             alt={movie.title}
-                            width={300}
-                            height={300}
+                            width={1000}
+                            height={1000}
                             quality={100}
-                            className="object-contain w-[200px] md:w-[250px] lg:w-[300px]"
+                            className={`object-cover w-[200px] md:w-[300px] lg:w-[400px]`}
                         />
                     )}
-                    <p className="mt-4 text-gray-300 max-w-2xl">{movie.overview}</p>
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 mt-4">
-                        <div className="flex items-center gap-2">
+                    <p className={`mt-4 text-gray-300 max-w-2xl text-justify transition-opacity duration-1000 ${showTrailer ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100 h-auto'}`}>
+                        {movie.overview}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-x-1 text-sm text-gray-400">
+                        <div className="flex items-center">
                             {movie.genres.map((genre) => genre.name).join(", ")}
                         </div>
-                        <div className="flex items-center gap-2">
-                            <div className="text-2xl">
-                                ·
-                            </div>
+                        <div className="text-2xl">
+                            ·
+                        </div>
+                        <div className="flex items-center">
                             {new Date(movie.release_date).getFullYear()}
                         </div>
+                        <div className="text-2xl">
+                            ·
+                        </div>
                         {movie.runtime > 0 && (
-                            <div className="flex items-center gap-2">
-                                <div className="text-2xl">
-                                    ·
-                                </div>
+                            <div className="flex items-center">
                                 {Math.floor(movie.runtime / 60)}h{movie.runtime % 60}
                             </div>
                         )}
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center px-1 gap-1">
                             <Image
-                                src={rotten}
-                                alt="Rotten Tomatoes"
-                                width={20}
-                                height={20}
+                                src={movie.vote_average > 5 ? rotten : splash}
+                                alt={movie.vote_average > 5 ? "Rotten Tomatoes" : "Splash"}
+                                width={15}
+                                height={15}
                             />
                             <span>{Math.round(movie.vote_average * 10)}%</span>
                         </div>
+                        {certification && (
+
+                            <div className="flex items-center border text-xs border-gray-400 rounded px-1">{certification}</div>
+                        )}
+                        <div className="flex items-center border text-xs font-black border-gray-400 rounded px-1">HD</div>
+                        <div className="flex items-center border text-xs border-gray-400 rounded px-1">SDH</div>
+                        <div className="flex items-center border text-xs border-gray-400 rounded px-1">AD</div>
                     </div>
                 </div>
             </div>
+
+            <div className="p-6 lg:p-12">
+                {/* About */}
+                <h2 className="text-xl font-bold mb-6">About</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Main Section */}
+                    <div className="p-4 rounded-lg shadow-lg col-span-1 md:col-span-2">
+                        <h3 className="text-lg font-semibold">{movie.title}</h3>
+                        <p className="text-xs text-gray-400 font-black uppercase">{movie.genres.map((genre) => genre.name).join(", ")}</p>
+                        <p className="text-sm text-gray-500 mt-2">{movie.overview}</p>
+                    </div>
+
+                    {/* Tomatometer */}
+                    <div className="p-4 rounded-lg shadow-lg w-full md:w-64">
+                        <h3 className="text-lg font-semibold flex items-center gap-1">
+                            <Image
+                                src={movie.vote_average > 5 ? rotten : splash}
+                                alt={movie.vote_average > 5 ? "Rotten Tomatoes" : "Splash"}
+                                width={15}
+                                height={15}
+                            />
+                            {Math.round(movie.vote_average * 10)}%
+                        </h3>
+                        <p className="text-xs font-black uppercase text-gray-400">Tomatometer</p>
+                        <ul className="text-sm text-gray-500 mt-2">
+                            <li>Total Votes: {movie.vote_count}</li>
+                            <li>Average Rating: {movie.vote_average.toFixed(1)}</li>
+                            <li>Popularity: {movie.popularity.toFixed(0)}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <hr className="border-gray-300 my-1 w-[95%] mx-auto" />
 
             {/* Recommendations */
             }
@@ -294,19 +378,20 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                 <h2 className="text-xl font-semibold mb-4">Recommended</h2>
                 <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
                     {relatedMovies.map((related) => (
-                        <div
-                            key={related.id}
-                            onClick={() => router.push(`/movies/${related.id}`)}
-                            className="flex-shrink-0 w-[200px] cursor-pointer hover:opacity-80"
-                        >
-                            <Image
-                                src={`https://image.tmdb.org/t/p/original${related.poster_path}`}
-                                alt={related.title}
-                                width={200}
-                                height={225}
-                                className="rounded-md shadow-md"
-                            />
-                        </div>
+                        related.poster_path && (
+                            <div
+                                key={related.id}
+                                onClick={() => router.push(`/movies/${related.id}`)}
+                                className="flex-shrink-0 w-[200px] cursor-pointer hover:opacity-80"
+                            >
+                                <Image
+                                    src={`https://image.tmdb.org/t/p/original${related.poster_path}`}
+                                    alt={related.title}
+                                    width={200}
+                                    height={225}
+                                    className="rounded-md shadow-md"
+                                />
+                            </div>)
                     ))}
                 </div>
             </div>
@@ -316,7 +401,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
             <div className="p-6 lg:p-12">
                 <h2 className="text-xl font-semibold mb-4">Cast</h2>
                 <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
-                    {credits.slice(0, 12).map((credit) => (
+                    {credits.map((credit) => (
                         credit.profile_path && (<div
                             key={credit.id}
                             className="flex-shrink-0 w-[120px] text-center cursor-pointer hover:opacity-80"
@@ -408,7 +493,86 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                     ))}
                 </div>
             </div>
-        </div>
+
+            <hr className="border-gray-300 my-1 w-[95%] mx-auto" />
+
+            {/* Columns Section */}
+            <div className="p-6 lg:p-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Information Column */}
+                <div>
+                    <h2 className="text-xl font-semibold mb-4">Information</h2>
+                    <div className="space-y-4 ">
+                        <div>
+                            <h3 className="text-lg font-semibold">Studio</h3>
+                            <div className="flex flex-col">
+                                {movie.production_companies.map((company) => (
+                                    <div key={company.id} className="flex items-center gap-2 p-3">
+                                        {company.logo_path && (
+                                            <Image
+                                                src={`https://image.tmdb.org/t/p/original${company.logo_path}`}
+                                                alt={company.name}
+                                                width={50}
+                                                height={50}
+                                                className="object-contain"
+                                            />
+                                        )}
+                                        <p className="text-sm text-gray-500">{company.name}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold">Release Date</h3>
+                            <p className="text-sm text-gray-500">{movie.release_date}</p>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold">Runtime</h3>
+                            <p className="text-sm text-gray-500">{Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m</p>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold">Rated</h3>
+                            <p className="text-sm text-gray-500">{certification || "Not Rated"}</p>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold">Origin Country</h3>
+                            <p className="text-sm text-gray-500">{movie.production_countries.map((country) => country.name).join(", ") || "N/A"}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Languages Column */}
+                <div>
+                    <h2 className="text-xl font-semibold mb-4">Languages</h2>
+                    <div className="space-y-4">
+                        <div>
+                            <h3 className="text-lg font-semibold">Original Audio</h3>
+                            <p className="text-sm text-gray-500">{movie.original_language.toUpperCase()}</p>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold">Available Audio</h3>
+                            <p className="text-sm text-gray-500">{movie.spoken_languages.map((lang) => lang.english_name).join(", ") || "N/A"}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Accessibility Column */}
+                <div>
+                    <h2 className="text-xl font-semibold mb-4">Accessibility</h2>
+                    <div className="space-y-4">
+                        <div>
+                            <p className="text-sm text-gray-500">
+                                <strong>SDH:</strong> Subtitles for the deaf and hard of hearing are available for select languages.
+                            </p>
+                        </div>
+                        <div>
+                            <p className="text-sm text-gray-500">
+                                <strong>AD:</strong> Audio description is available for viewers with visual impairments.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div >
     );
 };
 
