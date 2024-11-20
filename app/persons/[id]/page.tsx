@@ -51,11 +51,13 @@ const addEscapeKeyListener = (modal: HTMLDivElement) => {
 };
 
 const Biography = ({ person }: { person: Person }) => {
-  const [maxLength, setMaxLength] = useState(window.innerWidth < 768 ? 100 : 600);
+  const [maxLength, setMaxLength] = useState(
+    window.innerWidth < 768 ? 100 : window.innerWidth < 1440 ? 300 : 600
+  );
 
   useEffect(() => {
     const handleResize = () => {
-      setMaxLength(window.innerWidth < 768 ? 100 : 600);
+      setMaxLength(window.innerWidth < 768 ? 100 : window.innerWidth < 1440 ? 300 : 600);
     };
 
     window.addEventListener('resize', handleResize);
@@ -65,7 +67,7 @@ const Biography = ({ person }: { person: Person }) => {
   }, []);
 
   return (
-    <p className="text-gray-300 mb-6 text-left">
+    <p className="mb-6 text-justify">
       {person.biography.length > maxLength
         ? `${person.biography.substring(0, maxLength)}...`
         : person.biography}
@@ -87,7 +89,7 @@ const Biography = ({ person }: { person: Person }) => {
 
             // Header with name
             const header = document.createElement('h2');
-            header.className = 'mt-4 text-black text-2xl font-bold text-center shadow-md';
+            header.className = 'mt-4 text-black text-2xl font-bold text-center';
             header.innerText = person.name;
 
             // Divider line
@@ -96,7 +98,7 @@ const Biography = ({ person }: { person: Person }) => {
 
             // Biography text
             const bio = document.createElement('p');
-            bio.className = 'text-black text-lg mb-2 p-6';
+            bio.className = 'text-black text-lg mb-2 p-6 text-justify';
             bio.innerText = person.biography;
 
             // "Done" button
@@ -254,9 +256,9 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
             </button>
           </div>
 
-          {/* Details Section */}
-          <div className="flex-1 text-center md:text-left pr-4 md:pr-6 lg:pr-8 person-details w-[60%] h-full flex flex-col justify-center">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">{person.name}</h1>
+          {/* Person Details */}
+          <div className="flex-1 text-center md:text-left pr-2 md:pr-4 lg:pr-6 person-details h-full flex flex-col justify-center max-w-[30%]">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 pb-8">{person.name}</h1>
             <Biography person={person} />
           </div>
         </div>
