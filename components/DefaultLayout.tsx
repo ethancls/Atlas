@@ -18,13 +18,14 @@ export const DefaultLayout = ({ children }: PropsWithChildren) => {
             <AppSidebar />
             <main className="w-full">
                 <Header>
-                    <h1 className="flex text-2xl font-bold p-4 text-center">Atlas</h1>
-                    <div className="flex w-30  md:w-50 lg:w-80 items-center space-x-2 ml-auto p-3">
+                    <div className="flex items-center space-x-2 p-2">
+                        <SidebarTrigger />
+                    </div>
+                    <div className="flex w-30 md:w-50 lg:w-80 items-center space-x-2 ml-auto p-2">
                         <ModeToggle />
                         <Input onChange={(e) => handleSearch(e.target.value)} type="search" placeholder="Search..." className="flex-grow" />
                     </div>
                 </Header>
-                <SidebarTrigger />
                 {query ? typeof window !== "undefined" && window.location.href.includes("movies") ? (
                     <MovieSearch query={query ?? ""} />
                 ) : typeof window !== "undefined" && window.location.href.includes("shows") ? (

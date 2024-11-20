@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUserByUsername } from '@/repository/user';
+import fs from 'fs';
+import path from 'path';
 import bcrypt from 'bcryptjs';
 
 export async function POST(req: NextRequest) {
@@ -12,9 +13,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // Vérifiez le mot de passe ici, par exemple avec bcrypt.compare
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
+    const hash = bcrypt.compareSync(password, user.password);
+
+    if (!hash) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 
@@ -24,4 +25,14 @@ export async function POST(req: NextRequest) {
     console.error(error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
+}
+
+// Function to get user by username
+function getUserByUsername(username: string) {
+  const filePath = path.join(process.cwd(), '/public/atlas.json');
+  if (!fs.existsSync(filePath)) {
+    fs.writeFileSync(filePath, JSON.stringify([]));
+  }
+  const usersDatabase = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  return usersDatabase.find((user: { username: string }) => user.username === username);
 }

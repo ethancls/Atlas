@@ -1,4 +1,4 @@
-import icon from "@/assets/movie.png"
+import icon from "@/public/movie.png"
 import { Atom, LoaderPinwheelIcon, LogOut, MedalIcon, PlayIcon, StarIcon, TrophyIcon } from "lucide-react"
 import Image from "next/image"
 import Link from 'next/link';
@@ -14,6 +14,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
 
 import { logout } from "@/repository/auth"
@@ -79,12 +80,19 @@ const persons = [
 ]
 
 export function AppSidebar() {
+  const { state } = useSidebar();
   return (
     <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader>
-        <Image src={icon} alt="Logo" className="h-8 w-8 flex items-center justify-center" />
+        <div className="flex items-center space-x-4">
+          <Image src={icon} alt="Logo" className="h-8 w-8 flex items-center justify-center" />
+            {state !== "collapsed" && (
+            <span className="text-xl font-bold">
+              Atlas
+            </span>
+            )}
+        </div>
       </SidebarHeader>
-      
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
@@ -104,7 +112,7 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        
+
         <SidebarGroup>
           <SidebarGroupLabel>Movies</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -124,7 +132,7 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        
+
         <SidebarGroup>
           <SidebarGroupLabel>Shows</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -144,7 +152,7 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        
+
         <SidebarGroup>
           <SidebarGroupLabel>Others</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -165,7 +173,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      
+
       <SidebarFooter>
         <Button
           onClick={() => {

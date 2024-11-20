@@ -6,8 +6,6 @@ import { Label } from "@/components/ui/label"
 import { register, getError } from "../../repository/auth"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import bcrypt from "bcryptjs"
-
 
 export default function Dashboard() {
     const [username, setUsername] = useState('');
@@ -17,11 +15,10 @@ export default function Dashboard() {
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
-        const hash = await bcrypt.hash(password, 10);
-        const response = await register(username, hash);
+        const response = await register(username, password);
         setError(getError());
         if (response) {
-            router.push('/login');
+            router.push('/discover');
         }
     };
 

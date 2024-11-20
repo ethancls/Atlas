@@ -12,8 +12,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { MovieDetail } from "../entities/MovieDetail";
 import { useRouter } from "next/navigation";
 
-import rotten from "@/assets/rotten.png"
-import splash from "@/assets/splash.png"
+import rotten from "@/public/rotten.png"
+import splash from "@/public/splash.png"
 
 const Discover = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
