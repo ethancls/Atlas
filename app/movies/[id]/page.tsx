@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ChevronLeftIcon, Pause, Play, Volume2, VolumeX } from "lucide-react";
 
-import rotten from "@/assets/rotten.png"
-import splash from "@/assets/splash.png"
+import rotten from "@/public/rotten.png"
+import splash from "@/public/splash.png"
 
 import { MovieDetail } from "@/app/entities/MovieDetail";
 
