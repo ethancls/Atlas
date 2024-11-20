@@ -45,6 +45,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   const [person, setPerson] = useState<Person | null>(null);
   const [Movies, setMovies] = useState<Movies[]>([]);
   const [TVShows, setTVShows] = useState<TVShows[]>([]);
+  const [showFullBiography, setShowFullBiography] = useState(false);
 
   useEffect(() => {
     const fetchPersonDetails = async () => {
@@ -60,10 +61,10 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
 
         setPerson(data);
 
-        // Fetch to Movies
+        // Fetch Movies
         const moviesCreditsResponse = await fetch(`https://api.themoviedb.org/3/person/${id}/movie_credits`, { headers });
         const moviesCreditsData = await moviesCreditsResponse.json();
-        // Fileter out movies without poster and duplicates
+        // Filter out movies without poster and duplicates
         const validMovies = moviesCreditsData.cast.filter((movie: Movies, index: number, self: Movies[]) =>
           movie.poster_path !== null && index === self.findIndex((m) => m.id === movie.id)
         );
@@ -107,7 +108,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
           <MoveLeftIcon className="h-4 w-4 md:h-5 md:w-5" /> Back
         </button>
 
-        <div className="flex flex-col md:flex-row gap-6 lg:gap-8">
+        <div className="flex flex-col items-center md:flex-row gap-6 lg:gap-8">
           {/* Profile Picture */}
           <button
             className="flex-shrink-0 mx-auto md:mx-0 duration-300 ease-out hover:scale-105 cursor-pointer p-2"
@@ -146,21 +147,29 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
               width={300}
               height={450}
               quality={100}
-              className="rounded-lg shadow-lg w-[150px] md:w-[200px] lg:w-[300px] h-auto"
+              className="rounded-full shadow-lg w-[150px] md:w-[200px] lg:w-[300px] h-auto"
             />
           </button>
 
           {/* Details Section */}
-          <div className="flex-1">
+          <div className="flex-1 text-center md:text-left">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">{person.name}</h1>
-            <h2 className="text-xl font-semibold mb-4">Biography</h2>
-            <p className="text-gray-300 mb-6">{person.biography || 'No biography available.'}</p>
+            <p className="text-gray-300 mb-6">
+              {showFullBiography ? person.biography : `${person.biography.substring(0, 200)}...`}
+              {person.biography.length > 200 && (
+                <button
+                  onClick={() => setShowFullBiography(!showFullBiography)}
+                  className="text-blue-500 ml-2"
+                >
+                  {showFullBiography ? 'Read less' : 'Read more'}
+                </button>
+              )}
+            </p>
           </div>
         </div>
 
         {/* Movies */}
         <div>
-          <div className="mb-6"></div>
           <h2 className="text-xl md:text-2xl font-semibold mb-4">Movies</h2>
           <div className="flex gap-6 p-2 overflow-x-auto scrollbar-hide">
             {Movies.map((movie) => (
@@ -191,7 +200,6 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
 
         {/* TV Shows */}
         <div>
-          <div className="mb-6"></div>
           <h2 className="text-xl md:text-2xl font-semibold mb-4">TV Shows</h2>
           <div className="flex gap-6 p-2 overflow-x-auto scrollbar-hide">
             {TVShows.map((show) => (
