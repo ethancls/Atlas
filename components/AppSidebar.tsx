@@ -1,4 +1,4 @@
-import icon from "@/assets/movie.png"
+import icon from "@/public/movie.png"
 import { Atom, LoaderPinwheelIcon, LogOut, MedalIcon, PlayIcon, StarIcon, TrophyIcon } from "lucide-react"
 import Image from "next/image"
 import Link from 'next/link';
