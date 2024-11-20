@@ -51,13 +51,17 @@ const addEscapeKeyListener = (modal: HTMLDivElement) => {
 };
 
 const Biography = ({ person }: { person: Person }) => {
-  const [maxLength, setMaxLength] = useState(
-    window.innerWidth < 768 ? 100 : window.innerWidth < 1440 ? 300 : 600
-  );
+  const getMaxLength = () => {
+    if (window.innerWidth < 768) return 100;
+    if (window.innerWidth < 1440) return 300;
+    return 600;
+  };
+
+  const [maxLength, setMaxLength] = useState(getMaxLength());
 
   useEffect(() => {
     const handleResize = () => {
-      setMaxLength(window.innerWidth < 768 ? 100 : window.innerWidth < 1440 ? 300 : 600);
+      setMaxLength(getMaxLength());
     };
 
     window.addEventListener('resize', handleResize);
@@ -141,6 +145,16 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   const [Movies, setMovies] = useState<Movies[]>([]);
   const [TVShows, setTVShows] = useState<TVShows[]>([]);
 
+  const filterValidMovies = (movies: Movies[]) => {
+    return movies.filter((movie, index, self) =>
+      movie.poster_path !== null && index === self.findIndex((m) => m.id === movie.id)
+    );
+  };
+
+  const sortMoviesByPopularity = (movies: Movies[]) => {
+    return movies.sort((a, b) => b.popularity - a.popularity);
+  };
+
   useEffect(() => {
     const fetchPersonDetails = async () => {
       const headers = {
@@ -158,23 +172,15 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
         // Fetch Movies
         const moviesCreditsResponse = await fetch(`https://api.themoviedb.org/3/person/${id}/movie_credits`, { headers });
         const moviesCreditsData = await moviesCreditsResponse.json();
-        // Filter out movies without poster and duplicates
-        const validMovies = moviesCreditsData.cast.filter((movie: Movies, index: number, self: Movies[]) =>
-          movie.poster_path !== null && index === self.findIndex((m) => m.id === movie.id)
-        );
-        // Sort by popularity
-        const sortedMovies = validMovies.sort((a: Movies, b: Movies) => b.popularity - a.popularity);
+        const validMovies = filterValidMovies(moviesCreditsData.cast);
+        const sortedMovies = sortMoviesByPopularity(validMovies);
         setMovies(sortedMovies);
 
         // Fetch TV Shows
         const tvShowsCreditsResponse = await fetch(`https://api.themoviedb.org/3/person/${id}/tv_credits`, { headers });
         const tvShowsCreditsData = await tvShowsCreditsResponse.json();
-        // Filter out TV shows without poster and duplicates
-        const validTVShows = tvShowsCreditsData.cast.filter((show: TVShows, index: number, self: TVShows[]) =>
-          show.poster_path !== null && index === self.findIndex((s) => s.id === show.id)
-        );
-        // Sort by popularity
-        const sortedTVShows = validTVShows.sort((a: TVShows, b: TVShows) => b.popularity - a.popularity);
+        const validTVShows = filterValidMovies(tvShowsCreditsData.cast);
+        const sortedTVShows = sortMoviesByPopularity(validTVShows);
         setTVShows(sortedTVShows);
       } catch (error) {
         console.error('Error fetching person data:', error);
@@ -265,7 +271,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
 
         {/* Movies */}
         <div>
-          <h2 className="text-xl md:text-2xl font-semibold mb-4">Movies</h2>
+          <h2 className="text-xl md:text-2xl font-semibold mb-4 pt-8">Movies</h2>
           <div className="flex gap-6 p-2 overflow-x-auto scrollbar-hide">
             {Movies.map((movie) => (
               <div
@@ -292,6 +298,9 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
             ))}
           </div>
         </div>
+
+        {/* Additional Details */}
+        <hr className="border-gray-500 my-8 w-[100%] mx-auto" />
 
         {/* TV Shows */}
         <div>
