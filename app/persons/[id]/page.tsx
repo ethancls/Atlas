@@ -236,38 +236,40 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
 
-        {/* Movies */}
-        <h2 className="text-xl font-semibold mb-4 pt-8">Movies</h2>
-        <div className="relative">
-          <div ref={moviesRef} className="flex gap-20 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
-            {movies.map((movie) => (
-              movie.poster_path && (
-                <button
-                  key={movie.id}
-                  onClick={() => router.push(`/movies/${movie.id}`)}
-                  className="flex-shrink-0 w-[200px] cursor-pointer hover:opacity-80"
-                  aria-label={`View details for ${movie.title ?? 'Unknown title'}`}
-                >
-                  <Image
-                    src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                    alt={movie.title ?? 'Unknown title'}
-                    width={200}
-                    height={225}
-                    className="rounded-md shadow-md"
-                    style={{ width: 'auto', height: 'auto' }}
-                  />
-                </button>
-              )
-            ))}
-          </div>
+{/* Movies */}
+<h2 className="text-xl font-semibold mb-4 pt-8">Movies</h2>
+<div className="relative">
+  <div className="flex items-center gap-4">
+    <div ref={moviesRef} className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide flex-1">
+      {movies.map((movie) => (
+        movie.poster_path && (
           <button
-            onClick={scrollMoviesRight}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md"
-            aria-label="Scroll right"
+            key={movie.id}
+            onClick={() => router.push(`/movies/${movie.id}`)}
+            className="flex-shrink-0 w-[200px] cursor-pointer hover:opacity-80"
+            aria-label={`View details for ${movie.title ?? 'Unknown title'}`}
           >
-            <ChevronRightIcon className="h-7 w-7 text-gray-400" />
+            <Image
+              src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+              alt={movie.title ?? 'Unknown title'}
+              width={200}
+              height={225}
+              className="rounded-md shadow-md"
+              style={{ width: 'auto', height: 'auto' }}
+            />
           </button>
-        </div>
+        )
+      ))}
+    </div>
+    <button
+      onClick={scrollMoviesRight}
+      className="bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md"
+      aria-label="Scroll right"
+    >
+      <ChevronRightIcon className="h-7 w-7 text-gray-400" />
+    </button>
+  </div>
+</div>
 
         <hr className="border-gray-500 mt-8 mb-0 w-[100%] mx-auto" />
 
