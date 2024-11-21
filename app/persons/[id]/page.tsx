@@ -39,6 +39,10 @@ interface TVShows {
   popularity: number;
 }
 
+interface PersonImage {
+  file_path: string;
+}
+
 const addEscapeKeyListener = (modal: HTMLDivElement) => {
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -144,6 +148,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   const [person, setPerson] = useState<Person | null>(null);
   const [Movies, setMovies] = useState<Movies[]>([]);
   const [TVShows, setTVShows] = useState<TVShows[]>([]);
+  const [personImages, setPersonImages] = useState<PersonImage[]>([]);
 
   const filterValidMovies = (movies: Movies[]) => {
     return movies.filter((movie, index, self) =>
@@ -182,6 +187,12 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
         const validTVShows = filterValidMovies(tvShowsCreditsData.cast);
         const sortedTVShows = sortMoviesByPopularity(validTVShows);
         setTVShows(sortedTVShows);
+
+        // Fetch Person Images
+        const personImagesResponse = await fetch(`https://api.themoviedb.org/3/person/${id}/images`, { headers });
+        const personImagesData = await personImagesResponse.json();
+        setPersonImages(personImagesData.profiles);
+
       } catch (error) {
         console.error('Error fetching person data:', error);
       }
@@ -292,10 +303,10 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
         </div>
 
         {/* Additional Details */}
-        <hr className="border-gray-500 my-8 w-[100%] mx-auto" />
+        <hr className="border-gray-500 mt-8 mb-0 w-[100%] mx-auto" />
 
         {/* TV Shows */}
-        <h2 className="text-xl font-semibold mb-4 pt-8">TV Shows</h2>
+        <h2 className="text-xl font-semibold mb-4 pt-4">TV Shows</h2>
         <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
           {TVShows.map((show) => (
             show.poster_path && (
@@ -313,6 +324,60 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
                 />
               </div>
             )
+          ))}
+        </div>
+
+        {/* Additional Details */}
+        <hr className="border-gray-500 mt-8 mb-0 w-[100%] mx-auto" />
+
+        {/* Images of person */}
+        <h2 className="text-xl font-semibold mb-4 pt-4">Images of {person.name}</h2>
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+          {personImages.map((image) => (
+            <button
+              key={image.file_path}
+              className="flex-shrink-0 w-[200px] cursor-pointer hover:opacity-80"
+              onClick={() => {
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80';
+                modal.onclick = () => modal.remove();
+
+                const img = document.createElement('img');
+                img.src = `https://image.tmdb.org/t/p/original${image.file_path}`;
+                img.className = 'max-h-[80vh] max-w-[80vw] object-contain rounded-lg shadow-lg shadow-black/50';
+
+                modal.appendChild(img);
+                document.body.appendChild(modal);
+
+                addEscapeKeyListener(modal);
+              }}
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  const modal = document.createElement('div');
+                  modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80';
+                  modal.onclick = () => modal.remove();
+
+                  const img = document.createElement('img');
+                  img.src = `https://image.tmdb.org/t/p/original${image.file_path}`;
+                  img.className = 'max-h-[80vh] max-w-[80vw] object-contain rounded-lg shadow-lg shadow-black/50';
+
+                  modal.appendChild(img);
+                  document.body.appendChild(modal);
+
+                  addEscapeKeyListener(modal);
+                }
+              }}
+              aria-label="View image"
+            >
+              <Image
+                src={`https://image.tmdb.org/t/p/original${image.file_path}`}
+                alt={person.name}
+                width={200}
+                height={225}
+                className="rounded-md shadow-md"
+              />
+            </button>
           ))}
         </div>
       </div>
