@@ -211,7 +211,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   return (
     <div className="relative flex min-h-screen min-w-full bg-cover">
       {/* Content */}
-      <div className="flex-1 flex flex-col gap-4 backdrop-blur-2xl pt-2 px-18 pb-18 lg:pt-6 lg:px-20 lg:pb-20 overflow-hidden">
+      <div className="flex-1 flex flex-col gap-4 backdrop-blur-2xl pt-2 px-4 sm:px-6 md:px-18 pb-18 lg:pt-6 lg:px-20 lg:pb-20 overflow-hidden">
         {/* Back Button */}
         <div className="absolute top-4 left-6 z-30 p-0 rounded-lg shadow-md flex items-center justify-center bg-gray-100 dark:bg-[rgb(24,24,27)]">
           <button
