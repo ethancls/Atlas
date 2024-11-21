@@ -9,25 +9,10 @@ import rotten from "@/public/rotten.png"
 import splash from "@/public/splash.png"
 
 import { MovieDetail } from "@/app/entities/MovieDetail";
+import { Movie } from "@/app/entities/Movie";
+import { CastMember } from "@/app/entities/CastMember";
+import { ImageData } from "@/app/entities/ImageData";
 
-interface CastMember {
-    id: number;
-    name: string;
-    profile_path: string;
-    character: string;
-}
-
-interface RelatedMovie {
-    id: number;
-    title: string;
-    poster_path: string;
-    backdrop_path: string;
-}
-
-interface ImageData {
-    type: string;
-    file_path: string;
-}
 
 const MovieDetailPage = ({ params }: { params: { id: string } }) => {
     const { id } = params;
@@ -35,7 +20,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
 
     const [movie, setMovie] = useState<MovieDetail | null>(null);
     const [credits, setCredits] = useState<CastMember[]>([]);
-    const [relatedMovies, setRelatedMovies] = useState<RelatedMovie[]>([]);
+    const [relatedMovies, setRelatedMovies] = useState<Movie[]>([]);
     const [imagesData, setImagesData] = useState<ImageData[]>([]);
     const [trailerLink, setTrailerLink] = useState<string | null>(null);
     const [showTrailer, setShowTrailer] = useState(false);
@@ -116,28 +101,6 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                     );
                 }
 
-                // Define a mapping of raw certifications to user-friendly descriptions
-                /**
-                  * A map of movie and TV show certification ratings to their corresponding age recommendations.
-                  * 
-                  * Source: The age recommendations are based on common rating systems used in the United States,
-                  * including the Motion Picture Association (MPA) for movies and the TV Parental Guidelines for television.
-                  * 
-                  * - 'G': General audiences, suitable for all ages (0+)
-                  * - 'PG': Parental guidance suggested, some material may not be suitable for children under 10 (10+)
-                  * - 'PG-13': Parents strongly cautioned, some material may be inappropriate for children under 13 (13+)
-                  * - 'R': Restricted, under 17 requires accompanying parent or adult guardian (17+)
-                  * - 'NC-17': No one 17 and under admitted (18+)
-                  * - 'R+': Restricted, similar to 'R' (17+)
-                  * - 'NR': Not rated
-                  * - 'UR': Unrated, similar to 'NR'
-                  * - 'TV-Y': All children, suitable for all ages (0+)
-                  * - 'TV-Y7': Directed to older children, suitable for children age 7 and above (7+)
-                  * - 'TV-G': General audience, suitable for all ages (0+)
-                  * - 'TV-PG': Parental guidance suggested, some material may not be suitable for children under 10 (10+)
-                  * - 'TV-14': Parents strongly cautioned, some material may be inappropriate for children under 14 (14+)
-                  * - 'TV-MA': Mature audience only, suitable for adults 17 and above (17+)
-                  */
                 const certificationMap: { [key: string]: string } = {
                     'G': '0+',
                     'PG': '10+',
@@ -167,7 +130,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                         setCertification(userFriendlyCertification);
                     }
                 }
-                
+
             } catch (error) {
                 console.error("Error fetching movie data:", error);
             }
@@ -372,7 +335,8 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
 
             {/* Recommendations */
             }
-            <div className="p-6 lg:p-12">
+
+            {relatedMovies.length > 0 && <div className="p-6 lg:p-12">
                 <h2 className="text-xl font-semibold mb-4">Recommended</h2>
                 <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
                     {relatedMovies.map((related) => (
@@ -392,7 +356,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                             </div>)
                     ))}
                 </div>
-            </div>
+            </div>}
 
             {/* Cast */
             }
