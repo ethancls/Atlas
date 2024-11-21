@@ -3,7 +3,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { MovieDetail } from "@/app/entities/MovieDetail";
 import { Person } from "@/app/entities/Person";
@@ -128,6 +128,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   const [movies, setMovies] = useState<MovieDetail[]>([]);
   const [tvShows, setTVShows] = useState<ShowDetail[]>([]);
   const [personImages, setPersonImages] = useState<PersonImage[]>([]);
+  const moviesRef = useRef<HTMLDivElement>(null);
 
   const filterValidItems = <T extends { poster_path: string | null; id: number; popularity: number; title?: string; name?: string; release_date?: string }>(items: T[]) => {
     return items.filter((item, index, self) =>
@@ -177,7 +178,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   }, [id]);
 
   const scrollMoviesRight = () => {
-    if (movies.current) {
+    if (moviesRef.current) {
       moviesRef.current.scrollBy({ left: 200, behavior: 'smooth' });
     }
   };
@@ -238,7 +239,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
         {/* Movies */}
         <h2 className="text-xl font-semibold mb-4 pt-8">Movies</h2>
         <div className="relative">
-          <div className="flex gap-20 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+          <div ref={moviesRef} className="flex gap-20 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
             {movies.map((movie) => (
               movie.poster_path && (
                 <button
