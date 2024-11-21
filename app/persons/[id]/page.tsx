@@ -270,60 +270,50 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
         </div>
 
         {/* Movies */}
-        <div className="p-6 lg:p-12">
-          <h2 className="text-xl font-semibold mb-4 pt-8">Movies</h2>
-          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
-            {Movies.map((movie) => (
-              movie.poster_path && (
-                <div
-                  key={movie.id}
-                  onClick={() => router.push(`/movies/${movie.id}`)}
-                  className="flex-shrink-0 w-[200px] cursor-pointer hover:opacity-80"
-                >
-                  <Image
-                    src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                    alt={movie.title ?? movie.name ?? 'Unknown title'}
-                    width={200}
-                    height={225}
-                    className="rounded-md shadow-md"
-                  />
-                </div>
-              )
-            ))}
-          </div>
+        <h2 className="text-xl font-semibold mb-4 pt-8">Movies</h2>
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+          {Movies.map((movie) => (
+            movie.poster_path && (
+              <div
+                key={movie.id}
+                onClick={() => router.push(`/movies/${movie.id}`)}
+                className="flex-shrink-0 w-[200px] cursor-pointer hover:opacity-80"
+              >
+                <Image
+                  src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                  alt={movie.title ?? movie.name ?? 'Unknown title'}
+                  width={200}
+                  height={225}
+                  className="rounded-md shadow-md"
+                />
+              </div>
+            )
+          ))}
         </div>
 
         {/* Additional Details */}
         <hr className="border-gray-500 my-8 w-[100%] mx-auto" />
 
         {/* TV Shows */}
-        <div>
-          <h2 className="text-xl md:text-2xl font-semibold mb-4">TV Shows</h2>
-          <div className="flex gap-6 p-2 overflow-x-auto scrollbar-hide">
-            {TVShows.map((show) => (
+        <h2 className="text-xl font-semibold mb-4 pt-8">TV Shows</h2>
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+          {TVShows.map((show) => (
+            show.poster_path && (
               <div
                 key={show.id}
-                className="min-w-[160px] w-[180px] transition-transform duration-300 ease-out hover:scale-105 cursor-pointer"
                 onClick={() => router.push(`/shows/${show.id}`)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    router.push(`/shows/${show.id}`);
-                  }
-                }}
+                className="flex-shrink-0 w-[200px] cursor-pointer hover:opacity-80"
               >
                 <Image
                   src={`https://image.tmdb.org/t/p/original${show.poster_path}`}
                   alt={show.title ?? show.name ?? 'Unknown title'}
                   width={200}
-                  height={275}
-                  className="rounded-lg shadow-md mb-3"
+                  height={225}
+                  className="rounded-md shadow-md"
                 />
-                <p className="text-sm md:text-base font-semibold text-white">{show.title || show.name}</p>
               </div>
-            ))}
-          </div>
+            )
+          ))}
         </div>
       </div>
     </div>
