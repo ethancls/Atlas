@@ -1,43 +1,13 @@
 "use client";
 
-import { ChevronLeftIcon } from 'lucide-react';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-interface Person {
-  adult: boolean;
-  also_known_as: string[];
-  biography: string;
-  birthday: string;
-  deathday: string | null;
-  gender: number;
-  homepage: string | null;
-  id: number;
-  imdb_id: string;
-  known_for_department: string;
-  name: string;
-  place_of_birth: string;
-  popularity: number;
-  profile_path: string;
-}
-
-interface Movies {
-  id: number;
-  title?: string;
-  name?: string;
-  poster_path: string | null;
-  release_date?: string;
-  popularity: number;
-}
-
-interface TVShows {
-  id: number;
-  title?: string;
-  name?: string;
-  poster_path: string | null;
-  popularity: number;
-}
+import { MovieDetail } from "@/app/entities/MovieDetail";
+import { Person } from "@/app/entities/Person";
+import { ShowDetail } from "@/app/entities/ShowDetail";
 
 interface PersonImage {
   file_path: string;
@@ -155,11 +125,11 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const router = useRouter();
   const [person, setPerson] = useState<Person | null>(null);
-  const [movies, setMovies] = useState<Movies[]>([]);
-  const [tvShows, setTVShows] = useState<TVShows[]>([]);
+  const [movies, setMovies] = useState<MovieDetail[]>([]);
+  const [tvShows, setTVShows] = useState<ShowDetail[]>([]);
   const [personImages, setPersonImages] = useState<PersonImage[]>([]);
 
-  const filterValidItems = <T extends { poster_path: string | null; id: number; popularity: number }>(items: T[]) => {
+  const filterValidItems = <T extends { poster_path: string | null; id: number; popularity: number; title?: string; name?: string; release_date?: string }>(items: T[]) => {
     return items.filter((item, index, self) =>
       item.poster_path !== null && index === self.findIndex((i) => i.id === item.id)
     );
@@ -189,12 +159,12 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
         const moviesCreditsData = await fetchData(`https://api.themoviedb.org/3/person/${id}/movie_credits`, headers);
         const validMovies = filterValidItems(moviesCreditsData.cast);
         const sortedMovies = sortItemsByPopularity(validMovies);
-        setMovies(sortedMovies);
+        setMovies(sortedMovies as MovieDetail[]);
 
         const tvShowsCreditsData = await fetchData(`https://api.themoviedb.org/3/person/${id}/tv_credits`, headers);
         const validTVShows = filterValidItems(tvShowsCreditsData.cast);
         const sortedTVShows = sortItemsByPopularity(validTVShows);
-        setTVShows(sortedTVShows);
+        setTVShows(sortedTVShows as ShowDetail[]);
 
         const personImagesData = await fetchData(`https://api.themoviedb.org/3/person/${id}/images`, headers);
         setPersonImages(personImagesData.profiles);
@@ -205,6 +175,12 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
     };
     fetchPersonDetails();
   }, [id]);
+
+  const scrollMoviesRight = () => {
+    if (movies.current) {
+      moviesRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+    }
+  };
 
   if (!person) {
     return (
@@ -248,6 +224,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
                 height={375}
                 quality={100}
                 className="rounded-lg shadow-lg shadow-black/50 w-[125px] md:w-[175px] lg:w-[250px] h-auto duration-300 ease-out hover:scale-105"
+                style={{ width: 'auto', height: 'auto' }}
               />
             </button>
           </div>
@@ -260,25 +237,35 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
 
         {/* Movies */}
         <h2 className="text-xl font-semibold mb-4 pt-8">Movies</h2>
-        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
-          {movies.map((movie) => (
-            movie.poster_path && (
-              <button
-                key={movie.id}
-                onClick={() => router.push(`/movies/${movie.id}`)}
-                className="flex-shrink-0 w-[200px] cursor-pointer hover:opacity-80"
-                aria-label={`View details for ${movie.title ?? movie.name ?? 'Unknown title'}`}
-              >
-                <Image
-                  src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                  alt={movie.title ?? movie.name ?? 'Unknown title'}
-                  width={200}
-                  height={225}
-                  className="rounded-md shadow-md"
-                />
-              </button>
-            )
-          ))}
+        <div className="relative">
+          <div className="flex gap-20 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+            {movies.map((movie) => (
+              movie.poster_path && (
+                <button
+                  key={movie.id}
+                  onClick={() => router.push(`/movies/${movie.id}`)}
+                  className="flex-shrink-0 w-[200px] cursor-pointer hover:opacity-80"
+                  aria-label={`View details for ${movie.title ?? 'Unknown title'}`}
+                >
+                  <Image
+                    src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                    alt={movie.title ?? 'Unknown title'}
+                    width={200}
+                    height={225}
+                    className="rounded-md shadow-md"
+                    style={{ width: 'auto', height: 'auto' }}
+                  />
+                </button>
+              )
+            ))}
+          </div>
+          <button
+            onClick={scrollMoviesRight}
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md"
+            aria-label="Scroll right"
+          >
+            <ChevronRightIcon className="h-7 w-7 text-gray-400" />
+          </button>
         </div>
 
         <hr className="border-gray-500 mt-8 mb-0 w-[100%] mx-auto" />
@@ -288,31 +275,28 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
         <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
           {tvShows.map((show) => (
             show.poster_path && (
-              <a
+              <button
                 key={show.id}
-                href={`/shows/${show.id}`}
-                onClick={(e) => {
-                  e.preventDefault(); // Prevent default navigation for extra logic
-                  router.push(`/shows/${show.id}`);
-                }}
+                onClick={() => router.push(`/shows/${show.id}`)}
                 className="flex-shrink-0 w-[200px] cursor-pointer hover:opacity-80"
-                title={`View details for ${show.title ?? show.name ?? 'Unknown title'}`}
+                aria-label={`View details for ${show.name ?? 'Unknown title'}`}
               >
                 <Image
                   src={`https://image.tmdb.org/t/p/original${show.poster_path}`}
-                  alt={show.title ?? show.name ?? 'Unknown title'}
+                  alt={show.name ?? 'Unknown title'}
                   width={200}
                   height={225}
                   className="rounded-md shadow-md"
+                  style={{ width: 'auto', height: 'auto' }}
                 />
-              </a>
+              </button>
             )
           ))}
         </div>
 
         <hr className="border-gray-500 mt-8 mb-0 w-[100%] mx-auto" />
 
-        {/* Images */}
+        {/* Images of person */}
         <h2 className="text-xl font-semibold mb-4 pt-4">Images of {person.name}</h2>
         <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
           {personImages.map((image) => (
@@ -334,6 +318,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
                 width={200}
                 height={225}
                 className="rounded-md shadow-md"
+                style={{ width: 'auto', height: 'auto' }}
               />
             </button>
           ))}
