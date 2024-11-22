@@ -17,7 +17,6 @@ import { ImageData } from "@/app/entities/ImageData";
 const MovieDetailPage = ({ params }: { params: { id: string } }) => {
     const { id } = params;
     const router = useRouter();
-
     const [movie, setMovie] = useState<MovieDetail | null>(null);
     const [credits, setCredits] = useState<CastMember[]>([]);
     const [relatedMovies, setRelatedMovies] = useState<Movie[]>([]);
@@ -420,7 +419,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
                 </div>
             </div>
 
-            {/* Images */}
+            {/* Posters */}
             <div className="p-6 lg:p-12">
                 <h2 className="text-xl font-semibold mb-4">Posters</h2>
                 <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
@@ -458,7 +457,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
 
             <hr className="border-gray-500 my-1 w-[95%] mx-auto" />
 
-            {/* Columns Section */}
+            {/* Footer */}
             <div className="p-6 lg:p-12 grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Information Column */}
                 <div>

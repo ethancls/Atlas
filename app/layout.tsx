@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+"use client";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -14,10 +15,6 @@ const geistMono = localFont({
   weight: '100 900',
 });
 
-export const metadata: Metadata = {
-  title: 'Atlas',
-  description: 'The atlas of movies and TV shows',
-};
 
 export default function RootLayout({
   children,
@@ -29,6 +26,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <SessionProvider>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -37,7 +35,7 @@ export default function RootLayout({
           >
           {children}
         </ThemeProvider>
-
+        </SessionProvider>
       </body>
     </html>
   );

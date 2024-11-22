@@ -1,3 +1,4 @@
+"use client";
 import { PropsWithChildren, useState } from "react";
 import { Header } from "./Header";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
@@ -26,18 +27,19 @@ export const DefaultLayout = ({ children }: PropsWithChildren) => {
                         <Input onChange={(e) => handleSearch(e.target.value)} type="search" placeholder="Search..." className="flex-grow" />
                     </div>
                 </Header>
-                {query ? typeof window !== "undefined" && window.location.href.includes("movies") ? (
+                {query ? window.location.href.includes("movies") ? (
                     <MovieSearch query={query ?? ""} />
-                ) : typeof window !== "undefined" && window.location.href.includes("shows") ? (
+                ) : window.location.href.includes("shows") ? (
                     <TVShowSearch query={query ?? ""} />
-                ) : typeof window !== "undefined" && window.location.href.includes("persons") ? (
+                ) : window.location.href.includes("persons") ? (
                     <PersonSearch query={query ?? ""} />
-                ) : typeof window !== "undefined" && window.location.href.includes("discover") ? (
+                ) : window.location.href.includes("discover") ? (
                     <MultiSearch query={query ?? ""} />
                 ) : (
                     children
                 ) : (children)}
             </main>
         </SidebarProvider>
+
     );
 };

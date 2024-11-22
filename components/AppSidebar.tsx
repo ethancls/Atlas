@@ -17,7 +17,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
-import { logout } from "@/repository/auth"
+import { signOut } from "next-auth/react"
 import { Button } from "./ui/button"
 import { PersonIcon } from "@radix-ui/react-icons"
 
@@ -177,8 +177,7 @@ export function AppSidebar() {
       <SidebarFooter>
         <Button
           onClick={() => {
-            logout();
-            window.location.href = "/login";
+            signOut();
           }}
         >
           <LogOut />
