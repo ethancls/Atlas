@@ -1,17 +1,25 @@
 import { Movie } from "@/app/entities/Movie";
+import { authOptions } from "@/repository/auth";
+import { Session } from "inspector";
+import { getServerSession } from "next-auth";
 import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
+
+    const session = await getServerSession(authOptions) as Session & { imdbKey: string };
+
+    const imdbKey = session.imdbKey;
+
     const response = await fetch(`https://api.themoviedb.org/3/movie/top_rated`, {
       headers: {
-        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+        'Authorization': `Bearer ${imdbKey}`,
         'Accept': 'application/json',
       },
     });
 
     if (!response.ok) {
-      return NextResponse.json({ error: `Erreur ${response.status}: ${response.statusText}` }, { status: response.status });
+      return NextResponse.json({ error: `Error ${response.status}: ${response.statusText}` }, { status: response.status });
     }
 
     const data = await response.json();
@@ -19,7 +27,7 @@ export async function GET() {
 
     return NextResponse.json(movies);
   } catch (error) {
-    console.error("Erreur lors de la récupération des films:", error);
-    return NextResponse.json({ error: "Une erreur est survenue." }, { status: 500 });
+    console.error("Error fetching movies:", error);
+    return NextResponse.json({ error: "An error occured." }, { status: 500 });
   }
 }

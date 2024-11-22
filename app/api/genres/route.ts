@@ -1,11 +1,19 @@
 import { Genre } from "@/app/entities/Genre";
+import { authOptions } from "@/repository/auth";
+import { Session } from "inspector";
+import { getServerSession } from "next-auth";
 import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
+
+        const session = await getServerSession(authOptions) as Session & { imdbKey: string };
+
+        const imdbKey = session.imdbKey;
+        
         const response_movies = await fetch(`https://api.themoviedb.org/3/genre/movie/list`, {
             headers: {
-                'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+                'Authorization': `Bearer ${imdbKey}`,
                 'Accept': 'application/json',
             },
         });
@@ -19,7 +27,7 @@ export async function GET() {
 
         const response_shows = await fetch(`https://api.themoviedb.org/3/genre/tv/list`, {
             headers: {
-                'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+                'Authorization': `Bearer ${imdbKey}`,
                 'Accept': 'application/json',
             },
         });

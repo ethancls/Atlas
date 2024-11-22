@@ -1,12 +1,19 @@
 import { Movie } from "@/app/entities/Movie";
 import { TVShow } from "@/app/entities/TVShow";
 import { NextResponse } from 'next/server';
+import { getServerSession } from "next-auth/next";
+import { Session } from "next-auth";
 
 export async function GET() {
   try {
+
+    const session = await getServerSession() as Session & { imdbKey: string };
+
+    const imdbKey = session.imdbKey;
+
     const response_movies = await fetch(`https://api.themoviedb.org/3/discover/movie`, {
       headers: {
-        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+        'Authorization': `Bearer ${imdbKey}`,
         'Accept': 'application/json',
       },
     });
@@ -20,7 +27,7 @@ export async function GET() {
 
     const response_shows = await fetch(`https://api.themoviedb.org/3/discover/tv`, {
       headers: {
-        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+        'Authorization': `Bearer ${imdbKey}`,
         'Accept': 'application/json',
       },
     });

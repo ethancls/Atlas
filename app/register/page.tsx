@@ -3,22 +3,15 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 export default function Dashboard() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const router = useRouter();
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
-        const response = await register(username, password);
-        setError(getError());
-        if (response) {
-            router.push('/discover');
-        }
+        alert('Funtionality not implemented yet');
     };
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -71,7 +64,6 @@ export default function Dashboard() {
                             Register
                         </Button>
                     </form>
-                    {error && <p className="text-red-500">{error}</p>}
                     <div className="mt-4 text-center text-sm">
                         Already have an account ?{" "}
                         <Link href="/login" className="underline">

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -17,8 +18,8 @@ export default function LoginPage() {
 
   if (status === "loading") {
     return <div className="flex justify-center items-center min-h-screen">
-              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white"></div>
-           </div>;
+      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white"></div>
+    </div>;
   }
 
   if (session) {
@@ -99,6 +100,12 @@ export default function LoginPage() {
               <GitHubLogoIcon className="w-10 h-10" /> Login with GitHub
             </Button>
             {error && <p className="text-red-500">{error}</p>}
+            <div className="mt-4 text-center text-sm">
+              Don&lsquo;t have an account ?{" "}
+              <Link href="/login" className="underline">
+                Sign up
+              </Link>
+            </div>
           </div>
         </div>
       </div>
