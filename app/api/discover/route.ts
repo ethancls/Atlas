@@ -1,8 +1,6 @@
 import { Movie } from "@/app/entities/Movie";
 import { TVShow } from "@/app/entities/TVShow";
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
-
 
 export async function GET() {
   try {
