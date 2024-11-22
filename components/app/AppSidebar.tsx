@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/sidebar"
 
 import { signOut } from "next-auth/react"
-import { Button } from "./ui/button"
+import { Button } from "../ui/button"
 import { PersonIcon } from "@radix-ui/react-icons"
 
 // Menu items.

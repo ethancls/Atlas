@@ -4,10 +4,10 @@
 import { useEffect, useState } from 'react';
 import { Movie } from "@/app/entities/Movie";
 import { TVShow } from '../entities/TVShow';
-import DisplayMovie from '@/components/DisplayMovie';
-import DisplayShow from '@/components/DisplayShow';
+import DisplayMovie from '@/components/movies/DisplayMovie';
+import DisplayShow from '@/components/shows/DisplayShow';
 import { PopcornIcon, StarIcon, Tv2Icon } from 'lucide-react';
-import { DefaultLayout } from '@/components/DefaultLayout';
+import { DefaultLayout } from '@/components/app/DefaultLayout';
 
 const Discover = () => {
   const [movies, setMovies] = useState<Movie[]>([]);

@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { Movie } from "@/app/entities/Movie";
 import { TVShow } from "@/app/entities/TVShow";
-import DisplayMovie from "@/components/DisplayMovie";
-import DisplayShow from "@/components/DisplayShow";
-import { DefaultLayout } from "@/components/DefaultLayout";
+import DisplayMovie from "@/components/movies/DisplayMovie";
+import DisplayShow from "@/components/shows/DisplayShow";
+import { DefaultLayout } from "@/components/app/DefaultLayout";
 import Image from "next/image";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";

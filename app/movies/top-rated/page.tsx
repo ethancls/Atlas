@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { Movie } from "@/app/entities/Movie";
-import { DefaultLayout } from '@/components/DefaultLayout';
+import { DefaultLayout } from '@/components/app/DefaultLayout';
 import { PopcornIcon, TrophyIcon } from 'lucide-react';
-import DisplayMovie from '@/components/DisplayMovie';
+import DisplayMovie from '@/components/movies/DisplayMovie';
 
 const TopRated = () => {
   const [movies, setMovies] = useState<Movie[]>([]);

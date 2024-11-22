@@ -1,10 +1,10 @@
 "use client";
 import { PropsWithChildren, useState } from "react";
 import { Header } from "./Header";
-import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 import { AppSidebar } from "./AppSidebar";
-import { Input } from "./ui/input";
-import { MultiSearch, MovieSearch, TVShowSearch, PersonSearch } from "@/components/Search";
+import { Input } from "../ui/input";
+import { MultiSearch, MovieSearch, TVShowSearch, PersonSearch } from "@/components/app/Search";
 import { ModeToggle } from "./ModeToggle";
 
 export const DefaultLayout = ({ children }: PropsWithChildren) => {
