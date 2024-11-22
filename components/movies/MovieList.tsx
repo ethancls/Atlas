@@ -1,5 +1,5 @@
 import { Movie } from "@/app/entities/Movie";
-import DisplayMovie from "@/components/movies/DisplayMovie";
+import DisplayMovie from "@/components/movies/MovieCard";
 
 const MovieList = ({ movies }: { movies: Movie[] }) => {
   return (

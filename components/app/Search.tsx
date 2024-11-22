@@ -1,5 +1,5 @@
 import { Movie } from "@/app/entities/Movie";
-import DisplayMovie from "@/components/movies/DisplayMovie";
+import DisplayMovie from "@/components/movies/MovieCard";
 import { useEffect, useState } from "react";
 import { SearchIcon, ListChecksIcon } from "lucide-react";
 import { TVShow } from "@/app/entities/TVShow";

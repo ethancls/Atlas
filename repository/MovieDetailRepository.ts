@@ -97,14 +97,14 @@ export class MovieDetailRepository {
 
     // Map raw certification to user-friendly format
     const certificationMap: { [key: string]: string } = {
-      G: "0+",
-      PG: "10+",
+      "G": "0+",
+      "PG": "10+",
       "PG-13": "13+",
-      R: "17+",
+      "R": "17+",
       "NC-17": "18+",
       "R+": "17+",
-      NR: "Not Rated",
-      UR: "Not Rated",
+      "NR": "Not Rated",
+      "UR": "Not Rated",
       "TV-Y": "0+",
       "TV-Y7": "7+",
       "TV-G": "0+",
@@ -123,6 +123,22 @@ export class MovieDetailRepository {
       if (usCertification) {
         return certificationMap[usCertification.certification] || null;
       }
+    }
+    return null;
+  }
+
+  async fetchYoutubeTrailer(movie: Movie): Promise<string | null> {
+    const youtubeResponse = await fetch(
+      `/api/youtube?search=${encodeURIComponent(
+        movie.title + new Date(movie.release_date).getFullYear() + " 4k trailer official movie"
+      )}`
+    );
+
+    const youtubeData = await youtubeResponse.json();
+    if (youtubeData?.result?.[0]?.id) {
+      return (
+        `https://www.youtube.com/embed/${youtubeData.result[0].id}?autoplay=1&vq=hd2160&mute=1&enablejsapi=1&modestbranding=1&rel=0&controls=0&showinfo=1@iv_load_policy=3&autohide=1&playsinline=1&loop=1`
+      );
     }
     return null;
   }

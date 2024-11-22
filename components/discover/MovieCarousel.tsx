@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 import rotten from "@/public/rotten.png"
 import splash from "@/public/splash.png"
-import {ChevronLeftIcon } from "lucide-react";
+import {ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 const MovieCarousel = ({ movieDetails }: { movieDetails: MovieDetail[] }) => {
     const router = useRouter();
@@ -20,7 +20,7 @@ const MovieCarousel = ({ movieDetails }: { movieDetails: MovieDetail[] }) => {
                     // Revenir au début si on atteint la fin
                     container.scrollTo({ left: 0, behavior: "smooth" });
                 } else {
-                    container.scrollBy({ left: container.clientWidth, behavior: "smooth" });
+                    container.scrollBy({ left: container.clientWidth + 15 , behavior: "smooth" });
                 }
             }
         }, 5000);
@@ -37,7 +37,7 @@ const MovieCarousel = ({ movieDetails }: { movieDetails: MovieDetail[] }) => {
                 onClick={() => {
                     const container = document.querySelector("#carousel");
                     if (container) {
-                        container.scrollBy({ left: -container.clientWidth, behavior: "smooth" });
+                        container.scrollBy({ left: -container.clientWidth - 15, behavior: "smooth" });
                     }
                 }}
             >
@@ -48,7 +48,7 @@ const MovieCarousel = ({ movieDetails }: { movieDetails: MovieDetail[] }) => {
                     movieDetails.map((movie) => (
                         <div
                             key={movie.id}
-                            className="flex-none relative h-[60vh] lg:h-[80vh] w-[40vh] md:w-[60vh] lg:[70vh] xl:w-[95%] rounded-lg cursor-pointer"
+                            className="flex-none relative h-[60vh] lg:h-[80vh] w-[100%] rounded-lg cursor-pointer"
                             onClick={() => router.push(`/movies/${movie.id}`)}
                         >
                             <Image
@@ -65,7 +65,7 @@ const MovieCarousel = ({ movieDetails }: { movieDetails: MovieDetail[] }) => {
                                         width={500}
                                         height={500}
                                         quality={100}
-                                        className="object-contain w-[200px] md:w-[300px] lg:w-[400px] xl:w-[500px]"
+                                        className="object-contain w-[150px] md:w-[300px] lg:w-[400px] xl:w-[500px]"
                                     />
                                 )}
                                 <div className="flex flex-wrap items-center gap-x-1 text-sm text-gray-400">
@@ -109,11 +109,11 @@ const MovieCarousel = ({ movieDetails }: { movieDetails: MovieDetail[] }) => {
                 onClick={() => {
                     const container = document.querySelector("#carousel");
                     if (container) {
-                        container.scrollBy({ left: container.clientWidth, behavior: "smooth" });
+                        container.scrollBy({ left: container.clientWidth + 15, behavior: "smooth" });
                     }
                 }}
             >
-                {">"}
+                <ChevronRightIcon className="h-7 w-7 text-white" />
             </button>
         </div>
     );

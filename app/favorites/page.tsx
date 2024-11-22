@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { Movie } from "@/app/entities/Movie";
 import { TVShow } from '../entities/TVShow';
-import DisplayMovie from '@/components/movies/DisplayMovie';
+import DisplayMovie from '@/components/movies/MovieCard';
 import DisplayShow from '@/components/shows/DisplayShow';
 import { PopcornIcon, StarIcon, Tv2Icon } from 'lucide-react';
 import { DefaultLayout } from '@/components/app/DefaultLayout';
