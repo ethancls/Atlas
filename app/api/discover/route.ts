@@ -3,11 +3,12 @@ import { TVShow } from "@/app/entities/TVShow";
 import { NextResponse } from 'next/server';
 import { getServerSession } from "next-auth/next";
 import { Session } from "next-auth";
+import { authOptions } from "@/repository/auth";
 
 export async function GET() {
   try {
 
-    const session = await getServerSession() as Session & { imdbKey: string };
+    const session = await getServerSession(authOptions) as Session & { imdbKey: string };
 
     const imdbKey = session.imdbKey;
 

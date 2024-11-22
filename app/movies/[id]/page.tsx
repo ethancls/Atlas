@@ -12,6 +12,7 @@ import { MovieDetail } from "@/app/entities/MovieDetail";
 import { Movie } from "@/app/entities/Movie";
 import { CastMember } from "@/app/entities/CastMember";
 import { ImageData } from "@/app/entities/ImageData";
+import { useSession } from "next-auth/react";
 
 
 const MovieDetailPage = ({ params }: { params: { id: string } }) => {
@@ -25,11 +26,13 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
     const [showTrailer, setShowTrailer] = useState(false);
     const [isMuted, setIsMuted] = useState(true);
     const [certification, setCertification] = useState<string | null>(null);
+    const session = useSession() as unknown as { data: { imdbKey: string } };
+    const imdbKey = session.data?.imdbKey;
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
             const headers = {
-                Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+                Authorization: `Bearer ${imdbKey}`,
                 "Content-Type": "application/json;charset=utf-8",
             };
 
@@ -148,7 +151,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
     if (!movie) {
         return (
             <div className="flex justify-center items-center min-h-screen">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white"></div>
+                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 dark:border-white border-black"></div>
             </div>
         );
     }
