@@ -3,7 +3,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { MovieDetail } from "@/app/entities/MovieDetail";
 import { Person } from "@/app/entities/Person";
@@ -26,7 +26,7 @@ const addEscapeKeyListener = (modal: HTMLDivElement) => {
 
 const openImageModal = (src: string) => {
   const modal = document.createElement('div');
-  modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80';
+  modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md';
   modal.onclick = () => modal.remove();
 
   const img = document.createElement('img');
@@ -69,7 +69,7 @@ const Biography = ({ person }: { person: Person }) => {
           onClick={() => {
             const modal = document.createElement('div');
             modal.className =
-              'fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4';
+              'fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md';
 
             const closeModal = () => {
               modal.remove();
@@ -177,11 +177,23 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
     fetchPersonDetails();
   }, [id]);
 
-  const scrollMoviesRight = () => {
+  function scrollMoviesLeft() {
     if (moviesRef.current) {
-      moviesRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+      moviesRef.current.scrollBy({
+        left: -300,
+        behavior: 'smooth',
+      });
     }
-  };
+  }
+
+  function scrollMoviesRight() {
+    if (moviesRef.current) {
+      moviesRef.current.scrollBy({
+        left: 300,
+        behavior: 'smooth',
+      });
+    }
+  }
 
   if (!person) {
     return (
@@ -236,40 +248,56 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
 
-{/* Movies */}
-<h2 className="text-xl font-semibold mb-4 pt-8">Movies</h2>
-<div className="relative">
-  <div className="flex items-center gap-4">
-    <div ref={moviesRef} className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide flex-1">
-      {movies.map((movie) => (
-        movie.poster_path && (
-          <button
-            key={movie.id}
-            onClick={() => router.push(`/movies/${movie.id}`)}
-            className="flex-shrink-0 w-[200px] cursor-pointer hover:opacity-80"
-            aria-label={`View details for ${movie.title ?? 'Unknown title'}`}
-          >
-            <Image
-              src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-              alt={movie.title ?? 'Unknown title'}
-              width={200}
-              height={225}
-              className="rounded-md shadow-md"
-              style={{ width: 'auto', height: 'auto' }}
-            />
-          </button>
-        )
-      ))}
-    </div>
-    <button
-      onClick={scrollMoviesRight}
-      className="bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md"
-      aria-label="Scroll right"
-    >
-      <ChevronRightIcon className="h-7 w-7 text-gray-400" />
-    </button>
-  </div>
-</div>
+        {/* Movies */}
+        <h2 className="text-xl font-semibold mb-4 pt-8">Movies</h2>
+        <div className="relative group">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={scrollMoviesLeft}
+              className="bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              aria-label="Scroll left"
+            >
+              <ChevronLeftIcon className="h-7 w-7 text-gray-400" />
+            </button>
+            <div
+              ref={moviesRef}
+              className="flex gap-16 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+            >
+              {movies.map(
+                (movie) =>
+                  movie.poster_path && (
+                    <button
+                      key={movie.id}
+                      onClick={() => router.push(`/movies/${movie.id}`)}
+                      className="flex-shrink-0 w-[200px] md:w-[250px] lg:w-[300px] cursor-pointer hover:opacity-80 snap-center"
+                      aria-label={`View details for ${movie.title ?? 'Unknown title'}`}
+                      style={{
+                        flex: `0 0 calc(100% / ${Math.floor(
+                          window.innerWidth / (window.innerWidth < 768 ? 400 : 300)
+                        )})`,
+                      }}
+                    >
+                      <Image
+                        src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                        alt={movie.title ?? 'Unknown title'}
+                        width={300}
+                        height={400}
+                        className="rounded-md shadow-md"
+                        style={{ width: 'auto', height: 'auto' }}
+                      />
+                    </button>
+                  )
+              )}
+            </div>
+            <button
+              onClick={scrollMoviesRight}
+              className="bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              aria-label="Scroll right"
+            >
+              <ChevronRightIcon className="h-7 w-7 text-gray-400" />
+            </button>
+          </div>
+        </div>
 
         <hr className="border-gray-500 mt-8 mb-0 w-[100%] mx-auto" />
 
