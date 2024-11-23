@@ -180,7 +180,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   function scrollMoviesLeft() {
     if (moviesRef.current) {
       moviesRef.current.scrollBy({
-        left: -300,
+        left: -moviesRef.current.clientWidth,
         behavior: 'smooth',
       });
     }
@@ -189,7 +189,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   function scrollMoviesRight() {
     if (moviesRef.current) {
       moviesRef.current.scrollBy({
-        left: 300,
+        left: moviesRef.current.clientWidth,
         behavior: 'smooth',
       });
     }
@@ -262,6 +262,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
             <div
               ref={moviesRef}
               className="flex gap-16 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+              style={{ scrollSnapType: 'x mandatory' }}
             >
               {movies.map(
                 (movie) =>
@@ -271,11 +272,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
                       onClick={() => router.push(`/movies/${movie.id}`)}
                       className="flex-shrink-0 w-[200px] md:w-[250px] lg:w-[300px] cursor-pointer hover:opacity-80 snap-center"
                       aria-label={`View details for ${movie.title ?? 'Unknown title'}`}
-                      style={{
-                        flex: `0 0 calc(100% / ${Math.floor(
-                          window.innerWidth / (window.innerWidth < 768 ? 400 : 300)
-                        )})`,
-                      }}
+                      style={{ flex: '0 0 auto' }}
                     >
                       <Image
                         src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
