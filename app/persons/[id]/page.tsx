@@ -28,7 +28,7 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   useEffect(() => {
     const fetchPersonDetails = async () => {
       const headers = {
-        Authorization: `Bearer ${process.env.TMDB_KEY}`,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
         'Content-Type': 'application/json;charset=utf-8',
       };
 

@@ -29,7 +29,6 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
         trailerLink
     } = useMovieDetail(id, imdbKey);
     const [showTrailer, setShowTrailer] = useState(false);
-    const [isMuted, setIsMuted] = useState(true);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
