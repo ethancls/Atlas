@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { Movie } from "@/app/entities/Movie";
 import { authOptions } from "@/repository/auth";
 import { Session } from "inspector";

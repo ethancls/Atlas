@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { Movie } from "@/app/entities/Movie";
 import { TVShow } from "@/app/entities/TVShow";
 import { NextResponse } from 'next/server';
