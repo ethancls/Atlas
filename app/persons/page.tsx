@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { MedalIcon } from 'lucide-react';
-import { DefaultLayout } from '@/components/DefaultLayout';
+import { DefaultLayout } from '@/components/app/DefaultLayout';
 import { Person } from '../entities/Person';
-import DisplayPerson from '@/components/DisplayPerson';
+import DisplayPerson from '@/components/persons/DisplayPerson';
 import { PersonIcon } from '@radix-ui/react-icons';
 
 

@@ -1,82 +1,50 @@
-// Objective: Manage the authentication of the user.
-function setCookie(name: string, value: string, days: number) {
-  const date = new Date();
-  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-  const expires = "expires=" + date.toUTCString();
-  document.cookie = name + "=" + value + ";" + expires + ";path=/";
-}
+import NextAuth, { Session } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GitHubProvider from "next-auth/providers/github";
 
-function getCookie(name: string) {
-  const nameEQ = name + "=";
-  const ca = document.cookie.split(';');
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-  }
-  return null;
-}
-
-export async function login(username: string, password: string) {
-  if (typeof window !== 'undefined') {
-
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+export const authOptions = {
+  // Configuration des fournisseurs
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        username: { label: "Username", type: "text", placeholder: "admin" },
+        password: { label: "Password", type: "password", placeholder: "admin" },
       },
-      body: JSON.stringify({ username, password }),
-    });
-
-    if (response.ok) {
-      setCookie('isLogged', 'true', 7);
-      localStorage.removeItem('error');
-    } else {
-      setCookie('isLogged', 'false', 7);
-      localStorage.setItem('error', 'Nom d\'utilisateur ou mot de passe incorrect');
-    }
-  }
-}
-
-export async function register(username: string, password: string) {
-  if (typeof window !== 'undefined') {
-
-    const response = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+      async authorize(credentials) {
+        console.log("Credentials:", credentials);
+        const { username, password } = credentials || {};
+        if (username === "admin" && password === "admin") {
+          return { id: "1", name: "Admin User", imdbKey: process.env.TMDB_KEY };
+        }
+        console.error("Invalid credentials");
+        return null;
       },
-      body: JSON.stringify({ username, password }),
-    });
-
-    if (response.ok) {
-      localStorage.removeItem('error');
-      setCookie('isLogged', 'true', 7);
-      return true;
-    } else {
-      const data = await response.json();
-      localStorage.setItem('error', data.error || 'Failed to register');
-      return false;
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
+    }),
+  ],
+  session: {
+    strategy: "jwt" as const,
+  },
+  pages: {
+    signIn: "/login", // Personnalisation de la page de connexion
+  },
+  callbacks:{
+    session({ session, token }: { session: Session; token: any;}) {
+      (session as Session & { imdbKey: string }).imdbKey = token.imdbKey as string;
+      return session;
+    },
+    jwt({ token, user }: { token: any; user?: any }) {
+      if (user) {
+        token.imdbKey =  process.env.TMDB_KEY;
+      }
+      return token;
     }
-  }
-}
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+};
 
-export function logout() {
-  if (typeof window !== 'undefined') {
-    setCookie('isLogged', 'false', 7);
-  }
-}
-
-export function getLogin() {
-  if (typeof window !== 'undefined') {
-    return getCookie('isLogged') === 'true';
-  }
-  return false;
-}
-
-export function getError() {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('error') || '';
-  }
-  return '';
-}
+export default NextAuth(authOptions);

@@ -1,11 +1,21 @@
 import { TVShow } from "@/app/entities/TVShow";
+import { authOptions } from "@/repository/auth";
+import { Session } from "inspector";
+import { getServerSession } from "next-auth";
 import { NextResponse } from 'next/server';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
+
+    const session = await getServerSession(authOptions) as Session & { imdbKey: string };
+
+    const imdbKey = session.imdbKey;
+
     const response = await fetch(`https://api.themoviedb.org/3/tv/top_rated`, {
       headers: {
-        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+        'Authorization': `Bearer ${imdbKey}`,
         'Accept': 'application/json',
       },
     });

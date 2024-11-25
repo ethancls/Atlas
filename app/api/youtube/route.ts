@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest): Promise<Response> {
-    // Récupérer la query "search" de l'URL
+
     const { searchParams } = req.nextUrl;
     const searchQuery = searchParams.get('search');
 
@@ -10,13 +10,12 @@ export async function GET(req: NextRequest): Promise<Response> {
     }
 
     try {
-        // Faire une requête GET à l'API FastAPI
         const response = await fetch(`https://fastapi-atlas.vercel.app/api/youtube?search=${encodeURIComponent(searchQuery)}`);
         
         if (!response.ok) {
             const errorText = await response.text();
             return NextResponse.json(
-                { error: 'Erreur lors de la requête à l’API FastAPI', details: errorText },
+                { error: 'Error : ', details: errorText },
                 { status: response.status }
             );
         }
@@ -24,9 +23,9 @@ export async function GET(req: NextRequest): Promise<Response> {
         const data = await response.json();
         return NextResponse.json(data, { status: 200 });
     } catch (error) {
-        console.error('Erreur lors de la requête à l’API FastAPI :', error);
+        console.error('Error : ', error);
         return NextResponse.json(
-            { error: 'Erreur lors de la requête à l’API FastAPI', details: (error as Error).message },
+            { error: 'Error : ', details: (error as Error).message },
             { status: 500 }
         );
     }

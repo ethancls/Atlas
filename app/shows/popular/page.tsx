@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { TVShow } from "@/app/entities/TVShow";
 import { MedalIcon, Tv2Icon } from 'lucide-react';
-import { DefaultLayout } from '@/components/DefaultLayout';
-import DisplayShow from '@/components/DisplayShow';
+import { DefaultLayout } from '@/components/app/DefaultLayout';
+import DisplayShow from '@/components/shows/DisplayShow';
 
 const OnTheAir = () => {
   const [shows, setShows] = useState<TVShow[]>([]);

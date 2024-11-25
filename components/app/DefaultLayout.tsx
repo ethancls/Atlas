@@ -1,9 +1,10 @@
+"use client";
 import { PropsWithChildren, useState } from "react";
 import { Header } from "./Header";
-import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 import { AppSidebar } from "./AppSidebar";
-import { Input } from "./ui/input";
-import { MultiSearch, MovieSearch, TVShowSearch, PersonSearch } from "@/components/Search";
+import { Input } from "../ui/input";
+import { MultiSearch, MovieSearch, TVShowSearch, PersonSearch } from "@/components/app/Search";
 import { ModeToggle } from "./ModeToggle";
 
 export const DefaultLayout = ({ children }: PropsWithChildren) => {
@@ -27,17 +28,18 @@ export const DefaultLayout = ({ children }: PropsWithChildren) => {
                     </div>
                 </Header>
                 {query ? typeof window !== "undefined" && window.location.href.includes("movies") ? (
-                    <MovieSearch query={query ?? ""} />
-                ) : typeof window !== "undefined" && window.location.href.includes("shows") ? (
-                    <TVShowSearch query={query ?? ""} />
-                ) : typeof window !== "undefined" && window.location.href.includes("persons") ? (
-                    <PersonSearch query={query ?? ""} />
-                ) : typeof window !== "undefined" && window.location.href.includes("discover") ? (
-                    <MultiSearch query={query ?? ""} />
-                ) : (
-                    children
-                ) : (children)}
+                        <MovieSearch query={query ?? ""} />
+                    ) : typeof window !== "undefined" && window.location.href.includes("shows") ? (
+                        <TVShowSearch query={query ?? ""} />
+                    ) : typeof window !== "undefined" && window.location.href.includes("persons") ? (
+                        <PersonSearch query={query ?? ""} />
+                    ) : typeof window !== "undefined" && window.location.href.includes("discover") ? (
+                        <MultiSearch query={query ?? ""} />
+                    ) : (
+                        children
+                    ) : (children)}
             </main>
         </SidebarProvider>
+
     );
 };

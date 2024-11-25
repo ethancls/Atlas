@@ -1,11 +1,11 @@
 import { Movie } from "@/app/entities/Movie";
-import DisplayMovie from "@/components/DisplayMovie";
+import DisplayMovie from "@/components/movies/MovieCard";
 import { useEffect, useState } from "react";
 import { SearchIcon, ListChecksIcon } from "lucide-react";
 import { TVShow } from "@/app/entities/TVShow";
 import { Person } from "@/app/entities/Person";
-import DisplayShow from "./DisplayShow";
-import DisplayPerson from "./DisplayPerson";
+import DisplayShow from "../shows/DisplayShow";
+import DisplayPerson from "../persons/DisplayPerson";
 
 export const MultiSearch = ({ query }: { query: string }) => {
   const [movies, setMovies] = useState<Movie[]>([]);
