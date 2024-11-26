@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { Person } from "@/app/entities/Person";
 import { MovieDetail } from "@/app/entities/MovieDetail";
+import { Person } from "@/app/entities/Person";
 import { ShowDetail } from "@/app/entities/ShowDetail";
 import { PersonDetailRepository } from "@/repository/PersonDetailRepository";
+import { useEffect, useState } from "react";
 
 export const usePersonDetail = (id: string, apiKey: string) => {
   const [person, setPerson] = useState<Person | null>(null);

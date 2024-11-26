@@ -1,5 +1,5 @@
-import { Person } from "@/app/entities/Person";
 import { MovieDetail } from "@/app/entities/MovieDetail";
+import { Person } from "@/app/entities/Person";
 import { ShowDetail } from "@/app/entities/ShowDetail";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
