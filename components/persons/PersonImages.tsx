@@ -1,3 +1,4 @@
+import { handleKeyDown } from '@/app/utils/handleKeyDown';
 import Image from 'next/image';
 
 interface PersonImage {
@@ -16,20 +17,13 @@ const openImageModal = (src: string) => {
   modal.appendChild(img);
   document.body.appendChild(modal);
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      modal.remove();
-      document.removeEventListener('keydown', handleKeyDown);
-    }
-  };
-
-  document.addEventListener('keydown', handleKeyDown);
+  document.addEventListener('keydown', handleKeyDown(modal));
 };
 
 const PersonImages = ({ personImages, personName }: { personImages: PersonImage[], personName: string }) => {
   return (
-    <>
-      <h2 className="text-xl font-semibold mb-4 pt-4">Images of {personName}</h2>
+    <div className="pt-0 px-4 sm:px-6 md:px-18 pb-8 lg:pt-6 lg:px-20 lg:pb-10">
+      <h2 className="text-xl font-semibold pb-10">Images of {personName}</h2>
       <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
         {personImages.map((image) => (
           <button
@@ -55,7 +49,7 @@ const PersonImages = ({ personImages, personName }: { personImages: PersonImage[
           </button>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

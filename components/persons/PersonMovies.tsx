@@ -27,8 +27,8 @@ const PersonMovies = ({ movies }: { movies: MovieDetail[] }) => {
   }
 
   return (
-    <>
-      <h2 className="text-xl font-semibold mb-4 pt-8">Movies</h2>
+    <div className="pt-0 px-4 sm:px-6 md:px-18 pb-8 lg:pt-6 lg:px-20 lg:pb-10">
+      <h2 className="text-xl font-semibold pb-10">Movies</h2>
       <div className="relative group">
         <div className="flex items-center gap-4">
           <button
@@ -77,7 +77,7 @@ const PersonMovies = ({ movies }: { movies: MovieDetail[] }) => {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

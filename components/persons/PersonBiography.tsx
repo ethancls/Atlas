@@ -1,4 +1,5 @@
 import { Person } from "@/app/entities/Person";
+import { handleKeyDown } from '@/app/utils/handleKeyDown';
 import { useEffect, useState } from 'react';
 
 const Biography = ({ person }: { person: Person }) => {
@@ -65,14 +66,7 @@ const Biography = ({ person }: { person: Person }) => {
             modal.appendChild(modalContent);
             document.body.appendChild(modal);
 
-            const handleKeyDown = (e: KeyboardEvent) => {
-              if (e.key === 'Escape') {
-                closeModal();
-                document.removeEventListener('keydown', handleKeyDown);
-              }
-            };
-
-            document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('keydown', handleKeyDown(modal));
           }}
           className="text-blue-500 ml-2"
         >

@@ -6,8 +6,8 @@ const PersonTVShows = ({ tvShows }: { tvShows: ShowDetail[] }) => {
   const router = useRouter();
 
   return (
-    <>
-      <h2 className="text-xl font-semibold mb-4 pt-4">TV Shows</h2>
+    <div className="pt-0 px-4 sm:px-6 md:px-18 pb-8 lg:pt-6 lg:px-20 lg:pb-10">
+      <h2 className="text-xl font-semibold pb-10">TV Shows</h2>
       <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
         {tvShows.map((show) => (
           show.poster_path && (
@@ -29,7 +29,7 @@ const PersonTVShows = ({ tvShows }: { tvShows: ShowDetail[] }) => {
           )
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

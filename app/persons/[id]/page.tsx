@@ -1,16 +1,13 @@
 "use client";
 
-import { usePersonDetail } from "@/hooks/usePersonDetail";
-import { ChevronLeftIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import PersonHeader from "@/components/persons/PersonHeader";
+import PersonImages from "@/components/persons/PersonImages";
 import PersonMovies from "@/components/persons/PersonMovies";
 import PersonTVShows from "@/components/persons/PersonTVShows";
-import PersonImages from "@/components/persons/PersonImages";
+import { usePersonDetail } from "@/hooks/usePersonDetail";
 
 const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  const router = useRouter();
   const {
     person,
     movies,
@@ -37,27 +34,18 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
     }
 
     return (
-      <div className="relative">
-          <button
-            onClick={() => router.back()}
-            className="flex items-center justify-center w-full h-full"
-            title="Go back"
-          >
-            <ChevronLeftIcon className="h-7 w-7 text-gray-400" />
-            <span className="text-gray-400 font-medium"></span>
-          </button>
-
+      <div>
         <PersonHeader person={person} />
-
-        <hr className="border-gray-500 my-1 w-[95%] mx-auto" />
 
         <PersonMovies movies={movies} />
 
+        <hr className="border-gray-500 my-1 w-[92%] mx-auto" />
+
         <PersonTVShows tvShows={tvShows} />
 
-        <PersonImages personImages={personImages} personName={person.name} />
+        <hr className="border-gray-500 my-1 w-[92%] mx-auto" />
 
-        <hr className="border-gray-500 my-1 w-[95%] mx-auto" />
+        <PersonImages personImages={personImages} personName={person.name} />
       </div>
     );
   }
