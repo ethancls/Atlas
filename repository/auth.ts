@@ -29,6 +29,7 @@ export const authOptions = {
   session: {
     strategy: "jwt" as const,
   },
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/login", // Personnalisation de la page de connexion
   },
@@ -43,8 +44,7 @@ export const authOptions = {
       }
       return token;
     }
-  },
-  secret: process.env.NEXTAUTH_SECRET,
+  }
 };
 
 export default NextAuth(authOptions);
