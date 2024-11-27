@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { TVShow } from "@/app/entities/TVShow";
-import { LoaderPinwheelIcon, Tv2Icon } from 'lucide-react';
+import { LoaderPinwheelIcon } from 'lucide-react';
 import { DefaultLayout } from '@/components/app/DefaultLayout';
-import DisplayShow from '@/components/shows/DisplayShow';
+import TVShowList from '@/components/shows/TVShowList';
 
 const OnTheAir = () => {
   const [shows, setShows] = useState<TVShow[]>([]);
@@ -40,18 +40,10 @@ const OnTheAir = () => {
           <h1 className="text-3xl lg:text-4xl font-bold text-center">On The Air</h1>
         </div>
 
-        <div className="flex items-center space-x-2 mb-2">
-          <Tv2Icon className="h-6 w-6 xl:h-10 xl-w-10" />
-          <h2 className="text-2xl font-semibold xl:text-3xl">TV Shows</h2>
-        </div>
         {error ? (
           <p className="text-red-500 text-center">{error}</p>
         ) : (
-          <div className="flex flex-wrap justify-center gap-4">
-            {shows.map((show) => (
-              <DisplayShow key={show.id} show={show} />
-            ))}
-          </div>
+          <TVShowList shows={shows} />
         )}
       </div>
     </DefaultLayout>

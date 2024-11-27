@@ -102,7 +102,7 @@ export default function LoginPage() {
             {error && <p className="text-red-500">{error}</p>}
             <div className="mt-4 text-center text-sm">
               Don&lsquo;t have an account ?{" "}
-              <Link href="/login" className="underline">
+              <Link href="/register" className="underline">
                 Sign up
               </Link>
             </div>

@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { Movie } from "@/app/entities/Movie";
-import DisplayMovie from '@/components/movies/MovieCard';
-import { MedalIcon, PopcornIcon } from 'lucide-react';
+import { MedalIcon } from 'lucide-react';
 import { DefaultLayout } from '@/components/app/DefaultLayout';
+import MovieList from '@/components/movies/MovieList';
 
 
 const Popular = () => {
@@ -41,18 +41,10 @@ const Popular = () => {
           <h1 className="text-3xl lg:text-4xl font-bold text-center">Popular</h1>
         </div>
 
-        <div className="flex items-center space-x-2 mb-2">
-          <PopcornIcon className="h-6 w-6 xl:h-10 xl-w-10" />
-          <h2 className="text-2xl font-semibold xl:text-3xl">Movies</h2>
-        </div>
         {error ? (
           <p className="text-red-500 text-center">{error}</p>
         ) : (
-          <div className="flex flex-wrap justify-center gap-4">
-            {movies.map((movie) => (
-              <DisplayMovie key={movie.id} movie={movie} />
-            ))}
-          </div>
+          <MovieList movies={movies} />
         )}
       </div>
     </DefaultLayout>

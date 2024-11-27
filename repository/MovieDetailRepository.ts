@@ -41,7 +41,7 @@ export class MovieDetailRepository {
   }
 
   async fetchMovieImages(id: string): Promise<ImageData[]> {
-    const response = await fetch(`${API_BASE_URL}/movie/${id}/images`, {
+    const response = await fetch(`${API_BASE_URL}/movie/${id}/images?include_image_language=en%2Cnull`, {
       headers: this.getHeaders(),
     });
     if (!response.ok) {
@@ -51,24 +51,15 @@ export class MovieDetailRepository {
 
     // Process images (logos, backdrops, posters)
     return [
-      ...data.backdrops.filter(
-        (image: { iso_639_1: string }) =>
-          image.iso_639_1 === "en" || image.iso_639_1 === null
-      ).map((image: { file_path: string }) => ({
+      ...data.backdrops.map((image: { file_path: string }) => ({
         type: "backdrop",
         file_path: image.file_path,
       })),
-      ...data.logos.filter(
-        (image: { iso_639_1: string }) =>
-          image.iso_639_1 === "en" || image.iso_639_1 === null
-      ).map((image: { file_path: string }) => ({
+      ...data.logos.map((image: { file_path: string }) => ({
         type: "logo",
         file_path: image.file_path,
       })),
-      ...data.posters.filter(
-        (image: { iso_639_1: string }) =>
-          image.iso_639_1 === "en" || image.iso_639_1 === null
-      ).map((image: { file_path: string }) => ({
+      ...data.posters.map((image: { file_path: string }) => ({
         type: "poster",
         file_path: image.file_path,
       })),
@@ -130,7 +121,7 @@ export class MovieDetailRepository {
   async fetchYoutubeTrailer(movie: Movie): Promise<string | null> {
     const youtubeResponse = await fetch(
       `/api/youtube?search=${encodeURIComponent(
-        movie.title + new Date(movie.release_date).getFullYear() + " 4k trailer official movie"
+        movie.title + new Date(movie.release_date).getFullYear() + " 4k movie trailer official"
       )}`
     );
 

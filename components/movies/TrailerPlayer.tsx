@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Pause, Play, Volume2, VolumeX } from "lucide-react";
+import { ArrowDown, Pause, Play, Volume2, VolumeX } from "lucide-react";
 import { useState } from "react";
 import { MovieDetail } from "@/app/entities/MovieDetail";
 import { ImageData } from "@/app/entities/ImageData";
@@ -158,6 +158,25 @@ const TrailerPlayer = ({
                     <div className="flex items-center border text-xs border-gray-400 rounded px-1">AD</div>
                 </div>
             </div>
+
+            {/*Download Button*/}
+            <button
+                onClick={() => {
+                    fetch(`http://localhost:3000/api/download?search=${movie.title}%20${new Date(movie.release_date).getFullYear()}`)
+                        .then(response => response.json())
+                        .then(data => data[0])
+                        .then(data => {
+                            const url = data.url;
+                            window.open(url);
+                        })
+                        .catch(() => {
+                            alert("No download link found");
+                        });
+                }}
+                className="absolute bottom-20 right-10 z-30 p-2 bg-white rounded md:bottom-6 md:right-6 transition hover:scale-105"
+            >
+                <ArrowDown color="black" className="md:w-6 md:h-6 w-5 h-5 animate-pulse" />
+            </button>
         </div>
     );
 };
