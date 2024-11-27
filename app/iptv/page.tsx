@@ -1,5 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
+import { DefaultLayout } from '@/components/app/DefaultLayout';
+import { LoaderPinwheelIcon } from 'lucide-react';
 
 interface Channel {
     name: string;
@@ -39,35 +41,41 @@ const IPTVPage: React.FC = () => {
     }, {} as { [key: string]: Channel[] });
 
     return (
-        <div>
-            <input
-            type="text"
-            placeholder="Search channels..."
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-            />
-            {loading ? (
-            <div>Loading...</div>
-            ) : (
-            Object.keys(groupedChannels).map(group => (
-                <div key={group}>
-                <h2 onClick={() => setSelectedGroup(selectedGroup === group ? null : group)}>
-                    {group}
-                </h2>
-                {selectedGroup === group && (
+        <DefaultLayout>
+            <div className="min-h-screen p-6 sm:p-8 space-y-12 w-full">
+                <input
+                    type="text"
+                    placeholder="Rechercher une chaîne..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                />
+                {loading ? (
+                    <div className="flex justify-center items-center min-h-screen">
+                        <LoaderPinwheelIcon className="animate-spin h-16 w-16 text-gray-500" />
+                    </div>
+                ) : (
                     <div>
-                    {groupedChannels[group].map(channel => (
-                        <div key={channel.url}>
-                        <img src={channel.logo} alt={channel.name} height={120} width={120}/>
-                        <p>{channel.name}</p>
-                        </div>
-                    ))}
+                        {Object.keys(groupedChannels).map(group => (
+                            <div key={group} className="mb-8">
+                                <h2 className="text-2xl font-bold mb-4">{group}</h2>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                                    {groupedChannels[group].map(channel => (
+                                        <div key={channel.name} className="p-4 border border-gray-300 rounded-md shadow-md">
+                                            <img src={channel.logo} alt={channel.name} className="w-full h-32 object-contain mb-4" />
+                                            <h3 className="text-lg font-semibold">{channel.name}</h3>
+                                            <a href={channel.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                                                Regarder
+                                            </a>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 )}
-                </div>
-            ))
-            )}
-        </div>
+            </div>
+        </DefaultLayout>
     );
 };
 
