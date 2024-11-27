@@ -14,7 +14,6 @@ const IPTVPage: React.FC = () => {
     const [channels, setChannels] = useState<Channel[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
-    const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
 
     useEffect(() => {
         fetch('/api/playlist')
