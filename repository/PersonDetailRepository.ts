@@ -5,7 +5,7 @@ import { ShowDetail } from "@/app/entities/ShowDetail";
 const API_BASE_URL = "https://api.themoviedb.org/3";
 
 export class PersonDetailRepository {
-  private apiKey: string;
+  private readonly apiKey: string;
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;

@@ -9,12 +9,12 @@ export const usePersonDetail = (id: string, apiKey: string) => {
   const [movies, setMovies] = useState<MovieDetail[]>([]);
   const [tvShows, setTVShows] = useState<ShowDetail[]>([]);
   const [personImages, setPersonImages] = useState<{ file_path: string }[]>([]);
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPersonData = async () => {
-      setLoading(true);
+      setIsLoading(true);
       const repository = new PersonDetailRepository(apiKey);
       try {
         const [personData, moviesData, tvShowsData, imagesData] = await Promise.all([
@@ -32,7 +32,7 @@ export const usePersonDetail = (id: string, apiKey: string) => {
         console.error("Error fetching person data:", err);
         setError("An error occurred while fetching the data.");
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 

@@ -33,15 +33,15 @@ const PersonMovies = ({ movies }: { movies: MovieDetail[] }) => {
         <div className="flex items-center gap-4">
           <button
             onClick={scrollMoviesLeft}
-            className="bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            className="bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 scroll-snap-align-start"
             aria-label="Scroll left"
-            style={{ scrollSnapAlign: 'start' }}
+            type="button"
           >
             <ChevronLeftIcon className="h-7 w-7 text-gray-400" />
           </button>
           <div
             ref={moviesRef}
-            className="flex gap-16 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+            className="flex gap-16 overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-snap-x-mandatory"
             style={{ scrollSnapType: 'x mandatory' }}
           >
             {movies.map(
@@ -69,9 +69,9 @@ const PersonMovies = ({ movies }: { movies: MovieDetail[] }) => {
           </div>
           <button
             onClick={scrollMoviesRight}
-            className="bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            className="bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 scroll-snap-align-start"
             aria-label="Scroll right"
-            style={{ scrollSnapAlign: 'start' }}
+            type="button"
           >
             <ChevronRightIcon className="h-7 w-7 text-gray-400" />
           </button>
