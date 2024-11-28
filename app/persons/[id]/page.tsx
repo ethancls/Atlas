@@ -40,9 +40,9 @@ const PersonDetailPage = ({ params }: { params: { id: string } }) => {
       <div>
         <PersonHeader person={person} />
 
-        <PersonMovies movies={movies} />
-
         <hr className="border-gray-500 my-1 w-[92%] mx-auto" />
+
+        <PersonMovies movies={movies} />
 
         <PersonTVShows tvShows={tvShows} />
 

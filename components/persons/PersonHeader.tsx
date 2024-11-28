@@ -25,14 +25,13 @@ const PersonHeader = ({ person }: { person: Person }) => {
 
   return (
     <div className="flex-col gap-4 backdrop-blur-2xl pt-2 px-4 sm:px-6 md:px-18 pb-4 lg:pt-6 lg:px-20 lg:pb-8 overflow-hidden">
-      <div className="absolute top-4 left-6 z-30 p-0 rounded-lg shadow-md flex items-center justify-center bg-gray-100 dark:bg-[rgb(24,24,27)]">
+      <div className="absolute top-4 left-4 z-30 flex items-center gap-2 p-1 hover:bg-black/50 dark:hover:bg-white/50 rounded">
         <button
           onClick={() => router.back()}
           className="flex items-center justify-center w-full h-full"
           title="Go back"
         >
-          <ChevronLeftIcon className="h-7 w-7 text-gray-400" />
-          <span className="text-gray-400 font-medium"></span>
+          <ChevronLeftIcon className="h-7 w-7 text-black dark:text-white" />
         </button>
       </div>
 
@@ -52,10 +51,10 @@ const PersonHeader = ({ person }: { person: Person }) => {
             <Image
               src={`https://image.tmdb.org/t/p/original${person.profile_path}`}
               alt={person.name}
-              width={225}
-              height={350}
+              width={175}
+              height={275}
               quality={100}
-              className="rounded-lg shadow-lg shadow-black/50 w-[75px] md:w-[125px] lg:w-[200px] h-auto duration-300 ease-out hover:scale-105"
+              className="rounded-lg shadow-lg shadow-black/50 w-[65px] md:w-[110px] lg:w-[180px] h-auto duration-300 ease-out hover:scale-105"
               style={{ width: 'auto', height: 'auto' }}
             />
           </button>
