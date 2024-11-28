@@ -1,7 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useEffect, useState } from 'react';
-import { DefaultLayout } from '@/components/app/DefaultLayout';
-import { LoaderPinwheelIcon } from 'lucide-react';
+
+import React, { useEffect, useState } from "react";
+import { DefaultLayout } from "@/components/app/DefaultLayout";
+import "mpegts-video-element";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 
 interface Channel {
     name: string;
@@ -12,23 +15,25 @@ interface Channel {
 
 const IPTVPage: React.FC = () => {
     const [channels, setChannels] = useState<Channel[]>([]);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState("");
     const [loading, setLoading] = useState(true);
+    const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
+    const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
 
     useEffect(() => {
-        fetch('/api/playlist')
-            .then(response => response.json())
-            .then(data => {
+        fetch("/api/playlist")
+            .then((response) => response.json())
+            .then((data) => {
                 setChannels(data);
                 setLoading(false);
             })
-            .catch(error => {
-                console.error('Error fetching playlist:', error);
+            .catch((error) => {
+                console.error("Error fetching playlist:", error);
                 setLoading(false);
             });
     }, []);
 
-    const filteredChannels = channels.filter(channel =>
+    const filteredChannels = channels.filter((channel) =>
         channel.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -39,36 +44,106 @@ const IPTVPage: React.FC = () => {
         return groups;
     }, {} as { [key: string]: Channel[] });
 
+    const handleChannelClick = (channel: Channel) => {
+        setSelectedChannel(channel);
+    };
+
     return (
         <DefaultLayout>
             <div className="min-h-screen p-6 sm:p-8 space-y-12 w-full">
                 <input
                     type="text"
-                    placeholder="Rechercher une chaîne..."
+                    placeholder="Rechercher une chaîne, un film, une série..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-md"
                 />
+
+                {selectedChannel && (
+                    <div onClick={() => setSelectedChannel(null)} className="fixed inset-0 z-10 bg-transparent flex flex-col items-center justify-center p-4">
+                        {selectedChannel.url.endsWith(".mp4") ? (
+                            <video
+                                autoPlay
+                                controls
+                                src={selectedChannel.url}
+                                style={{
+                                    width: "100%",
+                                    maxWidth: "900px",
+                                    height: "auto",
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                            ></video>
+                        ) : selectedChannel.url.endsWith(".mkv") ? (
+                            <a
+                                href={selectedChannel.url}
+                                download
+                                className="dark:text-black text-white bg-black dark:bg-white font-bold py-4 px-8 rounded text-xl"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                Télécharger {selectedChannel.name}
+                            </a>
+                        ) : (
+                            <mpegts-video
+                                autoplay
+                                controls
+                                src={selectedChannel.url}
+                                style={{
+                                    width: "100%",
+                                    maxWidth: "900px",
+                                    height: "auto",
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                            ></mpegts-video>
+                        )}
+                    </div>
+                )}
+
                 {loading ? (
                     <div className="flex justify-center items-center min-h-screen">
-                        <LoaderPinwheelIcon className="animate-spin h-16 w-16 text-gray-500" />
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 dark:border-white border-black"></div>
                     </div>
                 ) : (
                     <div>
-                        {Object.keys(groupedChannels).map(group => (
+                        {Object.keys(groupedChannels).map((group) => (
                             <div key={group} className="mb-8">
-                                <h2 className="text-2xl font-bold mb-4">{group}</h2>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                                    {groupedChannels[group].map(channel => (
-                                        <div key={channel.name} className="p-4 border border-gray-300 rounded-md shadow-md">
-                                            <img src={channel.logo} alt={channel.name} className="w-full h-32 object-contain mb-4" />
-                                            <h3 className="text-lg font-semibold">{channel.name}</h3>
-                                            <a href={channel.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-                                                Regarder
-                                            </a>
-                                        </div>
-                                    ))}
-                                </div>
+                                <h2
+                                    className="text-2xl font-bold mb-4 cursor-pointer"
+                                    onClick={() =>
+                                        setSelectedGroup(
+                                            selectedGroup === group ? null : group
+                                        )
+                                    }
+                                >
+                                    {group}
+                                </h2>
+                                {selectedGroup === group && (
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+                                        {groupedChannels[group].map((channel) => (
+                                            channel.url && <Card
+                                                onClick={() => handleChannelClick(channel)}
+                                                key={channel.url}
+                                                className="w-full p-1 hover:opacity-90"
+                                            >
+                                                <CardHeader className="p-1 relative">
+                                                    <div className="cursor-pointer">
+                                                        <img
+                                                            src={channel.logo}
+                                                            alt={channel.name}
+                                                            className="w-full h-full top-0 left-0 object-cover rounded-lg"
+                                                        />
+                                                    </div>
+                                                </CardHeader>
+                                                <div className="cursor-pointer">
+                                                    <CardContent className="p-2">
+                                                        <h2 className="text-base font-bold text-left truncate">
+                                                            {channel.name}
+                                                        </h2>
+                                                    </CardContent>
+                                                </div>
+                                            </Card>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>

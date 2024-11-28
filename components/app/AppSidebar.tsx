@@ -1,5 +1,5 @@
 import icon from "@/public/movie.png"
-import { Atom, LoaderPinwheelIcon, LogOut, MedalIcon, PlayIcon, StarIcon, TrophyIcon } from "lucide-react"
+import { Atom, LoaderPinwheelIcon, LogOut, MedalIcon, PlayIcon, StarIcon, TrophyIcon, TvIcon } from "lucide-react"
 import Image from "next/image"
 import Link from 'next/link';
 
@@ -27,6 +27,11 @@ const items = [
     title: "Discover",
     url: "/discover",
     icon: Atom,
+  },
+  {
+    title: "Streaming",
+    url: "/iptv",
+    icon: TvIcon,
   }
 ]
 
