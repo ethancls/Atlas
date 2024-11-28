@@ -18,7 +18,7 @@ const parseM3U = (filePath: string): M3UEntry[] => {
         const line = lines[i].trim();
         if (line.startsWith('#EXTINF')) {
             const nameMatch = line.match(/tvg-name="([^"]*)"/);
-            const name = nameMatch ? nameMatch[1] : 'Unknown';
+            const name = nameMatch ? nameMatch[1].replace(/:/g, '') : 'Unknown';
             const logoMatch = line.match(/tvg-logo="([^"]*)"/);
             const logo = logoMatch ? logoMatch[1] : '';
             const groupMatch = line.match(/group-title="([^"]*)"/);

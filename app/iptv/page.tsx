@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { DefaultLayout } from "@/components/app/DefaultLayout";
+
 import "mpegts-video-element";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 
@@ -117,12 +117,12 @@ const IPTVPage: React.FC = () => {
                                     {group}
                                 </h2>
                                 {selectedGroup === group && (
-                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+                                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-6">
                                         {groupedChannels[group].map((channel) => (
                                             channel.url && <Card
                                                 onClick={() => handleChannelClick(channel)}
                                                 key={channel.url}
-                                                className="w-full p-1 hover:opacity-90"
+                                                className="w-full p-1 hover:opacity-90  bg-black rounded-lg"
                                             >
                                                 <CardHeader className="p-1 relative">
                                                     <div className="cursor-pointer">
@@ -131,15 +131,11 @@ const IPTVPage: React.FC = () => {
                                                             alt={channel.name}
                                                             className="w-full h-full top-0 left-0 object-cover rounded-lg"
                                                         />
+                                                        <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-80 text-white text-center text-xs p-1">
+                                                            {channel.name}
+                                                        </div>
                                                     </div>
                                                 </CardHeader>
-                                                <div className="cursor-pointer">
-                                                    <CardContent className="p-2">
-                                                        <h2 className="text-base font-bold text-left truncate">
-                                                            {channel.name}
-                                                        </h2>
-                                                    </CardContent>
-                                                </div>
                                             </Card>
                                         ))}
                                     </div>
