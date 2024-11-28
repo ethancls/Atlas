@@ -1,4 +1,3 @@
-// utils/handleKeyDown.ts
 export const handleKeyDown = (modal: HTMLDivElement) => {
   return (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
