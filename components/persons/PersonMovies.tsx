@@ -53,16 +53,14 @@ const PersonMovies = ({ movies }: { movies: MovieDetail[] }) => {
       <h2 className="text-xl font-semibold pb-10">Movies</h2>
       <div className="relative group">
         <div className="flex items-center gap-4">
-          {showLeftButton && (
-            <button
-              onClick={scrollMoviesLeft}
-              className="hidden md:block bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 scroll-snap-align-start"
-              aria-label="Scroll left"
-              type="button"
-            >
-              <ChevronLeftIcon className="h-7 w-7 text-gray-400" />
-            </button>
-          )}
+          <button
+            onClick={scrollMoviesLeft}
+            className={`md:block bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 scroll-snap-align-start ${showLeftButton ? 'visible' : 'invisible'}`}
+            aria-label="Scroll left"
+            type="button"
+          >
+            <ChevronLeftIcon className="h-7 w-7 text-gray-400" />
+          </button>
           <div
             ref={moviesRef}
             className="flex gap-16 overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-snap-x-mandatory"
@@ -91,16 +89,14 @@ const PersonMovies = ({ movies }: { movies: MovieDetail[] }) => {
                 )
             )}
           </div>
-          {showRightButton && (
-            <button
-              onClick={scrollMoviesRight}
-              className="hidden md:block bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 scroll-snap-align-start"
-              aria-label="Scroll right"
-              type="button"
-            >
-              <ChevronRightIcon className="h-7 w-7 text-gray-400" />
-            </button>
-          )}
+          <button
+            onClick={scrollMoviesRight}
+            className={`md:block bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 scroll-snap-align-start ${showRightButton ? 'visible' : 'invisible'}`}
+            aria-label="Scroll right"
+            type="button"
+          >
+            <ChevronRightIcon className="h-7 w-7 text-gray-400" />
+          </button>
         </div>
       </div>
     </div>
