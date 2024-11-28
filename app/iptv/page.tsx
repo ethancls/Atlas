@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { DefaultLayout } from "@/components/app/DefaultLayout";
 
 import "mpegts-video-element";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
+import Loading from "@/components/app/Loading";
 
 interface Channel {
     name: string;
@@ -99,9 +100,7 @@ const IPTVPage: React.FC = () => {
                 )}
 
                 {loading ? (
-                    <div className="flex justify-center items-center min-h-screen">
-                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 dark:border-white border-black"></div>
-                    </div>
+                    <Loading isLoading={true} />
                 ) : (
                     <div>
                         {Object.keys(groupedChannels).map((group) => (
@@ -117,7 +116,7 @@ const IPTVPage: React.FC = () => {
                                     {group}
                                 </h2>
                                 {selectedGroup === group && (
-                                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-6">
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
                                         {groupedChannels[group].map((channel) => (
                                             channel.url && <Card
                                                 onClick={() => handleChannelClick(channel)}

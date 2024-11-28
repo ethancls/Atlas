@@ -1,6 +1,7 @@
 import { Movie } from "@/app/entities/Movie";
 import { TVShow } from "@/app/entities/TVShow";
 import { MovieDetail } from "@/app/entities/MovieDetail";
+import { useQuery } from "react-query";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
 

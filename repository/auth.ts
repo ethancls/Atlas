@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 
 export const authOptions = {
-  // Configuration des fournisseurs
+
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -31,7 +31,7 @@ export const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/login", // Personnalisation de la page de connexion
+    signIn: "/login",
   },
   callbacks:{
     session({ session, token }: { session: Session; token: any;}) {

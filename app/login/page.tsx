@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import Loading from "@/components/app/Loading";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -16,11 +17,7 @@ export default function LoginPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  if (status === "loading") {
-    return <div className="flex justify-center items-center min-h-screen">
-      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white"></div>
-    </div>;
-  }
+  <Loading isLoading={status === "loading"} />
 
   if (session) {
     router.push("/discover");

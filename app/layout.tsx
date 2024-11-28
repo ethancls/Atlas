@@ -1,8 +1,9 @@
 "use client";
-import localFont from "next/font/local";
-import "./globals.css";
-import { ThemeProvider } from "@/components/app/ThemeProvider";
 import { SessionProvider } from "next-auth/react";
+import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
+import localFont from "next/font/local";
+import { useEffect } from "react";
+import "./globals.css";
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -15,6 +16,39 @@ const geistMono = localFont({
   weight: '100 900',
 });
 
+const FaviconUpdater = () => {
+  const { theme, resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    const updateFavicon = (theme: string) => {
+      const favicon = document.getElementById("favicon") as HTMLLinkElement;
+      if (favicon) {
+        favicon.href = theme === "dark" ? "/favicon-dark.ico" : "/favicon-light.ico";
+      }
+    };
+
+    if (resolvedTheme) {
+      updateFavicon(resolvedTheme);
+    }
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = (e: MediaQueryListEvent) => {
+      if (theme === "system") {
+        updateFavicon(e.matches ? "dark" : "light");
+      }
+    };
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
+  }, [theme, resolvedTheme]);
+
+  return null;
+};
+
+import { QueryClient, QueryClientProvider } from 'react-query';
+const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,
@@ -23,18 +57,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link id="favicon" rel="icon" href="/favicon-light.ico" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SessionProvider>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+          <NextThemesProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
           >
-          {children}
-        </ThemeProvider>
+            <QueryClientProvider client={queryClient}>
+              <FaviconUpdater />
+              {children}
+            </QueryClientProvider>
+          </NextThemesProvider>
         </SessionProvider>
       </body>
     </html>

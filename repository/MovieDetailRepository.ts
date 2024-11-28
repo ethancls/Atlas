@@ -49,7 +49,6 @@ export class MovieDetailRepository {
     }
     const data = await response.json();
 
-    // Process images (logos, backdrops, posters)
     return [
       ...data.backdrops.map((image: { file_path: string }) => ({
         type: "backdrop",
@@ -117,7 +116,7 @@ export class MovieDetailRepository {
     }
     return null;
   }
-
+  
   async fetchYoutubeTrailer(movie: Movie): Promise<string | null> {
     const youtubeResponse = await fetch(
       `/api/youtube?search=${encodeURIComponent(
