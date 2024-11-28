@@ -2,11 +2,13 @@ import { MovieDetail } from "@/app/entities/MovieDetail";
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 const PersonMovies = ({ movies }: { movies: MovieDetail[] }) => {
   const router = useRouter();
   const moviesRef = useRef<HTMLDivElement>(null);
+  const [showRightButton, setShowRightButton] = useState(true);
+  const [showLeftButton, setShowLeftButton] = useState(false);
 
   function scrollMoviesLeft() {
     if (moviesRef.current) {
@@ -26,19 +28,41 @@ const PersonMovies = ({ movies }: { movies: MovieDetail[] }) => {
     }
   }
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (moviesRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = moviesRef.current;
+        setShowRightButton(scrollLeft + clientWidth < scrollWidth);
+        setShowLeftButton(scrollLeft > 0);
+      }
+    };
+
+    if (moviesRef.current) {
+      moviesRef.current.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (moviesRef.current) {
+        moviesRef.current.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
   return (
     <div className="pt-0 px-4 sm:px-6 md:px-18 pb-8 lg:pt-6 lg:px-20 lg:pb-10">
       <h2 className="text-xl font-semibold pb-10">Movies</h2>
       <div className="relative group">
         <div className="flex items-center gap-4">
-          <button
-            onClick={scrollMoviesLeft}
-            className="bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 scroll-snap-align-start"
-            aria-label="Scroll left"
-            type="button"
-          >
-            <ChevronLeftIcon className="h-7 w-7 text-gray-400" />
-          </button>
+          {showLeftButton && (
+            <button
+              onClick={scrollMoviesLeft}
+              className="hidden md:block bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 scroll-snap-align-start"
+              aria-label="Scroll left"
+              type="button"
+            >
+              <ChevronLeftIcon className="h-7 w-7 text-gray-400" />
+            </button>
+          )}
           <div
             ref={moviesRef}
             className="flex gap-16 overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-snap-x-mandatory"
@@ -67,14 +91,16 @@ const PersonMovies = ({ movies }: { movies: MovieDetail[] }) => {
                 )
             )}
           </div>
-          <button
-            onClick={scrollMoviesRight}
-            className="bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 scroll-snap-align-start"
-            aria-label="Scroll right"
-            type="button"
-          >
-            <ChevronRightIcon className="h-7 w-7 text-gray-400" />
-          </button>
+          {showRightButton && (
+            <button
+              onClick={scrollMoviesRight}
+              className="hidden md:block bg-gray-100 dark:bg-[rgb(24,24,27)] p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 scroll-snap-align-start"
+              aria-label="Scroll right"
+              type="button"
+            >
+              <ChevronRightIcon className="h-7 w-7 text-gray-400" />
+            </button>
+          )}
         </div>
       </div>
     </div>
