@@ -27,7 +27,9 @@ const FaviconUpdater = () => {
       }
     };
 
-    updateFavicon(resolvedTheme);
+    if (resolvedTheme) {
+      updateFavicon(resolvedTheme);
+    }
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = (e: MediaQueryListEvent) => {
