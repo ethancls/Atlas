@@ -3,7 +3,7 @@
 import { PlayIcon } from 'lucide-react';
 import { DefaultLayout } from '@/components/app/DefaultLayout';
 import MovieList from '@/components/movies/MovieList';
-import { useMovie } from '@/hooks/useMovie';
+import { useMovie } from '@/app/movies/rules/useMovie';
 import Loading from '@/components/app/Loading';
 
 const NowPlaying = () => {

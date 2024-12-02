@@ -41,7 +41,7 @@ export class MovieDetailRepository {
   }
 
   async fetchMovieImages(id: string): Promise<ImageData[]> {
-    const response = await fetch(`${API_BASE_URL}/movie/${id}/images?include_image_language=en%2Cnull`, {
+    const response = await fetch(`${API_BASE_URL}/movie/${id}/images`, {
       headers: this.getHeaders(),
     });
     if (!response.ok) {
@@ -50,15 +50,24 @@ export class MovieDetailRepository {
     const data = await response.json();
 
     return [
-      ...data.backdrops.map((image: { file_path: string }) => ({
+      ...data.backdrops.filter(
+        (image: { iso_639_1: string }) =>
+          image.iso_639_1 === "en" || image.iso_639_1 === null
+      ).map((image: { file_path: string }) => ({
         type: "backdrop",
         file_path: image.file_path,
       })),
-      ...data.logos.map((image: { file_path: string }) => ({
+      ...data.logos.filter(
+        (image: { iso_639_1: string }) =>
+          image.iso_639_1 === "en" || image.iso_639_1 === null
+      ).map((image: { file_path: string }) => ({
         type: "logo",
         file_path: image.file_path,
       })),
-      ...data.posters.map((image: { file_path: string }) => ({
+      ...data.posters.filter(
+        (image: { iso_639_1: string }) =>
+          image.iso_639_1 === "en" || image.iso_639_1 === null
+      ).map((image: { file_path: string }) => ({
         type: "poster",
         file_path: image.file_path,
       })),

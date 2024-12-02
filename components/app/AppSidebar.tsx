@@ -1,5 +1,5 @@
 import icon from "@/public/movie.png"
-import { Atom, LoaderPinwheelIcon, LogOut, MedalIcon, PlayIcon, StarIcon, TrophyIcon, TvIcon } from "lucide-react"
+import { Atom, LoaderPinwheelIcon, LogOut, MedalIcon, PlayIcon, StarIcon, TrophyIcon, TvIcon, Users } from "lucide-react"
 import Image from "next/image"
 import Link from 'next/link';
 
@@ -19,7 +19,7 @@ import {
 
 import { signOut } from "next-auth/react"
 import { Button } from "../ui/button"
-import { PersonIcon } from "@radix-ui/react-icons"
+import { useEffect, useState } from "react";
 
 // Menu items.
 const items = [
@@ -75,7 +75,7 @@ const persons = [
   {
     title: "Popular",
     url: "/persons",
-    icon: PersonIcon,
+    icon: Users,
   },
   {
     title: "Favorites",
@@ -86,16 +86,49 @@ const persons = [
 
 export function AppSidebar() {
   const { state } = useSidebar();
+  const [type, setType] = useState<"icon" | "offcanvas" | "none">("icon");
+
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      const triggerZoneWidth = window.innerWidth / 20;
+      const triggerZoneHeight = 80;
+  
+      if (type === "offcanvas" && state === "collapsed") {
+        if (event.clientX < triggerZoneWidth && event.clientY > triggerZoneHeight) {
+          setType("icon");
+        }
+      } 
+
+      else if (type === "icon") {
+        if (event.clientX > triggerZoneWidth * 4) {
+          setType("offcanvas");
+        }
+      }
+    };
+  
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [state, type]); // Ajout de type dans les dépendances
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setType("offcanvas")
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [state]);
+
   return (
-    <Sidebar variant="floating" collapsible="icon">
+    <Sidebar variant="floating" collapsible={type}>
       <SidebarHeader>
         <div className="flex items-center space-x-4">
           <Image src={icon} alt="Logo" className="h-8 w-8 flex items-center justify-center" />
-            {state !== "collapsed" && (
+          {state !== "collapsed" && (
             <span className="text-xl font-bold">
               Atlas
             </span>
-            )}
+          )}
         </div>
       </SidebarHeader>
       <SidebarContent>

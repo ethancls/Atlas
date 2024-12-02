@@ -1,10 +1,98 @@
 [
   {
-    "id": 698687,
+    "id": 402431,
     "type": "movie",
-    "title": "Transformers One",
-    "posterPath": "/qbkAqmmEIZfrCO8ZQAuIuVMlWoV.jpg",
-    "releaseDate": "2024-09-11",
-    "voteAverage": 8.085
+    "title": "Wicked",
+    "posterPath": "/xDGbZ0JJ3mYaGKy4Nzd9Kph6M9L.jpg",
+    "releaseDate": "2024-11-20",
+    "voteAverage": 7.7
+  },
+  {
+    "id": 533535,
+    "type": "movie",
+    "title": "Deadpool & Wolverine",
+    "posterPath": "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
+    "releaseDate": "2024-07-24",
+    "voteAverage": 7.7
+  },
+  {
+    "id": 94605,
+    "type": "show",
+    "title": "Arcane",
+    "posterPath": "/abf8tHznhSvl9BAElD2cQeRr7do.jpg",
+    "releaseDate": "2021-11-06",
+    "voteAverage": 8.8
+  },
+  {
+    "id": 246,
+    "type": "show",
+    "title": "Avatar: The Last Airbender",
+    "posterPath": "/9RQhVb3r3mCMqYVhLoCu4EvuipP.jpg",
+    "releaseDate": "2005-02-21",
+    "voteAverage": 8.7
+  },
+  {
+    "id": 238,
+    "type": "movie",
+    "title": "The Godfather",
+    "posterPath": "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+    "releaseDate": "1972-03-14",
+    "voteAverage": 8.7
+  },
+  {
+    "id": 424,
+    "type": "movie",
+    "title": "Schindler's List",
+    "posterPath": "/sF1U4EUQS8YHUYjNl3pMGNIQyr0.jpg",
+    "releaseDate": "1993-12-15",
+    "voteAverage": 8.565
+  },
+  {
+    "id": 155,
+    "type": "movie",
+    "title": "The Dark Knight",
+    "posterPath": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+    "releaseDate": "2008-07-16",
+    "voteAverage": 8.516
+  },
+  {
+    "id": 13,
+    "type": "movie",
+    "title": "Forrest Gump",
+    "posterPath": "/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg",
+    "releaseDate": "1994-06-23",
+    "voteAverage": 8.5
+  },
+  {
+    "id": 1241982,
+    "type": "movie",
+    "title": "Moana 2",
+    "posterPath": "/yh64qw9mgXBvlaWDi7Q9tpUBAvH.jpg",
+    "releaseDate": "2024-11-27",
+    "voteAverage": 7.208
+  },
+  {
+    "id": 912649,
+    "type": "movie",
+    "title": "Venom: The Last Dance",
+    "posterPath": "/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
+    "releaseDate": "2024-10-22",
+    "voteAverage": 6.4
+  },
+  {
+    "id": 791042,
+    "type": "movie",
+    "title": "Levels",
+    "posterPath": "/2ZdnmSCPm3ZcLc0CcTYqRvoyJLE.jpg",
+    "releaseDate": "2024-11-01",
+    "voteAverage": 5.685
+  },
+  {
+    "id": 1184918,
+    "type": "movie",
+    "title": "The Wild Robot",
+    "posterPath": "/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg",
+    "releaseDate": "2024-09-12",
+    "voteAverage": 8.4
   }
 ]

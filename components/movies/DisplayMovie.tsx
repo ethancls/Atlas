@@ -3,7 +3,7 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Movie } from "@/app/entities/Movie";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { LucideTrash2, StarIcon } from "lucide-react";
+import { StarIcon } from "lucide-react";
 
 const handleAddToFavorites = async (movie: Movie) => {
   try {
@@ -68,7 +68,7 @@ const DisplayMovie = ({ movie }: { movie: Movie }) => {
     movie.poster_path &&
     <Card className="w-full p-1 hover:opacity-90 group">
       <CardHeader className="p-1 relative">
-        <div onClick={handleClick} className="cursor-pointer">
+        <div onClick={handleClick} className="cursor-pointer relative">
           <Image
             src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
             alt={movie.title}
@@ -77,37 +77,44 @@ const DisplayMovie = ({ movie }: { movie: Movie }) => {
             quality={100}
             className="w-full h-full top-0 left-0 object-cover rounded-lg"
           />
-        </div>
-      </CardHeader>
-      <div className="cursor-pointer">
-        <CardContent className="p-2">
-          <h2 className="text-base font-bold text-left truncate">{movie.title}</h2>
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">
-              {new Date(movie.release_date).getFullYear()}
-            </p>
-            <p className="text-sm text-violet-500">
-              ★ {movie.vote_average.toFixed(1)}
-            </p>
-          </div>
-          <div className="flex items-center justify-between transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+          <div className="absolute top-2 right-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
             {isFavorite ? (
               <button
-                onClick={() => { handleRemoveFromFavorites(movie); setIsFavorite(false); }}
-                className="flex items-center text-sm text-gray-500 cursor-pointer">
-                <LucideTrash2 className="h-4 w-4 mr-1" /> Remove
+                onClick={(e) => { 
+                  e.stopPropagation();
+                  handleRemoveFromFavorites(movie); 
+                  setIsFavorite(false); 
+                }}
+                className="p-1 rounded-full bg-black/50 hover:bg-black/70"
+              >
+                <StarIcon className="h-5 w-5 text-yellow-400" />
               </button>
             ) : (
-              <p
-                onClick={() => { handleAddToFavorites(movie); setIsFavorite(true); }}
-                className="flex items-center text-sm text-gray-500 cursor-pointer"
+              <button
+                onClick={(e) => { 
+                  e.stopPropagation();
+                  handleAddToFavorites(movie); 
+                  setIsFavorite(true); 
+                }}
+                className="p-1 rounded-full bg-black/50 hover:bg-black/70"
               >
-                <StarIcon className="h-4 w-4 mr-1" /> Add to Favorites
-              </p>
+                <StarIcon className="h-5 w-5 text-white" />
+              </button>
             )}
           </div>
-        </CardContent>
-      </div>
+        </div>
+      </CardHeader>
+      <CardContent className="p-2">
+        <h2 className="text-base font-bold text-left truncate">{movie.title}</h2>
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-gray-500">
+            {new Date(movie.release_date).getFullYear()}
+          </p>
+          <p className="text-sm text-violet-500">
+            ★ {movie.vote_average.toFixed(1)}
+          </p>
+        </div>
+      </CardContent>
     </Card>
   );
 };

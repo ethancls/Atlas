@@ -6,6 +6,7 @@ declare namespace JSX {
             src?: string;
             style?: React.CSSProperties;
             onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+            className?: string;
         };
     }
 }

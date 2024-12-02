@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeftIcon } from "lucide-react";
-import { useMovieDetail } from "@/hooks/useMovieDetail";
+import { useMovieDetail } from "@/app/movies/rules/useMovieDetail";
 import { useSession } from "next-auth/react";
 
 import TrailerPlayer from "@/components/movies/TrailerPlayer";
@@ -82,9 +82,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
             <MovieFooter movie={movie} certification={certification || "Not Rated"} />
 
         </div>
-
     );
-
 };
 
 export default MovieDetailPage;
