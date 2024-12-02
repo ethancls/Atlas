@@ -2,8 +2,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { DefaultLayout } from "@/components/app/DefaultLayout";
-
-import "mpegts-video-element";
 import { Card, CardHeader } from "@/components/ui/card";
 import Loading from "@/components/app/Loading";
 
@@ -22,6 +20,9 @@ const IPTVPage: React.FC = () => {
     const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
 
     useEffect(() => {
+        // Dynamically import mpegts-video-element only on client
+        import "mpegts-video-element";
+
         fetch("/api/playlist")
             .then((response) => response.json())
             .then((data) => {
