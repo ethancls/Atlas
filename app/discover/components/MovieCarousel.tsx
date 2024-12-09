@@ -43,6 +43,7 @@ const MovieCarousel = ({ movieDetails }: { movieDetails: MovieDetail[] }) => {
             left: carousel.scrollLeft + scrollAmount,
             behavior: "smooth"
         });
+        
     };
 
     return (

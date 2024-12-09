@@ -16,6 +16,8 @@ import { SeasonDetail } from "@/app/entities/SeasonDetail";
 import { ShowDetailRepository } from "@/repository/ShowDetailRepository";
 import ShowFooter from "@/components/shows/ShowFooter";
 import { useSession } from "next-auth/react";
+import { DefaultLayout } from "@/components/app/DefaultLayout";
+import ShowPosters from "@/components/shows/ShowPosters";
 
 const ShowDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -58,51 +60,55 @@ const ShowDetailPage = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="relative">
+    <DefaultLayout>
+      <div className="relative">
 
-      <TrailerPlayer
-        show={show}
-        images={images}
-        showTrailer={showTrailer}
-        certification="13+"
-        trailerLink={trailerLink}
-        setShowTrailer={setShowTrailer}
-      />
+        <TrailerPlayer
+          show={show}
+          images={images}
+          showTrailer={showTrailer}
+          certification="13+"
+          trailerLink={trailerLink}
+          setShowTrailer={setShowTrailer}
+        />
 
-      <button
-        onClick={() => router.back()}
-        className="absolute top-4 left-4 z-30 flex items-center gap-2 p-1 hover:bg-black/50 rounded"
-      >
-        <ChevronLeftIcon className="h-7 w-7 text-white" />
-      </button>
+        <button
+          onClick={() => router.back()}
+          className="absolute top-4 left-4 z-30 flex items-center gap-2 p-1 hover:bg-black/50 rounded"
+        >
+          <ChevronLeftIcon className="h-7 w-7 text-white" />
+        </button>
 
-      <AboutSection show={show} />
+        <AboutSection show={show} />
 
-      <hr className="border-gray-500 my-1 w-[95%] mx-auto" />
+        <hr className="border-gray-500 my-1 w-[95%] mx-auto" />
 
-      <SeasonsList
-        show={show}
-        seasons={seasons}
-        onSelectSeason={async (seasonNumber) => {
-          const repository = new ShowDetailRepository(imdbKey);
-          const seasonDetails = await repository.fetchSeasonDetails(id, seasonNumber);
-          setSelectedSeason(seasonDetails);
-        }}
-      />
+        <SeasonsList
+          show={show}
+          seasons={seasons}
+          onSelectSeason={async (seasonNumber) => {
+            const repository = new ShowDetailRepository(imdbKey);
+            const seasonDetails = await repository.fetchSeasonDetails(id, seasonNumber);
+            setSelectedSeason(seasonDetails);
+          }}
+        />
 
-      <SeasonDetails season={selectedSeason} show={show} />
+        <SeasonDetails season={selectedSeason} show={show} />
 
-      <Recommendations relatedShows={relatedShows} />
+        <Recommendations relatedShows={relatedShows} />
 
-      <ShowCast credits={credits} />
+        <ShowCast credits={credits} />
 
-      <ShowImages images={images} />
+        <ShowImages images={images} />
 
-      <hr className="border-gray-500 my-1 w-[95%] mx-auto" />
+        <ShowPosters images={images} />
 
-      <ShowFooter show={show} />
+        <hr className="border-gray-500 my-1 w-[95%] mx-auto" />
 
-    </div>
+        <ShowFooter show={show} />
+
+      </div>
+    </DefaultLayout>
   );
 };
 

@@ -1,14 +1,14 @@
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { ShowDetail } from "@/app/entities/ShowDetail";
+
 import React, { useRef, useState } from 'react';
+import Image from 'next/image';
+import { ImageData } from '@/app/entities/ImageData';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const Recommendations = ({ relatedShows }: { relatedShows: ShowDetail[] }) => {
+const MoviePosters = ({ images }: { images: ImageData[] }) => {
+
     const scrollRef = useRef<HTMLDivElement>(null);
     const [showLeftNav, setShowLeftNav] = useState(false);
     const [showRightNav, setShowRightNav] = useState(true);
-    const router = useRouter()
 
     const scroll = (direction: 'left' | 'right') => {
         if (scrollRef.current) {
@@ -31,8 +31,8 @@ const Recommendations = ({ relatedShows }: { relatedShows: ShowDetail[] }) => {
 
     return (
         <div>
-            {relatedShows.length > 0 && <div className="p-6 lg:p-12 relative">
-                <h2 className="text-2xl font-semibold mb-4">Recommended</h2>
+            {images.length > 0 && <div className="p-6 lg:p-12 relative">
+                <h2 className="text-xl font-semibold mb-4">Posters</h2>
 
                 {/* Left Navigation */}
                 {showLeftNav && (
@@ -54,11 +54,10 @@ const Recommendations = ({ relatedShows }: { relatedShows: ShowDetail[] }) => {
                     </button>
                 )}
 
-                {/* Movie List */}
                 <div
                     ref={scrollRef}
                     onScroll={handleScroll}
-                    className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-4 scroll-smooth"
+                    className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-6 scroll-smooth"
                     style={{
                         scrollSnapType: "x mandatory",
                         WebkitOverflowScrolling: "touch",
@@ -66,21 +65,33 @@ const Recommendations = ({ relatedShows }: { relatedShows: ShowDetail[] }) => {
                         scrollPaddingRight: "1.5rem"
                     }}
                 >
-                    {relatedShows.map((related) => (
-                        related.poster_path && (
-                            <div
-                                key={related.id}
-                                onClick={() => router.push(`/movies/${related.id}`)}
-                                className="flex-shrink-0 w-[150px] lg:w-[200px] snap-center ursor-pointer hover:opacity-80"
-                            >
-                                <Image
-                                    src={`https://image.tmdb.org/t/p/original${related.poster_path}`}
-                                    alt={related.name}
-                                    width={200}
-                                    height={225}
-                                    className="rounded-md shadow-md"
-                                />
-                            </div>)
+                    {images.filter(image => image.type === "poster").map((image) => (
+                        <div
+                            key={image.file_path}
+                            className="flex-shrink-0 w-[150px] lg:w-[200px] snap-center cursor-pointer hover:opacity-80"
+                            onClick={() => {
+                                const modal = document.createElement("div");
+                                modal.className = "fixed inset-0 z-50 flex items-center justify-center bg-black/80";
+                                modal.onclick = () => modal.remove();
+
+                                const img = document.createElement("img");
+                                img.src = `https://image.tmdb.org/t/p/original${image.file_path}`;
+                                img.className = "max-h-[80vh] max-w-[80vw] object-contain rounded-lg shadow-lg";
+
+                                modal.appendChild(img);
+                                document.body.appendChild(modal);
+                            }}
+                        >
+                            <Image
+                                src={`https://image.tmdb.org/t/p/original${image.file_path}`}
+                                alt="Movie poster"
+                                className="w-full h-auto rounded-lg shadow-md object-cover"
+                                loading="lazy"
+                                width={150}
+                                height={200}
+                                quality={100}
+                            />
+                        </div>
                     ))}
                 </div>
             </div>}
@@ -88,4 +99,4 @@ const Recommendations = ({ relatedShows }: { relatedShows: ShowDetail[] }) => {
     );
 };
 
-export default Recommendations;
+export default MoviePosters;

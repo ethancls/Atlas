@@ -13,6 +13,8 @@ import MovieCast from "@/components/movies/MovieCast";
 import MovieImages from "@/components/movies/MovieImages";
 import MovieFooter from "@/components/movies/MovieFooter";
 import Loading from "@/components/app/Loading";
+import MoviePosters from "@/components/movies/MoviePosters";
+import { DefaultLayout } from "@/components/app/DefaultLayout";
 
 const MovieDetailPage = ({ params }: { params: { id: string } }) => {
     const { id } = params;
@@ -49,6 +51,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
     }
 
     return (
+        <DefaultLayout>
         <div className="relative">
 
             <TrailerPlayer
@@ -77,11 +80,14 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
 
             <MovieImages images={images} />
 
+            <MoviePosters images={images} />
+
             <hr className="border-gray-500 my-1 w-[95%] mx-auto" />
 
             <MovieFooter movie={movie} certification={certification || "Not Rated"} />
 
         </div>
+        </DefaultLayout>
     );
 };
 

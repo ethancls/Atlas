@@ -2,7 +2,7 @@
 
 import { DefaultLayout } from "@/components/app/DefaultLayout";
 import Loading from "@/components/app/Loading";
-import MovieCarousel from "@/components/discover/MovieCarousel";
+import MovieCarousel from "@/app/discover/components/MovieCarousel";
 import MovieList from "@/components/movies/MovieList";
 import TVShowList from "@/components/shows/TVShowList";
 import { useDiscover } from "@/app/discover/rules/useDiscover";

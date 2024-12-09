@@ -14,9 +14,9 @@ const About: React.FC<AboutProps> = ({ movie}) => {
         <div className="p-6 lg:p-12">
             {/* About */}
             <h2 className="text-xl font-bold mb-6">About</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-5 gap-6">
                 {/* Main Section */}
-                <div className="p-4 rounded-lg shadow-lg col-span-1 md:col-span-2">
+                <div className="p-4 rounded-lg border border-slate-300 col-span-3 lg:col-span-4">
                     <h3 className="text-lg font-semibold">{movie.title}</h3>
                     <p className="text-xs text-gray-400 font-black uppercase">
                         {movie.genres.map((genre) => genre.name).join(", ")}
@@ -25,7 +25,7 @@ const About: React.FC<AboutProps> = ({ movie}) => {
                 </div>
 
                 {/* Tomatometer */}
-                <div className="p-4 rounded-lg shadow-lg w-full md:w-64">
+                <div className="p-4 rounded-lg border border-slate-300 col-span-2 lg:col-span-1">
                     <h3 className="text-lg font-semibold flex items-center gap-1">
                         <Image
                             src={movie.vote_average > 5 ? rotten : splash}
