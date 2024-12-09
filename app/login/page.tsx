@@ -27,14 +27,18 @@ export default function LoginPage() {
     const handleLogin = async (e: React.FormEvent) => {
       e.preventDefault();
 
+      const params = new URLSearchParams(window.location.search);
+      const callbackUrl = params.get('callbackUrl') || '/discover'; // fallback à /discover si pas de callback    
+
       const res = await signIn("credentials", {
-        redirect: false,
+        redirect: true,
         username,
         password,
+        callbackUrl
       });
 
       if (res?.ok) {
-        router.push("/discover"); // Redirige l'utilisateur après une connexion réussie
+        console.log("Logged in");
       } else {
         setError("Invalid username or password");
       }
