@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import Loading from "@/components/app/Loading";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -16,11 +17,7 @@ export default function LoginPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  if (status === "loading") {
-    return <div className="flex justify-center items-center min-h-screen">
-      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white"></div>
-    </div>;
-  }
+  <Loading isLoading={status === "loading"} />
 
   if (session) {
     router.push("/discover");
@@ -30,14 +27,18 @@ export default function LoginPage() {
     const handleLogin = async (e: React.FormEvent) => {
       e.preventDefault();
 
+      const params = new URLSearchParams(window.location.search);
+      const callbackUrl = params.get('callbackUrl') || '/discover'; // fallback à /discover si pas de callback    
+
       const res = await signIn("credentials", {
-        redirect: false,
+        redirect: true,
         username,
         password,
+        callbackUrl
       });
 
       if (res?.ok) {
-        router.push("/discover"); // Redirige l'utilisateur après une connexion réussie
+        console.log("Logged in");
       } else {
         setError("Invalid username or password");
       }
@@ -102,7 +103,7 @@ export default function LoginPage() {
             {error && <p className="text-red-500">{error}</p>}
             <div className="mt-4 text-center text-sm">
               Don&lsquo;t have an account ?{" "}
-              <Link href="/login" className="underline">
+              <Link href="/register" className="underline">
                 Sign up
               </Link>
             </div>

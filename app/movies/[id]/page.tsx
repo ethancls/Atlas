@@ -1,8 +1,10 @@
 
 "use client";
 
-import { useMovieDetail } from "@/hooks/useMovieDetail";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ChevronLeftIcon } from "lucide-react";
+import { useMovieDetail } from "@/app/movies/rules/useMovieDetail";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -10,9 +12,9 @@ import { useEffect, useState } from "react";
 import About from "@/components/movies/AboutSection";
 import MovieCast from "@/components/movies/MovieCast";
 import MovieFooter from "@/components/movies/MovieFooter";
-import MovieImages from "@/components/movies/MovieImages";
-import Recommendations from "@/components/movies/Recommendations";
-import TrailerPlayer from "@/components/movies/TrailerPlayer";
+import Loading from "@/components/app/Loading";
+import MoviePosters from "@/components/movies/MoviePosters";
+import { DefaultLayout } from "@/components/app/DefaultLayout";
 
 const MovieDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -25,7 +27,7 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
     images,
     relatedMovies,
     certification,
-    isloading,
+    isLoading,
     error,
     trailerLink
   } = useMovieDetail(id, imdbKey);
@@ -38,23 +40,18 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
     return () => clearTimeout(timeout);
   }, [trailerLink]);
 
-  if (isloading) {
+  <Loading isLoading={isLoading} />
+
+  if (error || !movie) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 dark:border-white border-black"></div>
+        <p className="text-red-500">{error as string}</p>
       </div>
     );
-  } else {
+  }
 
-    if (error || !movie) {
-      return (
-        <div className="flex justify-center items-center min-h-screen">
-          <p className="text-red-500">{error}</p>
-        </div>
-      );
-    }
-
-    return (
+  return (
+    <DefaultLayout>
       <div className="relative">
 
         <TrailerPlayer
@@ -83,14 +80,15 @@ const MovieDetailPage = ({ params }: { params: { id: string } }) => {
 
         <MovieImages images={images} />
 
+        <MoviePosters images={images} />
+
         <hr className="border-gray-500 my-1 w-[95%] mx-auto" />
 
         <MovieFooter movie={movie} certification={certification || "Not Rated"} />
 
       </div>
-
-    );
-  }
+    </DefaultLayout>
+  );
 };
 
 export default MovieDetailPage;

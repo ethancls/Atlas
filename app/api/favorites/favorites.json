@@ -1,59 +1,75 @@
 [
   {
-    "id": 236594,
-    "type": "show",
-    "title": "Big Brother: Late & Live",
-    "posterPath": "/4neSwqJjJLtK6Zuqpx5j70z5CPs.jpg",
-    "releaseDate": "2023-10-08",
-    "voteAverage": 4.2
-  },
-  {
-    "id": 94722,
-    "type": "show",
-    "title": "Tagesschau",
-    "posterPath": "/7dFZJ2ZJJdcmkp05B9NWlqTJ5tq.jpg",
-    "releaseDate": "1952-12-26",
-    "voteAverage": 6.739
-  },
-  {
-    "id": 81329,
-    "type": "show",
-    "title": "Chronicles of the Sun",
-    "posterPath": "/t6jVlbPMtZOJoAOfeoR4yQmnjXM.jpg",
-    "releaseDate": "2018-08-27",
-    "voteAverage": 7
-  },
-  {
-    "id": 933260,
+    "id": 402431,
     "type": "movie",
-    "title": "The Substance",
-    "posterPath": "/lqoMzCcZYEFK729d6qzt349fB4o.jpg",
-    "releaseDate": "2024-09-07",
-    "voteAverage": 7.3
+    "title": "Wicked",
+    "posterPath": "/xDGbZ0JJ3mYaGKy4Nzd9Kph6M9L.jpg",
+    "releaseDate": "2024-11-20",
+    "voteAverage": 7.7
   },
   {
-    "id": 1184918,
+    "id": 533535,
     "type": "movie",
-    "title": "The Wild Robot",
-    "posterPath": "/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg",
-    "releaseDate": "2024-09-12",
+    "title": "Deadpool & Wolverine",
+    "posterPath": "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
+    "releaseDate": "2024-07-24",
+    "voteAverage": 7.7
+  },
+  {
+    "id": 94605,
+    "type": "show",
+    "title": "Arcane",
+    "posterPath": "/abf8tHznhSvl9BAElD2cQeRr7do.jpg",
+    "releaseDate": "2021-11-06",
+    "voteAverage": 8.8
+  },
+  {
+    "id": 246,
+    "type": "show",
+    "title": "Avatar: The Last Airbender",
+    "posterPath": "/9RQhVb3r3mCMqYVhLoCu4EvuipP.jpg",
+    "releaseDate": "2005-02-21",
+    "voteAverage": 8.7
+  },
+  {
+    "id": 238,
+    "type": "movie",
+    "title": "The Godfather",
+    "posterPath": "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+    "releaseDate": "1972-03-14",
+    "voteAverage": 8.7
+  },
+  {
+    "id": 424,
+    "type": "movie",
+    "title": "Schindler's List",
+    "posterPath": "/sF1U4EUQS8YHUYjNl3pMGNIQyr0.jpg",
+    "releaseDate": "1993-12-15",
+    "voteAverage": 8.565
+  },
+  {
+    "id": 155,
+    "type": "movie",
+    "title": "The Dark Knight",
+    "posterPath": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+    "releaseDate": "2008-07-16",
+    "voteAverage": 8.516
+  },
+  {
+    "id": 13,
+    "type": "movie",
+    "title": "Forrest Gump",
+    "posterPath": "/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg",
+    "releaseDate": "1994-06-23",
     "voteAverage": 8.5
   },
   {
-    "id": 82708,
-    "type": "show",
-    "title": "The First Years",
-    "posterPath": "/klPqN1oITjVub0Yss0Kqnx8NfY3.jpg",
-    "releaseDate": "2014-05-26",
-    "voteAverage": 4.6
-  },
-  {
-    "id": 1034541,
+    "id": 1241982,
     "type": "movie",
-    "title": "Terrifier 3",
-    "posterPath": "/63xYQj1BwRFielxsBDXvHIJyXVm.jpg",
-    "releaseDate": "2024-10-09",
-    "voteAverage": 7.308
+    "title": "Moana 2",
+    "posterPath": "/yh64qw9mgXBvlaWDi7Q9tpUBAvH.jpg",
+    "releaseDate": "2024-11-27",
+    "voteAverage": 7.208
   },
   {
     "id": 912649,
@@ -64,19 +80,27 @@
     "voteAverage": 6.4
   },
   {
-    "id": 945961,
+    "id": 791042,
     "type": "movie",
-    "title": "Alien: Romulus",
-    "posterPath": "/b33nnKl1GSFbao4l3fZDDqsMx0F.jpg",
-    "releaseDate": "2024-08-13",
-    "voteAverage": 7.254
+    "title": "Levels",
+    "posterPath": "/2ZdnmSCPm3ZcLc0CcTYqRvoyJLE.jpg",
+    "releaseDate": "2024-11-01",
+    "voteAverage": 5.685
   },
   {
-    "id": 335983,
+    "id": 1184918,
     "type": "movie",
-    "title": "Venom",
-    "posterPath": "/2uNW4WbgBXL25BAbXGLnLqX71Sw.jpg",
-    "releaseDate": "2018-09-28",
-    "voteAverage": 6.835
+    "title": "The Wild Robot",
+    "posterPath": "/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg",
+    "releaseDate": "2024-09-12",
+    "voteAverage": 8.4
+  },
+  {
+    "id": 1299652,
+    "type": "movie",
+    "title": "Watchmen: Chapter II",
+    "posterPath": "/4rBObJFpiWJOG7aIlRrOUniAkBs.jpg",
+    "releaseDate": "2024-11-25",
+    "voteAverage": 7.7
   }
 ]

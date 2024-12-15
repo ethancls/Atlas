@@ -47,6 +47,9 @@ const FaviconUpdater = () => {
   return null;
 };
 
+import { QueryClient, QueryClientProvider } from 'react-query';
+const queryClient = new QueryClient();
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -67,8 +70,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <FaviconUpdater />
-            {children}
+            <QueryClientProvider client={queryClient}>
+
+              <FaviconUpdater />
+              {children}
+            </QueryClientProvider>
           </NextThemesProvider>
         </SessionProvider>
       </body>

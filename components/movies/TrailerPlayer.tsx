@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { Pause, Play, Volume2, VolumeX } from "lucide-react";
-import { useState } from "react";
+import { ArrowDown, Pause, Play, Volume2, VolumeX } from "lucide-react";
+import { useEffect, useState } from "react";
 import { MovieDetail } from "@/app/entities/MovieDetail";
 import { ImageData } from "@/app/entities/ImageData";
 
@@ -50,6 +50,22 @@ const TrailerPlayer = ({
             setIsMuted(!isMuted);
         }
     };
+
+    const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetch(`/api/download?search=${movie.title}%20${new Date(movie.release_date).getFullYear()}`)
+            .then(response => response.json())
+            .then(data => data[0])
+            .then(data => {
+                if (data?.url) {
+                    setDownloadUrl(data.url);
+                }
+            })
+            .catch(() => {
+                setDownloadUrl(null);
+            });
+    }, [movie.title, movie.release_date]);
 
     return (
         <div className="relative w-full h-[100vh]">
@@ -158,6 +174,15 @@ const TrailerPlayer = ({
                     <div className="flex items-center border text-xs border-gray-400 rounded px-1">AD</div>
                 </div>
             </div>
+
+            {downloadUrl && (
+                <button
+                    onClick={() => window.open(downloadUrl)}
+                    className="absolute bottom-20 right-10 z-30 p-2 bg-white rounded md:bottom-6 md:right-6 transition hover:scale-105"
+                >
+                    <ArrowDown color="black" className="md:w-6 md:h-6 w-5 h-5 animate-pulse" />
+                </button>
+            )}
         </div>
     );
 };

@@ -49,7 +49,6 @@ export class MovieDetailRepository {
     }
     const data = await response.json();
 
-    // Process images (logos, backdrops, posters)
     return [
       ...data.backdrops.filter(
         (image: { iso_639_1: string }) =>
@@ -126,11 +125,11 @@ export class MovieDetailRepository {
     }
     return null;
   }
-
+  
   async fetchYoutubeTrailer(movie: Movie): Promise<string | null> {
     const youtubeResponse = await fetch(
       `/api/youtube?search=${encodeURIComponent(
-        movie.title + new Date(movie.release_date).getFullYear() + " 4k trailer official movie"
+        movie.title + new Date(movie.release_date).getFullYear() + " 4k movie trailer official"
       )}`
     );
 

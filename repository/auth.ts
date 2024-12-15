@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 
 export const authOptions = {
-  // Configuration des fournisseurs
+
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -29,8 +29,10 @@ export const authOptions = {
   session: {
     strategy: "jwt" as const,
   },
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/login", // Personnalisation de la page de connexion
+    signIn: "/login",
+    signOut: "/login",
   },
   callbacks:{
     session({ session, token }: { session: Session; token: any;}) {
@@ -43,8 +45,7 @@ export const authOptions = {
       }
       return token;
     }
-  },
-  secret: process.env.NEXTAUTH_SECRET,
+  }
 };
 
 export default NextAuth(authOptions);

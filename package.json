@@ -2,11 +2,14 @@
   "name": "atlas",
   "version": "1.0",
   "private": true,
+  "homepage": "https://ethancls.github.io/Atlas",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",
@@ -24,7 +27,9 @@
     "better-sqlite3": "^11.5.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "hls.js": "^1.5.17",
     "lucide-react": "^0.454.0",
+    "mpegts-video-element": "^0.2.3",
     "next": "14.2.16",
     "next-auth": "^4.24.10",
     "next-themes": "^0.4.3",
@@ -32,13 +37,15 @@
     "react-circular-progress": "^0.1.2",
     "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18",
+    "react-query": "^3.39.3",
     "react-responsive-carousel": "^3.2.23",
     "recharts": "^2.13.3",
     "sharp": "^0.33.5",
     "sqlite3": "^5.1.7",
     "styled-jsx": "^5.1.6",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "video.js": "^8.19.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -52,7 +59,7 @@
     "gh-pages": "^6.2.0",
     "html-loader": "^5.1.0",
     "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^3.4.15",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   }
