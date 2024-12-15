@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -6,11 +5,12 @@ import { useRouter } from "next/navigation";
 import { ChevronLeftIcon } from "lucide-react";
 import { useMovieDetail } from "@/app/movies/rules/useMovieDetail";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
+import TrailerPlayer from "@/components/movies/TrailerPlayer";
 import About from "@/components/movies/AboutSection";
+import Recommendations from "@/components/movies/Recommendations";
 import MovieCast from "@/components/movies/MovieCast";
+import MovieImages from "@/components/movies/MovieImages";
 import MovieFooter from "@/components/movies/MovieFooter";
 import Loading from "@/components/app/Loading";
 import MoviePosters from "@/components/movies/MoviePosters";

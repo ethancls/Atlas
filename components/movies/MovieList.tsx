@@ -71,7 +71,7 @@ const MovieList = ({ movies }: { movies: Movie[] }) => {
             <DisplayMovie movie={movie} />
           </div>
         ))}
-      </ScrollContainer>
+      </div>
     </div>
   );
 };
