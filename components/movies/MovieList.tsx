@@ -30,11 +30,11 @@ const MovieList = ({ movies }: { movies: Movie[] }) => {
   return (
     <div className="p-6 lg:p-12 relative">
       <h2 className="text-2xl font-semibold mb-4">Movies</h2>
-      
+
       {/* Left Navigation */}
       {showLeftNav && (
-        <button 
-          onClick={() => scroll('left')} 
+        <button
+          onClick={() => scroll('left')}
           className="absolute left-20 top-1/2 transform -translate-y-1/2 z-10 bg-black/50 rounded-lg p-2 hover:bg-black/70 transition-all duration-300 ease-in-out"
         >
           <ChevronLeft className="text-white" />
@@ -43,8 +43,8 @@ const MovieList = ({ movies }: { movies: Movie[] }) => {
 
       {/* Right Navigation */}
       {showRightNav && (
-        <button 
-          onClick={() => scroll('right')} 
+        <button
+          onClick={() => scroll('right')}
           className="absolute right-20 top-1/2 transform -translate-y-1/2 z-10 bg-black/50 rounded-lg p-2 hover:bg-black/70 transition-all duration-300 ease-in-out"
         >
           <ChevronRight className="text-white" />
@@ -52,10 +52,10 @@ const MovieList = ({ movies }: { movies: Movie[] }) => {
       )}
 
       {/* Movie List */}
-      <div 
+      <div
         ref={scrollRef}
         onScroll={handleScroll}
-        className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-6 scroll-smooth" 
+        className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-6 scroll-smooth"
         style={{
           scrollSnapType: "x mandatory",
           WebkitOverflowScrolling: "touch",
@@ -64,8 +64,8 @@ const MovieList = ({ movies }: { movies: Movie[] }) => {
         }}
       >
         {movies.map((movie) => (
-          <div 
-            key={movie.id} 
+          <div
+            key={movie.id}
             className="flex-shrink-0 w-[150px] md:w-[200px] lg:w-[250px] snap-center"
           >
             <DisplayMovie movie={movie} />

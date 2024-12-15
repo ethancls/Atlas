@@ -71,7 +71,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <QueryClientProvider client={queryClient}>
-            
+
               <FaviconUpdater />
               {children}
             </QueryClientProvider>
