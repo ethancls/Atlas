@@ -51,11 +51,11 @@ const PersonHeader = ({ person }: { person: Person }) => {
             <Image
               src={`https://image.tmdb.org/t/p/original${person.profile_path}`}
               alt={person.name}
-              width={175}
-              height={275}
+              width={260}
+              height={390}
               quality={100}
-              className="rounded-lg shadow-lg shadow-black/50 w-[65px] md:w-[110px] lg:w-[180px] h-auto duration-300 ease-out hover:scale-105"
-              style={{ width: 'auto', height: 'auto' }}
+              className="rounded-lg shadow-lg shadow-black/50 w-[200px] h-[300px] duration-300 ease-out hover:scale-105"
+              style={{ width: '200px', height: '300px' }}
             />
           </button>
         </div>
