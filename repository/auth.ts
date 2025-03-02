@@ -14,11 +14,7 @@ export const authOptions = {
       async authorize(credentials) {
         console.log("Credentials:", credentials);
         const { username, password } = credentials || {};
-        if (username === "admin" && password === "admin") {
-          return { id: "1", name: "Admin User", imdbKey: process.env.TMDB_KEY };
-        }
-        console.error("Invalid credentials");
-        return null;
+        return { id: "1", name: "everyone", imdbKey: process.env.TMDB_KEY };
       },
     }),
     GitHubProvider({
@@ -31,8 +27,8 @@ export const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/login",
-    signOut: "/login",
+    signIn: "/discover",
+    signOut: "/discover",
   },
   callbacks:{
     session({ session, token }: { session: Session; token: any;}) {
