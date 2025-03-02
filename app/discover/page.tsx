@@ -8,7 +8,7 @@ import TVShowList from "@/components/shows/TVShowList";
 import { useDiscover } from "@/app/discover/rules/useDiscover";
 
 const Discover = () => {
-  const imdbKey = process.env.TMDB_KEY || '';
+  const imdbKey = process.env.NEXT_PUBLIC_TMDB_KEY || '';
   const { movies, shows, movieDetail, error, isLoading } = useDiscover(imdbKey);
 
   if (error) {

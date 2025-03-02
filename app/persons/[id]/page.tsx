@@ -9,7 +9,7 @@ import { usePersonDetail } from "@/hooks/usePersonDetail";
 const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
-  const imdbKey = process.env.TMDB_KEY || '';
+  const imdbKey = process.env.NEXT_PUBLIC_TMDB_KEY || '';
 
   const {
     person,

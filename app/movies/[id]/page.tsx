@@ -18,7 +18,7 @@ import { DefaultLayout } from "@/components/app/DefaultLayout";
 const MovieDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const router = useRouter();
-  const imdbKey = process.env.TMDB_KEY || '';
+  const imdbKey = process.env.NEXT_PUBLIC_TMDB_KEY || '';
 
   const {
     movie,

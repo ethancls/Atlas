@@ -1,5 +1,4 @@
 "use client";
-import { SessionProvider } from "next-auth/react";
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
 import localFont from "next/font/local";
 import { useEffect } from "react";
@@ -63,20 +62,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SessionProvider>
-          <NextThemesProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <QueryClientProvider client={queryClient}>
+        <NextThemesProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <QueryClientProvider client={queryClient}>
 
-              <FaviconUpdater />
-              {children}
-            </QueryClientProvider>
-          </NextThemesProvider>
-        </SessionProvider>
+            <FaviconUpdater />
+            {children}
+          </QueryClientProvider>
+        </NextThemesProvider>
+
       </body>
     </html>
   );

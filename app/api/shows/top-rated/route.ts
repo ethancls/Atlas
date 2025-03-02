@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
 
-    const imdbKey = process.env.TMDB_KEY;
+    const imdbKey = process.env.NEXT_PUBLIC_TMDB_KEY || '';
 
     const response = await fetch(`https://api.themoviedb.org/3/tv/top_rated`, {
       headers: {

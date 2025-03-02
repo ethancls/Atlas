@@ -7,7 +7,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
 
-    const imdbKey = process.env.TMDB_KEY;
+    const imdbKey = process.env.NEXT_PUBLIC_TMDB_KEY || '';
 
     const response_movies = await fetch(`https://api.themoviedb.org/3/discover/movie`, {
       headers: {
