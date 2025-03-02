@@ -17,7 +17,7 @@ const Popular = () => {
 
                 const response = await fetch(`https://api.themoviedb.org/3/trending/person/week`, {
                     headers: {
-                        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+                        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_TMDB_KEY}`,
                         'Accept': 'application/json',
                     },
                 });
