@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeftIcon } from "lucide-react";
 import { useMovieDetail } from "@/app/movies/rules/useMovieDetail";
-import { useSession } from "next-auth/react";
 
 import TrailerPlayer from "@/components/movies/TrailerPlayer";
 import About from "@/components/movies/AboutSection";
@@ -19,8 +18,8 @@ import { DefaultLayout } from "@/components/app/DefaultLayout";
 const MovieDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const router = useRouter();
-  const session = useSession() as unknown as { data: { imdbKey: string } };
-  const imdbKey = session.data?.imdbKey;
+  const imdbKey = process.env.TMDB_KEY || '';
+
   const {
     movie,
     credits,

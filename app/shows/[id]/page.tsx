@@ -15,15 +15,14 @@ import Loading from "@/components/app/Loading";
 import { SeasonDetail } from "@/app/entities/SeasonDetail";
 import { ShowDetailRepository } from "@/repository/ShowDetailRepository";
 import ShowFooter from "@/components/shows/ShowFooter";
-import { useSession } from "next-auth/react";
 import { DefaultLayout } from "@/components/app/DefaultLayout";
 import ShowPosters from "@/components/shows/ShowPosters";
 
 const ShowDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const router = useRouter();
-  const session = useSession() as unknown as { data: { imdbKey: string } };
-  const imdbKey = session.data?.imdbKey;
+  const imdbKey = process.env.TMDB_KEY || '';
+
 
   const {
     show,

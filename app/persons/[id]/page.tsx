@@ -5,12 +5,12 @@ import PersonImages from "@/components/persons/PersonImages";
 import PersonMovies from "@/components/persons/PersonMovies";
 import PersonTVShows from "@/components/persons/PersonTVShows";
 import { usePersonDetail } from "@/hooks/usePersonDetail";
-import { useSession } from "next-auth/react";
 
 const PersonDetailPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  const session = useSession() as unknown as { data: { imdbKey: string } };
-  const imdbKey = session.data?.imdbKey;
+
+  const imdbKey = process.env.TMDB_KEY || '';
+
   const {
     person,
     movies,

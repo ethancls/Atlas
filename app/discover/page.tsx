@@ -6,11 +6,9 @@ import MovieCarousel from "@/app/discover/components/MovieCarousel";
 import MovieList from "@/components/movies/MovieList";
 import TVShowList from "@/components/shows/TVShowList";
 import { useDiscover } from "@/app/discover/rules/useDiscover";
-import { useSession } from "next-auth/react";
 
 const Discover = () => {
-  const session = useSession() as unknown as { data: { imdbKey: string } };
-  const imdbKey = session.data?.imdbKey;
+  const imdbKey = process.env.TMDB_KEY || '';
   const { movies, shows, movieDetail, error, isLoading } = useDiscover(imdbKey);
 
   if (error) {
