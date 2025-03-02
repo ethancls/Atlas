@@ -1,17 +1,12 @@
 export const dynamic = 'force-dynamic';
 
 import { Movie } from "@/app/entities/Movie";
-import { authOptions } from "@/repository/auth";
-import { Session } from "inspector";
-import { getServerSession } from "next-auth";
 import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
 
-    const session = await getServerSession(authOptions) as Session & { imdbKey: string };
-
-    const imdbKey = session.imdbKey;
+    const imdbKey = process.env.TMDB_KEY;
 
     const response = await fetch(`https://api.themoviedb.org/3/movie/popular`, {
       headers: {

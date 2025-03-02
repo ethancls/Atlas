@@ -3,16 +3,11 @@ export const dynamic = 'force-dynamic';
 import { Movie } from "@/app/entities/Movie";
 import { TVShow } from "@/app/entities/TVShow";
 import { NextResponse } from 'next/server';
-import { getServerSession } from "next-auth/next";
-import { Session } from "next-auth";
-import { authOptions } from "@/repository/auth";
 
 export async function GET() {
   try {
 
-    const session = await getServerSession(authOptions) as Session & { imdbKey: string };
-
-    const imdbKey = session.imdbKey;
+    const imdbKey = process.env.TMDB_KEY;
 
     const response_movies = await fetch(`https://api.themoviedb.org/3/discover/movie`, {
       headers: {
