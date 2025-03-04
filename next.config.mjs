@@ -7,7 +7,15 @@ const nextConfig = {
                 hostname: 'image.tmdb.org',
             },
         ],
-        unoptimized: true,
+    },
+    async redirects() {
+        return [
+            {
+                source: "/",
+                destination: "/discover",
+                permanent: true,
+            },
+        ];
     },
 };
 
