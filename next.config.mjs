@@ -8,16 +8,6 @@ const nextConfig = {
             },
         ],
     },
-    async redirects() {
-        return [
-            {
-                source: "/",
-                destination: "/discover",
-                permanent: true,
-            },
-        ];
-    },
-    sitemap: "https://atlas.ethancls.com/sitemap.xml",
 };
 
 export default nextConfig;

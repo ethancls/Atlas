@@ -2,10 +2,10 @@
 
 import { DefaultLayout } from "@/components/app/DefaultLayout";
 import Loading from "@/components/app/Loading";
-import MovieCarousel from "@/app/discover/components/MovieCarousel";
+import MovieCarousel from "@/components/MovieCarousel";
 import MovieList from "@/components/movies/MovieList";
 import TVShowList from "@/components/shows/TVShowList";
-import { useDiscover } from "@/app/discover/rules/useDiscover";
+import { useDiscover } from "@/app/rules/useDiscover";
 
 const Discover = () => {
   const imdbKey = process.env.NEXT_PUBLIC_TMDB_KEY || '';
