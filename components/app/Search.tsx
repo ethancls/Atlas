@@ -14,7 +14,7 @@ export const MultiSearch = ({ query }: { query: string }) => {
   useEffect(() => {
     const fetchMovies = async () => {
       const headers = {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_KEY}`,
         'Content-Type': 'application/json;charset=utf-8',
       };
 
@@ -76,7 +76,7 @@ export const MovieSearch = ({ query }: { query: string }) => {
   useEffect(() => {
     const fetchMovies = async () => {
       const headers = {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_KEY}`,
         'Content-Type': 'application/json;charset=utf-8',
       };
 
@@ -120,7 +120,7 @@ export const TVShowSearch = ({ query }: { query: string }) => {
   useEffect(() => {
     const fetchShows = async () => {
       const headers = {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_KEY}`,
         'Content-Type': 'application/json;charset=utf-8',
       };
 
@@ -161,7 +161,7 @@ export const PersonSearch = ({ query }: { query: string }) => {
   useEffect(() => {
     const fetchPersons = async () => {
       const headers = {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_KEY}`,
         'Content-Type': 'application/json;charset=utf-8',
       };
 
