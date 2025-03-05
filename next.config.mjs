@@ -17,6 +17,7 @@ const nextConfig = {
             },
         ];
     },
+    sitemap: "https://atlas.ethancls.com/sitemap.xml",
 };
 
 export default nextConfig;
