@@ -25,7 +25,7 @@ import { useEffect, useState } from "react";
 const items = [
   {
     title: "Discover",
-    url: "/discover",
+    url: "/",
     icon: Atom,
   },
   {

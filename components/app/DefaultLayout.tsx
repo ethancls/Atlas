@@ -46,7 +46,7 @@ export const DefaultLayout = ({ children }: PropsWithChildren) => {
                         <TVShowSearch query={query ?? ""} />
                     ) : typeof window !== "undefined" && window.location.href.includes("persons") ? (
                         <PersonSearch query={query ?? ""} />
-                    ) : typeof window !== "undefined" && window.location.href.includes("discover") ? (
+                    ) : typeof window !== "undefined" && window.location.href.includes("") ? (
                         <MultiSearch query={query ?? ""} />
                     ) : (
                         children
