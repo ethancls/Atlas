@@ -5,6 +5,7 @@ services:
       dockerfile: dockerfile
     ports:
       - "2234:3000"
+    restart: unless-stopped
 
   cloudflared:
     image: cloudflare/cloudflared:latest
