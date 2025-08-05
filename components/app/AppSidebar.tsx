@@ -27,11 +27,6 @@ const items = [
     title: "Discover",
     url: "/",
     icon: Atom,
-  },
-  {
-    title: "Streaming",
-    url: "/iptv",
-    icon: TvIcon,
   }
 ]
 
