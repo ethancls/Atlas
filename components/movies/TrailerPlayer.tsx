@@ -53,7 +53,7 @@ const TrailerPlayer = ({
 
     const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
 
-    useEffect(() => {
+    /* useEffect(() => {
         fetch(`/api/download?search=${movie.title}%20${new Date(movie.release_date).getFullYear()}`)
             .then(response => response.json())
             .then(data => data[0])
@@ -65,7 +65,7 @@ const TrailerPlayer = ({
             .catch(() => {
                 setDownloadUrl(null);
             });
-    }, [movie.title, movie.release_date]);
+    }, [movie.title, movie.release_date]); */
 
     return (
         <div className="relative w-full h-[100vh]">
@@ -175,14 +175,14 @@ const TrailerPlayer = ({
                 </div>
             </div>
 
-            {downloadUrl && (
+           {/*  {downloadUrl && (
                 <button
                     onClick={() => window.open(downloadUrl)}
                     className="absolute bottom-20 right-10 z-30 p-2 bg-white rounded md:bottom-6 md:right-6 transition hover:scale-105"
                 >
                     <ArrowDown color="black" className="md:w-6 md:h-6 w-5 h-5 animate-pulse" />
                 </button>
-            )}
+            )} */}
         </div>
     );
 };

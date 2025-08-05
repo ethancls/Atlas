@@ -50,7 +50,7 @@ export function SeasonDetails({ season, show }: SeasonDetailsProps) {
                             </div>
                         </div>
                         {/*Download Button*/}
-                        <button
+                        {/* <button
                             onClick={() => {
                                 fetch(`http://localhost:3000/api/download?search=${show.name}%20s${season.season_number.toString().padStart(2, '0')}%20e${episode.episode_number.toString().padStart(2, '0')}`)
                                     .then(response => response.json())
@@ -65,7 +65,7 @@ export function SeasonDetails({ season, show }: SeasonDetailsProps) {
                             }}
                             className="relative p-2 bg-white rounded transition hover:scale-105 mt-5">
                             <ArrowDown color="black" className="md:w-6 md:h-6 w-5 h-5" />
-                        </button>
+                        </button> */}
                     </div>
                 ))}
             </div>
