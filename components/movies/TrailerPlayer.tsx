@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { ArrowDown, Pause, Play, Volume2, VolumeX } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Pause, Play, Volume2, VolumeX } from "lucide-react";
 import { MovieDetail } from "@/app/entities/MovieDetail";
 import { ImageData } from "@/app/entities/ImageData";
 
 import rotten from "@/public/rotten.png";
 import splash from "@/public/splash.png";
+import { useState } from "react";
 
 interface TrailerPlayerProps {
     movie: MovieDetail;
@@ -50,22 +50,6 @@ const TrailerPlayer = ({
             setIsMuted(!isMuted);
         }
     };
-
-    const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
-
-    /* useEffect(() => {
-        fetch(`/api/download?search=${movie.title}%20${new Date(movie.release_date).getFullYear()}`)
-            .then(response => response.json())
-            .then(data => data[0])
-            .then(data => {
-                if (data?.url) {
-                    setDownloadUrl(data.url);
-                }
-            })
-            .catch(() => {
-                setDownloadUrl(null);
-            });
-    }, [movie.title, movie.release_date]); */
 
     return (
         <div className="relative w-full h-[100vh]">

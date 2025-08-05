@@ -3,7 +3,6 @@ import { SeasonDetail } from "@/app/entities/SeasonDetail";
 
 import rotten from '@/public/rotten.png';
 import splash from '@/public/splash.png';
-import { ArrowDown } from "lucide-react";
 import { ShowDetail } from "@/app/entities/ShowDetail";
 
 interface SeasonDetailsProps {
@@ -11,7 +10,7 @@ interface SeasonDetailsProps {
     show: ShowDetail;
 }
 
-export function SeasonDetails({ season, show }: SeasonDetailsProps) {
+export function SeasonDetails({ season }: SeasonDetailsProps) {
     if (!season) return null;
 
     return (
@@ -49,23 +48,6 @@ export function SeasonDetails({ season, show }: SeasonDetailsProps) {
                                 <div className="flex items-center border text-xs border-gray-400 rounded px-1">AD</div>
                             </div>
                         </div>
-                        {/*Download Button*/}
-                        {/* <button
-                            onClick={() => {
-                                fetch(`http://localhost:3000/api/download?search=${show.name}%20s${season.season_number.toString().padStart(2, '0')}%20e${episode.episode_number.toString().padStart(2, '0')}`)
-                                    .then(response => response.json())
-                                    .then(data => data[0])
-                                    .then(data => {
-                                        const url = data.url;
-                                        window.open(url, "_blank");
-                                    })
-                                    .catch(() => {
-                                        alert("No download link found");
-                                    });
-                            }}
-                            className="relative p-2 bg-white rounded transition hover:scale-105 mt-5">
-                            <ArrowDown color="black" className="md:w-6 md:h-6 w-5 h-5" />
-                        </button> */}
                     </div>
                 ))}
             </div>
